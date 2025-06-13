@@ -190,7 +190,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_0
+      name: player11111111
       rect:
         serializedVersion: 2
         x: 355
@@ -212,7 +212,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_1
+      name: 0
       rect:
         serializedVersion: 2
         x: 877
@@ -234,7 +234,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_2
+      name: 5
       rect:
         serializedVersion: 2
         x: 1365
@@ -278,7 +278,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_4
+      name: 3
       rect:
         serializedVersion: 2
         x: 1140
@@ -410,7 +410,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_12
+      name: 4
       rect:
         serializedVersion: 2
         x: 875
@@ -498,7 +498,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_16
+      name: 2
       rect:
         serializedVersion: 2
         x: 802
@@ -520,7 +520,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_17
+      name: 1
       rect:
         serializedVersion: 2
         x: 1221
@@ -555,19 +555,19 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      player_0: 4334783836991956000
-      player_1: 7388399842426930641
+      0: 7388399842426930641
+      1: -7689382371589266427
+      2: -7814200450545973387
+      3: 1755772209161902963
+      4: 1871739406167786269
+      5: 6757282713640645180
+      player11111111: 4334783836991956000
       player_10: -3861952770410913445
       player_11: 5044450397378941176
-      player_12: 1871739406167786269
       player_13: 6426868497666326525
       player_14: -2418196558428526619
       player_15: -480808811739928509
-      player_16: -7814200450545973387
-      player_17: -7689382371589266427
-      player_2: 6757282713640645180
       player_3: -6781412095145881161
-      player_4: 1755772209161902963
       player_5: 5865078278364869351
       player_6: -2023923573111878767
       player_7: -540375121143967267
