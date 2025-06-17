@@ -8,9 +8,10 @@ public class Limb
     public GameObject partA, partB, partC;
     public SpriteRenderer srA, srB, srC;
     int inverted, flipped = 1;
-    Vector2 initFollowPosition, followTarget, circleOrgin,followPos,boxsize = new Vector2(0.1f,.2f);
+    Vector2 initFollowPosition, followTarget, circleOrgin, followPos;
     bool isBackLimb;
     public LimbMode currentLimbMode;
+    public Vector2 boxsize = new Vector2(0.1f, .2f);
 
     public void Start(bool _isBackLimb,bool _isInverted)
     {
