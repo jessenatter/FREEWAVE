@@ -102,7 +102,8 @@ public class Character : PrimaryClass
 
     void GroundedCheck()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(gameObject.transform.position, bc.size, 0, Vector2.down, 0.15f, manager.groundMask);
+        Vector2 boxSize = new Vector2(bc.size.x * 0.8f, bc.size.y * 0.8f);
+        RaycastHit2D hit = Physics2D.BoxCast(gameObject.transform.position, boxSize, 0, Vector2.down, 0.3f, manager.groundMask);
 
         if (hit.collider != null)
             grounded = true;
