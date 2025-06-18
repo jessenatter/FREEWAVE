@@ -127,14 +127,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 824403378604262372, guid: e9b0f96ddb06340ca9c175fa4ac7ef27, type: 3}
-      propertyPath: m_ApplyToSortingLayers.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 824403378604262372, guid: e9b0f96ddb06340ca9c175fa4ac7ef27, type: 3}
-      propertyPath: 'm_ApplyToSortingLayers.Array.data[1]'
-      value: 525203333
-      objectReference: {fileID: 0}
     - target: {fileID: 2382528731802519633, guid: e9b0f96ddb06340ca9c175fa4ac7ef27, type: 3}
       propertyPath: m_Name
       value: Level
