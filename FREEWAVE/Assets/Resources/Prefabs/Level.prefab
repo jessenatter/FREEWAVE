@@ -237,7 +237,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   moveAction:
-    m_Name: 
+    m_Name: Move
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: d2066df6-7a57-46c7-a845-4945a94e8f21
@@ -246,7 +246,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   jumpAction:
-    m_Name: 
+    m_Name: Jump
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 817166d6-1c2c-45e2-b9f8-d203c05aae3b
@@ -255,7 +255,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   attackAction:
-    m_Name: 
+    m_Name: Attack
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 141f1127-133a-426e-8dc4-9640a9abd27d
@@ -264,7 +264,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   interactAction:
-    m_Name: 
+    m_Name: Interact
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 4ce6839b-6e03-4df0-8bab-05683ae67256
@@ -273,7 +273,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   dodgeAction:
-    m_Name: 
+    m_Name: Dodge
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 56987e9c-6c42-459d-8843-0dfa70f3a4c1
@@ -282,7 +282,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   aimAction:
-    m_Name: 
+    m_Name: Aim
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 35c512e0-37eb-4063-a0e1-33ea0a42308e
@@ -291,7 +291,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   shootAction:
-    m_Name: 
+    m_Name: Shoot
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: ec3a0e71-bef2-413a-a80b-332c8349dcea

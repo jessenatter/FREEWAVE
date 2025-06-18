@@ -5,14 +5,14 @@ using System;
 public class Character : PrimaryClass
 {
     protected string name;
-    public GameObject gameObject,head;
-    Limb frontArm, backArm, frontLeg, backLeg;
+    public GameObject gameObject,spine1,spine2, head;
+    public Limb frontArm, backArm, frontLeg, backLeg;
     List<Limb> limbs = new List<Limb>();
     public int xDir;
     public Rigidbody2D rb;
     BoxCollider2D bc;
     SpriteRenderer sr;
-    Vector2 spawnPoint,boxsize = new Vector2(0.4f,.9f);
+    Vector2 spawnPoint;
     public float moveSpeed = 1f,jumpForce = 5f;
     public UpperBodyState currentUpperBodyState;
     public LowerBodyState currentLowerBodyState;
@@ -31,28 +31,29 @@ public class Character : PrimaryClass
     {
         base.Start(_manager);
 
-        limbs.AddRange(new[] { frontArm, backArm, frontLeg, backLeg });
-
         sprites = Resources.LoadAll<Sprite>("Sprites/Characters/" + name.ToString());
 
-        gameObject = new GameObject(name);
+        gameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character"));
 
-        rb = gameObject.AddComponent<Rigidbody2D>();
-        bc = gameObject.AddComponent<BoxCollider2D>();
-        bc.size = boxsize;
-        sr = gameObject.AddComponent<SpriteRenderer>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        bc = gameObject.GetComponent<BoxCollider2D>();
+        sr = gameObject.GetComponent<SpriteRenderer>();
         sr.sprite = sprites[0];
         gameObject.transform.position = spawnPoint;
 
-        frontLeg = StartLimb(true, false);
-        backLeg = StartLimb(true, true);
-        frontArm = StartLimb(false, false);
-        backArm = StartLimb(false, true);
+        spine1 = gameObject.transform.GetChild(0).gameObject;
+        spine2 = spine1.transform.GetChild(0).gameObject;
+        head = spine2.transform.GetChild(0).gameObject;
 
-        head = new GameObject(name + "head");
-        head.AddComponent<SpriteRenderer>().sprite = sprites[5];
-        head.transform.position = new Vector2(gameObject.transform.position.x,bc.bounds.max.y + 0.2f);
-        head.transform.SetParent(gameObject.transform);
+        frontLeg = StartLimb(true, false,gameObject.transform.GetChild(1).gameObject);
+        backLeg = StartLimb(true, true, gameObject.transform.GetChild(2).gameObject);
+        frontArm = StartLimb(false, false,spine2.transform.GetChild(1).gameObject);
+        backArm = StartLimb(false, true,spine2.transform.GetChild(2).gameObject);
+
+        limbs.AddRange(new[] { frontArm, backArm, frontLeg, backLeg });
+
+        head.GetComponent<SpriteRenderer>().sprite = sprites[5];
+
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
 
@@ -63,30 +64,21 @@ public class Character : PrimaryClass
             bodyState.Start(this);
     }
 
-    Limb StartLimb(bool isLeg, bool isBackLimb)
+    Limb StartLimb(bool isLeg, bool isBackLimb,GameObject _gameObject)
     {
         Limb limb = new Limb();
-        limb.Start(isBackLimb, isLeg);
+        limb.Start(isBackLimb, isLeg,_gameObject);
 
         if (isLeg)
         {
             limb.srA.sprite = sprites[1];
             limb.srB.sprite = sprites[2];
-
-            limb.partA.transform.position = new Vector2(bc.bounds.min.x,gameObject.transform.position.y - limb.boxsize.y);
         }
         else
         {
             limb.srA.sprite = sprites[3];
             limb.srB.sprite = sprites[4];
-
-            limb.partA.transform.position = new Vector2(bc.bounds.min.x, bc.bounds.max.y);
         }
-
-        if (isBackLimb)
-            limb.partA.transform.position = new Vector2(bc.bounds.max.x, limb.partA.transform.position.y);
-
-        limb.partA.transform.SetParent(gameObject.transform);
 
         return limb;
     }
@@ -95,15 +87,16 @@ public class Character : PrimaryClass
     {
         GroundedCheck();
 
+        foreach (Limb limb in limbs)
+            limb.Update();
+
         currentLowerBodyState.StateUpdate();
         currentUpperBodyState.StateUpdate();
     }
 
     void GroundedCheck()
     {
-        Vector2 orgin = new Vector2(gameObject.transform.position.x,gameObject.transform.position.y - (bc.size.y/2));
-
-        RaycastHit2D hit = Physics2D.BoxCast(orgin, boxsize, 0, Vector2.down, 0.1f, manager.groundMask);
+        RaycastHit2D hit = Physics2D.BoxCast(gameObject.transform.position, bc.size, 0, Vector2.down, 0.15f, manager.groundMask);
 
         if (hit.collider != null)
             grounded = true;
@@ -123,7 +116,6 @@ public class Character : PrimaryClass
         if (grounded)
         {
             currentLowerBodyState = lowerBodyJump;
-            Debug.Log("wwww");
         }
     }
 }
@@ -153,6 +145,7 @@ public class BodyState
 {
     protected Character character;
     bool stateEntered;
+    protected LimbMode limbMode;
 
     public virtual void Start(Character _character)
     {
@@ -181,27 +174,86 @@ public class BodyState
 
 public class UpperBodyState : BodyState
 {
+    public override void StateEnter()
+    {
+        base.StateEnter();
 
+        character.frontArm.currentLimbMode = limbMode;
+        character.backArm.currentLimbMode = limbMode;
+    }
 }
 
 public class LowerBodyState : BodyState
 {
-    
+    public override void StateEnter()
+    {
+        base.StateEnter();
+
+        character.frontLeg.currentLimbMode = limbMode;
+        character.backLeg.currentLimbMode = limbMode;
+    }
 }
+
+#region //upperbody states
 
 public class UpperBodyIdle : UpperBodyState
 {
-
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+    }
 }
+
+public class UpperBodyRun : UpperBodyState
+{
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+
+        ThreePoints threePoints = new ThreePoints();
+        threePoints.pointA = new Vector2(0, 0);
+        threePoints.pointB = new Vector2(0, 0);
+        threePoints.pointC = new Vector2(0, 0);
+        threePoints.duration = 1f;
+
+        limbMode = threePoints;
+    }
+}
+
+public class UpperBodyJump : UpperBodyState
+{
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+
+        FollowVector2 followVector2 = new FollowVector2();
+        followVector2.vector2 = new Vector2(0.2f, 0.3f);
+
+        limbMode = followVector2;
+    }
+}
+
+#endregion
+
+#region //lowerbody states
 
 public class LowerBodyIdle : LowerBodyState
 {
+    float decelerationLerp = 0.1f;
+
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+    }
+
     public override void StateUpdate()
     {
         base.StateUpdate();
 
         if (character.xDir != 0)
             StateExit();
+
+        character.rb.linearVelocityX = Mathf.Lerp(character.rb.linearVelocityX, 0, decelerationLerp);
     }
 
     public override void StateExit()
@@ -213,6 +265,19 @@ public class LowerBodyIdle : LowerBodyState
 
 public class LowerBodyRun : LowerBodyState
 {
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+
+        ThreePoints threePoints = new ThreePoints();
+        threePoints.pointA = new Vector2(0, 0);
+        threePoints.pointB = new Vector2(0, 0);
+        threePoints.pointC = new Vector2(0, 0);
+        threePoints.duration = 1f;
+
+        limbMode = threePoints;
+    }
+
     public override void StateUpdate()
     {
         base.StateUpdate();
@@ -234,6 +299,13 @@ public class LowerBodyRun : LowerBodyState
 
 public class LowerBodyJump : LowerBodyState
 {
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+
+        limbMode = new FollowVector2();
+    }
+
     public override void StateUpdate()
     {
         base.StateUpdate();
@@ -256,3 +328,5 @@ public class LowerBodyJump : LowerBodyState
         character.rb.AddForce(character.jumpForce * Vector2.up,ForceMode2D.Impulse);
     }
 }
+
+#endregion

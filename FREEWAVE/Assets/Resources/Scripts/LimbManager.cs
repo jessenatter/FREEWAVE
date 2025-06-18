@@ -4,16 +4,16 @@ using System;
 
 public class Limb
 {
-    float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation;
+    float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed;
     public GameObject partA, partB, partC;
     public SpriteRenderer srA, srB, srC;
     int inverted, flipped = 1;
-    Vector2 initFollowPosition, followTarget, circleOrgin, followPos;
+    Vector2 followPos, followTarget;
     bool isBackLimb;
     public LimbMode currentLimbMode;
-    public Vector2 boxsize = new Vector2(0.1f, .2f);
+    Rest rest = new Rest();
 
-    public void Start(bool _isBackLimb,bool _isInverted)
+    public void Start(bool _isBackLimb,bool _isInverted,GameObject _gameObject)
     {
         if (_isBackLimb)
             isBackLimb = true;
@@ -21,32 +21,29 @@ public class Limb
         if (_isInverted)
             inverted = -1;
 
-        partA = new GameObject("PartA");
-        partB = new GameObject("PartB");
-        partC = new GameObject("PartC");
+        partA = _gameObject;
+        partB = _gameObject.transform.GetChild(0).gameObject;
+        partC = partB.transform.GetChild(0).gameObject;
 
-        srA = partA.AddComponent<SpriteRenderer>();
-        srB = partB.AddComponent<SpriteRenderer>();
-        srC = partC.AddComponent<SpriteRenderer>();
+        srA = partA.GetComponent<SpriteRenderer>();
+        srB = partB.GetComponent<SpriteRenderer>();
+        srC = partC.GetComponent<SpriteRenderer>();
 
-        partB.transform.position = new Vector2(partA.transform.position.y, partA.transform.position.y - boxsize.y);
-        partB.transform.SetParent(partA.transform);
-
-        partC.transform.position = new Vector2(partB.transform.position.y, partB.transform.position.y - boxsize.y);
-        partC.transform.SetParent(partB.transform);
+        rest.restPos = partC.transform.position;
     }
 
-    Vector2 GetOffset(Vector2 origionalPosition)
+    public void Update()
     {
-        Vector2 transformVec2 = new Vector2(partA.transform.position.x, partA.transform.position.y);
-        Vector2 offset = origionalPosition - transformVec2;
-        return offset;
-    }
+        if (currentLimbMode == null)
+            followTarget = rest.Update();
+        else
+            followTarget = currentLimbMode.Update();
 
-    Vector2 ApplyOffset(Vector2 offset)
-    {
-        Vector2 transformVec2 = new Vector2(partA.transform.position.x, partA.transform.position.y);
-        return transformVec2 + offset;
+        float _x = Mathf.Lerp(followPos.x,followTarget.x,lerpSpeed);
+        float _y = Mathf.Lerp(followPos.y,followTarget.y,lerpSpeed);
+
+        followPos = new Vector2(partA.transform.position.x + _x, partA.transform.position.y + _y);
+        ApplyRotations();
     }
 
     void ApplyRotations()
@@ -106,8 +103,79 @@ public class Limb
 
 public class LimbMode
 {
-    public void Update()
+    public virtual void EnterMode()
     {
 
     }
+
+    public virtual Vector2 Update()
+    {
+        return Vector2.zero;
+    }
 }
+
+public class FollowVector2 : LimbMode
+{
+    public Vector2 vector2;
+
+    public override Vector2 Update()
+    {
+        base.Update();
+
+        Vector2 followObjectRelativePos = vector2;
+        return followObjectRelativePos;
+    }
+
+}
+
+public class FollowGameObject : LimbMode
+{
+    public GameObject followObject;
+
+    public override Vector2 Update()
+    {
+        base.Update();
+
+        Vector2 followObjectRelativePos = followObject.transform.position;
+        return followObjectRelativePos;
+    }
+}
+
+public class Rest : LimbMode
+{
+    public Vector2 restPos;
+
+    public override Vector2 Update()
+    {
+        base.Update();
+
+        return restPos;
+    }
+}
+
+public class ThreePoints : LimbMode
+{
+    public Vector2 pointA, pointB, pointC;
+    public float duration = 1f,initDuration;
+    public bool loop;
+
+    public override void EnterMode()
+    {
+        base.EnterMode();
+
+        initDuration = duration;
+    }
+
+    public override Vector2 Update()
+    {
+        if(duration > 0)
+            duration -= 1;
+
+        float t = 1f - Mathf.Clamp01(duration);
+        
+        Vector2 ab = Vector2.Lerp(pointA, pointB, t);
+        Vector2 bc = Vector2.Lerp(pointB, pointC, t);
+        return Vector2.Lerp(ab, bc, t);
+    }
+}
+
