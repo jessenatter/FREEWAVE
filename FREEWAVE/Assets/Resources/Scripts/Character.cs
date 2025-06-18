@@ -7,6 +7,7 @@ public class Character : PrimaryClass
     protected string name;
     public GameObject gameObject,spine1,spine2, head;
     public Limb frontArm, backArm, frontLeg, backLeg;
+    public float armMaxRadius, legMaxRadius;
     List<Limb> limbs = new List<Limb>();
     public int xDir;
     public Rigidbody2D rb;
@@ -23,6 +24,8 @@ public class Character : PrimaryClass
     public LowerBodyJump lowerBodyJump = new LowerBodyJump();
 
     public UpperBodyIdle upperBodyIdle = new UpperBodyIdle();
+    public UpperBodyRun upperBodyRun = new UpperBodyRun();
+    public UpperBodyJump upperBodyJump = new UpperBodyJump();
 
     public bool grounded;
     protected float groundedCD = 10, groundedTimer;
@@ -57,8 +60,11 @@ public class Character : PrimaryClass
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
 
+        armMaxRadius = frontArm.partA.transform.position.y - frontArm.partC.transform.position.y;
+        legMaxRadius = frontLeg.partA.transform.position.y - frontLeg.partC.transform.position.y;
+
         List<BodyState> _bodyStates = new List<BodyState>();
-        _bodyStates.AddRange(new BodyState[] { lowerBodyIdle,lowerBodyJump,lowerBodyRun,upperBodyIdle });
+        _bodyStates.AddRange(new BodyState[] { lowerBodyIdle,lowerBodyJump,lowerBodyRun,upperBodyIdle,upperBodyJump,upperBodyRun });
 
         foreach (BodyState bodyState in _bodyStates)
             bodyState.Start(this);
@@ -116,6 +122,7 @@ public class Character : PrimaryClass
         if (grounded)
         {
             currentLowerBodyState = lowerBodyJump;
+            currentUpperBodyState = upperBodyJump;
         }
     }
 }
@@ -202,6 +209,21 @@ public class UpperBodyIdle : UpperBodyState
     {
         base.Start(_character);
     }
+
+    public override void StateUpdate()
+    {
+        base.StateUpdate();
+
+        if (character.xDir != 0)
+            StateExit();
+    }
+
+    public override void StateExit()
+    {
+        base.StateExit();
+
+        character.currentUpperBodyState = character.upperBodyRun;
+    }
 }
 
 public class UpperBodyRun : UpperBodyState
@@ -211,12 +233,31 @@ public class UpperBodyRun : UpperBodyState
         base.Start(_character);
 
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(0, 0);
-        threePoints.pointB = new Vector2(0, 0);
-        threePoints.pointC = new Vector2(0, 0);
-        threePoints.duration = 1f;
+        threePoints.pointA = new Vector2(-character.armMaxRadius * 0.5f, -character.armMaxRadius * 0.25f);
+        threePoints.pointB = new Vector2(0, -character.armMaxRadius * 0.5f);
+        threePoints.pointC = new Vector2(character.armMaxRadius * 0.5f, -character.armMaxRadius * 0.25f);
+        threePoints.duration = 25;
+        threePoints.initDuration = threePoints.duration;
+        threePoints.loop = true;
 
         limbMode = threePoints;
+    }
+
+    public override void StateUpdate()
+    {
+        base.StateUpdate();
+
+        if (character.gameObject.transform.localScale.x != character.xDir && character.xDir != 0)
+            character.gameObject.transform.localScale = new Vector2(character.xDir, 1);
+
+        if (character.xDir == 0)
+            StateExit();
+    }
+
+    public override void StateExit()
+    {
+        base.StateExit();
+        character.currentUpperBodyState = character.upperBodyIdle;
     }
 }
 
@@ -227,9 +268,23 @@ public class UpperBodyJump : UpperBodyState
         base.Start(_character);
 
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(0.2f, 0.3f);
+        followVector2.vector2 = new Vector2(character.armMaxRadius * 0.5f, character.armMaxRadius * 0.5f);
 
         limbMode = followVector2;
+    }
+
+    public override void StateUpdate()
+    {
+        if (character.grounded == true && character.rb.linearVelocityY <= 0)
+            StateExit();
+
+        base.StateUpdate();
+    }
+
+    public override void StateExit()
+    {
+        base.StateExit();
+        character.currentUpperBodyState = character.upperBodyIdle;
     }
 }
 
@@ -270,10 +325,12 @@ public class LowerBodyRun : LowerBodyState
         base.Start(_character);
 
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(0, 0);
-        threePoints.pointB = new Vector2(0, 0);
-        threePoints.pointC = new Vector2(0, 0);
-        threePoints.duration = 1f;
+        threePoints.pointA = new Vector2(character.legMaxRadius * .5f, -character.legMaxRadius * .5f);
+        threePoints.pointB = new Vector2(0, -character.legMaxRadius);
+        threePoints.pointC = new Vector2(character.legMaxRadius * -.5f, -character.legMaxRadius * .5f);
+        threePoints.duration = 25;
+        threePoints.initDuration = threePoints.duration;
+        threePoints.loop = true;
 
         limbMode = threePoints;
     }
@@ -303,7 +360,9 @@ public class LowerBodyJump : LowerBodyState
     {
         base.Start(_character);
 
-        limbMode = new FollowVector2();
+        FollowVector2 followVector2 = new FollowVector2();
+        followVector2.vector2 = new Vector2(character.legMaxRadius * 0.3f, -character.legMaxRadius * 0.5f);
+        limbMode = followVector2;
     }
 
     public override void StateUpdate()

@@ -4,7 +4,7 @@ using System;
 
 public class Limb
 {
-    float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed;
+    float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed = 0.05f;
     public GameObject partA, partB, partC;
     public SpriteRenderer srA, srB, srC;
     int inverted, flipped = 1;
@@ -29,7 +29,8 @@ public class Limb
         srB = partB.GetComponent<SpriteRenderer>();
         srC = partC.GetComponent<SpriteRenderer>();
 
-        rest.restPos = partC.transform.position;
+        rest.restPos = new Vector2(0,partC.transform.position.y-partA.transform.position.y);
+        followPos = partC.transform.position;
     }
 
     public void Update()
@@ -39,10 +40,13 @@ public class Limb
         else
             followTarget = currentLimbMode.Update();
 
-        float _x = Mathf.Lerp(followPos.x,followTarget.x,lerpSpeed);
-        float _y = Mathf.Lerp(followPos.y,followTarget.y,lerpSpeed);
+        if(inverted == -1)
+            Debug.Log(followTarget);
 
-        followPos = new Vector2(partA.transform.position.x + _x, partA.transform.position.y + _y);
+        float _x = Mathf.Lerp(followPos.x,followTarget.x + partA.transform.position.x, lerpSpeed * Time.fixedDeltaTime);
+        float _y = Mathf.Lerp(followPos.y,followTarget.y + partA.transform.position.y, lerpSpeed * Time.fixedDeltaTime);
+
+        followPos = new Vector2(partA.transform.position.x + followTarget.x, partA.transform.position.y + followTarget.y);
         ApplyRotations();
     }
 
@@ -103,11 +107,6 @@ public class Limb
 
 public class LimbMode
 {
-    public virtual void EnterMode()
-    {
-
-    }
-
     public virtual Vector2 Update()
     {
         return Vector2.zero;
@@ -122,10 +121,8 @@ public class FollowVector2 : LimbMode
     {
         base.Update();
 
-        Vector2 followObjectRelativePos = vector2;
-        return followObjectRelativePos;
+        return vector2;
     }
-
 }
 
 public class FollowGameObject : LimbMode
@@ -156,22 +153,25 @@ public class Rest : LimbMode
 public class ThreePoints : LimbMode
 {
     public Vector2 pointA, pointB, pointC;
-    public float duration = 1f,initDuration;
+    public float duration,initDuration;
     public bool loop;
-
-    public override void EnterMode()
-    {
-        base.EnterMode();
-
-        initDuration = duration;
-    }
 
     public override Vector2 Update()
     {
-        if(duration > 0)
+        if (duration > 0)
             duration -= 1;
+        else if (loop)
+        {
+            Vector2 _a = pointA;
+            Vector2 _c = pointC;
 
-        float t = 1f - Mathf.Clamp01(duration);
+            pointA = _c;
+            pointC = _a;
+
+            duration = initDuration;
+        }
+
+        float t = 1f - Mathf.Clamp01(duration/initDuration);
         
         Vector2 ab = Vector2.Lerp(pointA, pointB, t);
         Vector2 bc = Vector2.Lerp(pointB, pointC, t);
