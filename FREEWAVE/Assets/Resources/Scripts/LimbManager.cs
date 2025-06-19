@@ -4,7 +4,7 @@ using System;
 
 public class Limb
 {
-    float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed = 0.05f;
+    float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed = 0.01f;
     public GameObject partA, partB, partC;
     public SpriteRenderer srA, srB, srC;
     int inverted, flipped = 1;
@@ -40,13 +40,10 @@ public class Limb
         else
             followTarget = currentLimbMode.Update();
 
-        if(inverted == -1)
-            Debug.Log(followTarget);
+        float _x = Mathf.Lerp(partA.transform.position.x,followTarget.x + partA.transform.position.x, lerpSpeed * Time.fixedDeltaTime);
+        float _y = Mathf.Lerp(partA.transform.position.y,followTarget.y + partA.transform.position.y, lerpSpeed * Time.fixedDeltaTime);
 
-        float _x = Mathf.Lerp(followPos.x,followTarget.x + partA.transform.position.x, lerpSpeed * Time.fixedDeltaTime);
-        float _y = Mathf.Lerp(followPos.y,followTarget.y + partA.transform.position.y, lerpSpeed * Time.fixedDeltaTime);
-
-        followPos = new Vector2(partA.transform.position.x + followTarget.x, partA.transform.position.y + followTarget.y);
+        followPos = new Vector2(_x,_y);
         ApplyRotations();
     }
 

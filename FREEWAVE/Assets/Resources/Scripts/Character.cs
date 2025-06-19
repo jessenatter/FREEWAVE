@@ -27,7 +27,7 @@ public class Character : PrimaryClass
     public UpperBodyRun upperBodyRun = new UpperBodyRun();
     public UpperBodyJump upperBodyJump = new UpperBodyJump();
 
-    public bool grounded;
+    public bool grounded,canJump;
     protected float groundedCD = 10, groundedTimer;
 
     override public void Start(Manager _manager)
@@ -103,7 +103,7 @@ public class Character : PrimaryClass
     void GroundedCheck()
     {
         Vector2 boxSize = new Vector2(bc.size.x * 0.8f, bc.size.y * 0.8f);
-        RaycastHit2D hit = Physics2D.BoxCast(gameObject.transform.position, boxSize, 0, Vector2.down, 0.3f, manager.groundMask);
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2)gameObject.transform.position + Vector2.down * 0.1f, boxSize, 0, Vector2.down, 0.3f, manager.groundMask);
 
         if (hit.collider != null)
             grounded = true;
@@ -120,10 +120,13 @@ public class Character : PrimaryClass
 
     protected void Jump()
     {
-        if (grounded)
+        if (grounded && canJump)
         {
+            currentLowerBodyState.StateExit();
+            currentUpperBodyState.StateExit();
             currentLowerBodyState = lowerBodyJump;
             currentUpperBodyState = upperBodyJump;
+            canJump = false;
         }
     }
 }
@@ -144,6 +147,8 @@ public class Player : Character
 
         if (manager.jumpAction.IsPressed())
             Jump();
+        else
+            canJump = true;
 
         base.Update();
     }
@@ -209,6 +214,7 @@ public class UpperBodyIdle : UpperBodyState
     public override void Start(Character _character)
     {
         base.Start(_character);
+        limbMode = null;
     }
 
     public override void StateUpdate()
@@ -276,7 +282,7 @@ public class UpperBodyJump : UpperBodyState
 
     public override void StateUpdate()
     {
-        if (character.grounded == true && character.rb.linearVelocityY <= 0)
+        if (character.grounded == true)
             StateExit();
 
         base.StateUpdate();
@@ -300,6 +306,7 @@ public class LowerBodyIdle : LowerBodyState
     public override void Start(Character _character)
     {
         base.Start(_character);
+        limbMode = null;
     }
 
     public override void StateUpdate()
@@ -370,9 +377,9 @@ public class LowerBodyJump : LowerBodyState
     {
         base.StateUpdate();
 
-        character.rb.linearVelocity = new Vector2((character.moveSpeed/1.65f) * character.xDir, character.rb.linearVelocity.y);
+        character.rb.linearVelocity = new Vector2((character.moveSpeed * .75f) * character.xDir, character.rb.linearVelocity.y);
 
-        if (character.grounded == true && character.rb.linearVelocityY <= 0)
+        if (character.grounded == true)
             StateExit();
     }
 
