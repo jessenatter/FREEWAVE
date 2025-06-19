@@ -36,9 +36,9 @@ public class Limb
     public void Update()
     {
         if (currentLimbMode == null)
-            followTarget = rest.Update();
+            followTarget = rest.Update(isBackLimb);
         else
-            followTarget = currentLimbMode.Update();
+            followTarget = currentLimbMode.Update(isBackLimb);
 
         float _x = Mathf.Lerp(partA.transform.position.x,followTarget.x + partA.transform.position.x, lerpSpeed * Time.fixedDeltaTime);
         float _y = Mathf.Lerp(partA.transform.position.y,followTarget.y + partA.transform.position.y, lerpSpeed * Time.fixedDeltaTime);
@@ -104,7 +104,7 @@ public class Limb
 
 public class LimbMode
 {
-    public virtual Vector2 Update()
+    public virtual Vector2 Update(bool isBackLimb)
     {
         return Vector2.zero;
     }
@@ -114,9 +114,9 @@ public class FollowVector2 : LimbMode
 {
     public Vector2 vector2;
 
-    public override Vector2 Update()
+    public override Vector2 Update(bool isBackLimb)
     {
-        base.Update();
+        base.Update(isBackLimb);
 
         return vector2;
     }
@@ -126,9 +126,9 @@ public class FollowGameObject : LimbMode
 {
     public GameObject followObject;
 
-    public override Vector2 Update()
+    public override Vector2 Update(bool isBackLimb)
     {
-        base.Update();
+        base.Update(isBackLimb);
 
         Vector2 followObjectRelativePos = followObject.transform.position;
         return followObjectRelativePos;
@@ -139,23 +139,22 @@ public class Rest : LimbMode
 {
     public Vector2 restPos;
 
-    public override Vector2 Update()
+    public override Vector2 Update(bool isBackLimb)
     {
-        base.Update();
+        base.Update(isBackLimb);
 
         return restPos;
     }
 }
-
 public class ThreePoints : LimbMode
 {
     public Vector2 pointA, pointB, pointC;
-    public float duration,initDuration;
-    public bool loop,backLimb;
+    public float duration, initDuration;
+    public bool loop;
 
-    public override Vector2 Update()
+    public override Vector2 Update(bool isBackLimb)
     {
-        base.Update();
+        base.Update(isBackLimb);
 
         if (duration > 0)
             duration -= 1;
@@ -163,18 +162,21 @@ public class ThreePoints : LimbMode
         {
             Vector2 _a = pointA;
             Vector2 _c = pointC;
-
             pointA = _c;
             pointC = _a;
 
             duration = initDuration;
         }
 
-        float t = 1f - Mathf.Clamp01(duration/initDuration);
+        float t = 1f - Mathf.Clamp01(duration / initDuration);
+
+        if (isBackLimb)
+            t = 1f - t;
 
         Vector2 ab = Vector2.Lerp(pointA, pointB, t);
         Vector2 bc = Vector2.Lerp(pointB, pointC, t);
         return Vector2.Lerp(ab, bc, t);
     }
 }
+
 

@@ -13,7 +13,7 @@ public class Character : PrimaryClass
     public Rigidbody2D rb;
     BoxCollider2D bc;
     SpriteRenderer sr;
-    Vector2 spawnPoint;
+    public Vector2 spawnPoint,climbPoint;
     public float moveSpeed = 1f,jumpForce = 5f;
     public UpperBodyState currentUpperBodyState;
     public LowerBodyState currentLowerBodyState;
@@ -22,10 +22,12 @@ public class Character : PrimaryClass
     public LowerBodyIdle lowerBodyIdle = new LowerBodyIdle();
     public LowerBodyRun lowerBodyRun = new LowerBodyRun();
     public LowerBodyJump lowerBodyJump = new LowerBodyJump();
+    public LowerBodyClimb lowerBodyClimb = new LowerBodyClimb();
 
     public UpperBodyIdle upperBodyIdle = new UpperBodyIdle();
     public UpperBodyRun upperBodyRun = new UpperBodyRun();
     public UpperBodyJump upperBodyJump = new UpperBodyJump();
+    public UpperBodyClimb upperBodyClimb = new UpperBodyClimb();
 
     public bool grounded,canJump = true;
     protected float groundedCD = 10, groundedTimer;
@@ -64,7 +66,7 @@ public class Character : PrimaryClass
         legMaxRadius = frontLeg.partA.transform.position.y - frontLeg.partC.transform.position.y;
 
         List<BodyState> _bodyStates = new List<BodyState>();
-        _bodyStates.AddRange(new BodyState[] { lowerBodyIdle,lowerBodyJump,lowerBodyRun,upperBodyIdle,upperBodyJump,upperBodyRun });
+        _bodyStates.AddRange(new BodyState[] { lowerBodyIdle,lowerBodyJump,lowerBodyRun,upperBodyIdle,upperBodyJump,upperBodyRun,lowerBodyClimb,upperBodyClimb });
 
         foreach (BodyState bodyState in _bodyStates)
             bodyState.Start(this);
@@ -119,6 +121,26 @@ public class Character : PrimaryClass
         }
     }
 
+    void ClimbCheck()
+    {
+        Vector2 climbOrgin = new Vector2(head.transform.position.x + (Mathf.Sign(gameObject.transform.localScale.x) * 0.5f), 0);
+
+        Vector2 boxSize = new Vector2(0.4f, 0.2f);
+        float distance = 0.1f;
+        RaycastHit2D top = Physics2D.BoxCast(climbOrgin, boxSize, 0, Vector2.up, distance,manager.groundMask);
+        RaycastHit2D bottom = Physics2D.BoxCast(climbOrgin, boxSize, 0, Vector2.down, distance, manager.groundMask);
+
+        if(top.collider == null && bottom.collider != null)
+        {
+            if(gameObject.transform.position.x > bottom.collider.transform.position.x)
+                climbPoint = new Vector2(bottom.collider.bounds.max.x,bottom.collider.bounds.max.y);
+            else
+                climbPoint = new Vector2(bottom.collider.bounds.min.x, bottom.collider.bounds.max.y);
+
+            Climb();
+        }
+    }
+
     protected void Jump()
     {
         if (grounded && canJump)
@@ -129,6 +151,14 @@ public class Character : PrimaryClass
             currentLowerBodyState = lowerBodyJump;
             currentUpperBodyState = upperBodyJump;
         }
+    }
+
+    protected void Climb()
+    {
+        currentLowerBodyState.StateExit();
+        currentUpperBodyState.StateExit();
+        currentLowerBodyState = lowerBodyClimb;
+        currentUpperBodyState = upperBodyClimb;
     }
 }
 
@@ -239,10 +269,10 @@ public class UpperBodyRun : UpperBodyState
         base.Start(_character);
 
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(-character.armMaxRadius * 0.5f, -character.armMaxRadius * 0.25f);
-        threePoints.pointB = new Vector2(0, -character.armMaxRadius * 0.5f);
-        threePoints.pointC = new Vector2(character.armMaxRadius * 0.5f, -character.armMaxRadius * 0.25f);
-        threePoints.duration = 25;
+        threePoints.pointA = new Vector2(-character.armMaxRadius * 0.3f, -character.armMaxRadius * 0.3f);
+        threePoints.pointB = new Vector2(0, -character.armMaxRadius * 0.3f);
+        threePoints.pointC = new Vector2(character.armMaxRadius * 0.3f, -character.armMaxRadius * 0.3f);
+        threePoints.duration = 50;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
 
@@ -294,6 +324,11 @@ public class UpperBodyJump : UpperBodyState
     }
 }
 
+public class UpperBodyClimb : UpperBodyState
+{
+
+}
+
 #endregion
 
 #region //lowerbody states
@@ -332,10 +367,10 @@ public class LowerBodyRun : LowerBodyState
         base.Start(_character);
 
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(character.legMaxRadius * .5f, -character.legMaxRadius * .5f);
+        threePoints.pointA = new Vector2(character.legMaxRadius * .3f, -character.legMaxRadius * .3f);
         threePoints.pointB = new Vector2(0, -character.legMaxRadius);
-        threePoints.pointC = new Vector2(character.legMaxRadius * -.5f, -character.legMaxRadius * .5f);
-        threePoints.duration = 25;
+        threePoints.pointC = new Vector2(character.legMaxRadius * -.3f, -character.legMaxRadius * .3f);
+        threePoints.duration = 50;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
 
@@ -398,6 +433,11 @@ public class LowerBodyJump : LowerBodyState
         base.StateEnter();
         character.rb.AddForce(character.jumpForce * Vector2.up,ForceMode2D.Impulse);
     }
+}
+
+public class LowerBodyClimb : LowerBodyState
+{
+
 }
 
 #endregion
