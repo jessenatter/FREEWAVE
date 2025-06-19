@@ -27,7 +27,7 @@ public class Character : PrimaryClass
     public UpperBodyRun upperBodyRun = new UpperBodyRun();
     public UpperBodyJump upperBodyJump = new UpperBodyJump();
 
-    public bool grounded,canJump;
+    public bool grounded,canJump = true;
     protected float groundedCD = 10, groundedTimer;
 
     override public void Start(Manager _manager)
@@ -113,6 +113,7 @@ public class Character : PrimaryClass
             if (groundedTimer == groundedCD)
             {
                 grounded = false;
+                canJump = true;
                 groundedTimer = 0;
             }
         }
@@ -122,11 +123,11 @@ public class Character : PrimaryClass
     {
         if (grounded && canJump)
         {
+            canJump = false;
             currentLowerBodyState.StateExit();
             currentUpperBodyState.StateExit();
             currentLowerBodyState = lowerBodyJump;
             currentUpperBodyState = upperBodyJump;
-            canJump = false;
         }
     }
 }
@@ -147,14 +148,12 @@ public class Player : Character
 
         if (manager.jumpAction.IsPressed())
             Jump();
-        else
-            canJump = true;
 
         base.Update();
     }
 }
 
-public class BodyState
+public class BodyState 
 {
     protected Character character;
     bool stateEntered;
@@ -282,7 +281,7 @@ public class UpperBodyJump : UpperBodyState
 
     public override void StateUpdate()
     {
-        if (character.grounded == true)
+        if (character.grounded == true && character.canJump)
             StateExit();
 
         base.StateUpdate();
@@ -360,6 +359,11 @@ public class LowerBodyRun : LowerBodyState
         base.StateExit();
         character.currentLowerBodyState = character.lowerBodyIdle;
     }
+
+    public override void StateEnter()
+    {
+        base.StateEnter();
+    }
 }
 
 public class LowerBodyJump : LowerBodyState
@@ -379,7 +383,7 @@ public class LowerBodyJump : LowerBodyState
 
         character.rb.linearVelocity = new Vector2((character.moveSpeed * .75f) * character.xDir, character.rb.linearVelocity.y);
 
-        if (character.grounded == true)
+        if (character.grounded == true && character.canJump)
             StateExit();
     }
 

@@ -151,10 +151,12 @@ public class ThreePoints : LimbMode
 {
     public Vector2 pointA, pointB, pointC;
     public float duration,initDuration;
-    public bool loop;
+    public bool loop,backLimb;
 
     public override Vector2 Update()
     {
+        base.Update();
+
         if (duration > 0)
             duration -= 1;
         else if (loop)
@@ -169,7 +171,7 @@ public class ThreePoints : LimbMode
         }
 
         float t = 1f - Mathf.Clamp01(duration/initDuration);
-        
+
         Vector2 ab = Vector2.Lerp(pointA, pointB, t);
         Vector2 bc = Vector2.Lerp(pointB, pointC, t);
         return Vector2.Lerp(ab, bc, t);
