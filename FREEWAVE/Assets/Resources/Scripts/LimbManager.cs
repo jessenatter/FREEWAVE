@@ -40,8 +40,8 @@ public class Limb
         else
             followTarget = currentLimbMode.Update(isBackLimb);
 
-        float _x = Mathf.Lerp(partA.transform.position.x,followTarget.x + partA.transform.position.x, lerpSpeed * Time.fixedDeltaTime);
-        float _y = Mathf.Lerp(partA.transform.position.y,followTarget.y + partA.transform.position.y, lerpSpeed * Time.fixedDeltaTime);
+        float _x = Mathf.Lerp(partA.transform.position.x,followTarget.x + partA.transform.position.x, lerpSpeed);
+        float _y = Mathf.Lerp(partA.transform.position.y,followTarget.y + partA.transform.position.y, lerpSpeed);
 
         followPos = new Vector2(_x,_y);
         ApplyRotations();

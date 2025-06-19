@@ -38,7 +38,7 @@ public class Character : PrimaryClass
 
         sprites = Resources.LoadAll<Sprite>("Sprites/Characters/" + name.ToString());
 
-        gameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character"));
+        gameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Character"));
 
         rb = gameObject.GetComponent<Rigidbody2D>();
         bc = gameObject.GetComponent<BoxCollider2D>();
