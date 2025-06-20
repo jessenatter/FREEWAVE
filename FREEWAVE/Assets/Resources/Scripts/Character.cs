@@ -62,8 +62,8 @@ public class Character : PrimaryClass
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
 
-        armMaxRadius = frontArm.partA.transform.position.y - frontArm.partC.transform.position.y;
-        legMaxRadius = frontLeg.partA.transform.position.y - frontLeg.partC.transform.position.y;
+        armMaxRadius = frontArm.lengthCmax;
+        legMaxRadius = frontLeg.lengthCmax;
 
         List<BodyState> _bodyStates = new List<BodyState>();
         _bodyStates.AddRange(new BodyState[] { lowerBodyIdle,lowerBodyJump,lowerBodyRun,upperBodyIdle,upperBodyJump,upperBodyRun,lowerBodyClimb,upperBodyClimb });
@@ -101,8 +101,6 @@ public class Character : PrimaryClass
 
         currentLowerBodyState.StateUpdate();
         currentUpperBodyState.StateUpdate();
-
-        Debug.Log(currentUpperBodyState);
     }
 
     void GroundedCheck()
@@ -147,21 +145,16 @@ public class Character : PrimaryClass
     {
         if (grounded && canJump)
         {
-            Debug.Log("a");
             canJump = false;
-            currentLowerBodyState.StateExit();
-            currentUpperBodyState.StateExit();
-            currentLowerBodyState = lowerBodyJump;
-            currentUpperBodyState = upperBodyJump;
+            currentLowerBodyState.StateExit(lowerBodyJump);
+            currentUpperBodyState.StateExit(upperBodyJump);
         }
     }
 
     protected void Climb()
     {
-        currentLowerBodyState.StateExit();
-        currentUpperBodyState.StateExit();
-        currentLowerBodyState = lowerBodyClimb;
-        currentUpperBodyState = upperBodyClimb;
+        currentLowerBodyState.StateExit(lowerBodyClimb);
+        currentUpperBodyState.StateExit(upperBodyClimb);
     }
 
     protected void Rotations()
@@ -176,7 +169,7 @@ public class Player : Character
     {
         name = "Player";
         moveSpeed = 3f;
-        jumpForce = 5.8f;
+        jumpForce = 5.5f;
 
         base.Start(_manager);
     }
@@ -212,7 +205,7 @@ public class BodyState
         }
     }
 
-    public virtual void StateExit()
+    public virtual void StateExit(BodyState nextState)
     {
         stateEntered = false;
     }
@@ -232,6 +225,12 @@ public class UpperBodyState : BodyState
         character.frontArm.currentLimbMode = limbMode;
         character.backArm.currentLimbMode = limbMode;
     }
+
+    public override void StateExit(BodyState nextState)
+    {
+        base.StateExit(nextState);
+        character.currentUpperBodyState = (UpperBodyState)nextState;
+    }
 }
 
 public class LowerBodyState : BodyState
@@ -242,6 +241,12 @@ public class LowerBodyState : BodyState
 
         character.frontLeg.currentLimbMode = limbMode;
         character.backLeg.currentLimbMode = limbMode;
+    }
+
+    public override void StateExit(BodyState nextState)
+    {
+        base.StateExit(nextState);
+        character.currentLowerBodyState = (LowerBodyState)nextState;
     }
 }
 
@@ -260,29 +265,21 @@ public class UpperBodyIdle : UpperBodyState
         base.StateUpdate();
 
         if (character.xDir != 0)
-            StateExit();
-    }
-
-    public override void StateExit()
-    {
-        base.StateExit();
-
-        character.currentUpperBodyState = character.upperBodyRun;
+            StateExit(character.upperBodyRun);
     }
 }
 
 public class UpperBodyRun : UpperBodyState
 {
-    float reach = 0.05f;
-
     public override void Start(Character _character)
     {
         base.Start(_character);
 
+        float reach = .5f;
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(-character.armMaxRadius * reach, -character.armMaxRadius * reach);
-        threePoints.pointB = new Vector2(0, -character.armMaxRadius * reach);
-        threePoints.pointC = new Vector2(character.armMaxRadius * reach, -character.armMaxRadius * reach);
+        threePoints.pointA = new Vector2(-character.armMaxRadius, -character.armMaxRadius) * reach;
+        threePoints.pointB = new Vector2(0, -character.armMaxRadius) * reach;
+        threePoints.pointC = new Vector2(character.armMaxRadius, -character.armMaxRadius) * reach;
         threePoints.duration = 50;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
@@ -298,13 +295,7 @@ public class UpperBodyRun : UpperBodyState
             character.gameObject.transform.localScale = new Vector2(character.xDir, 1);
 
         if (character.xDir == 0)
-            StateExit();
-    }
-
-    public override void StateExit()
-    {
-        base.StateExit();
-        character.currentUpperBodyState = character.upperBodyIdle;
+            StateExit(character.upperBodyIdle);
     }
 }
 
@@ -315,7 +306,7 @@ public class UpperBodyJump : UpperBodyState
         base.Start(_character);
 
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(character.armMaxRadius, character.armMaxRadius);
+        followVector2.vector2 = new Vector2(character.armMaxRadius, character.armMaxRadius) * 0.65f;
 
         limbMode = followVector2;
     }
@@ -323,18 +314,12 @@ public class UpperBodyJump : UpperBodyState
     public override void StateUpdate()
     {
         if (character.grounded == true && character.rb.linearVelocityY <= 0)
-            StateExit();
+            StateExit(character.upperBodyIdle);
 
         if (character.gameObject.transform.localScale.x != character.xDir && character.xDir != 0)
             character.gameObject.transform.localScale = new Vector2(character.xDir, 1);
 
         base.StateUpdate();
-    }
-
-    public override void StateExit()
-    {
-        base.StateExit();
-        character.currentUpperBodyState = character.upperBodyIdle;
     }
 }
 
@@ -375,15 +360,9 @@ public class LowerBodyIdle : LowerBodyState
         base.StateUpdate();
 
         if (character.xDir != 0)
-            StateExit();
+            StateExit(character.lowerBodyRun);
 
         character.rb.linearVelocityX = Mathf.Lerp(character.rb.linearVelocityX, 0, decelerationLerp);
-    }
-
-    public override void StateExit()
-    {
-        base.StateExit();
-        character.currentLowerBodyState = character.lowerBodyRun;
     }
 
     public override void StateEnter()
@@ -399,10 +378,11 @@ public class LowerBodyRun : LowerBodyState
     {
         base.Start(_character);
 
+        float reach = 0.7f;
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(character.legMaxRadius, -character.legMaxRadius);
+        threePoints.pointA = new Vector2(-character.legMaxRadius, -character.legMaxRadius) * reach;
         threePoints.pointB = new Vector2(0, -character.legMaxRadius);
-        threePoints.pointC = new Vector2(character.legMaxRadius, -character.legMaxRadius);
+        threePoints.pointC = new Vector2(character.legMaxRadius, -character.legMaxRadius) * reach;
         threePoints.duration = 50;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
@@ -415,17 +395,11 @@ public class LowerBodyRun : LowerBodyState
         base.StateUpdate();
 
         if (character.xDir == 0)
-            StateExit();
+            StateExit(character.lowerBodyIdle);
         else
         {
             character.rb.linearVelocity = new Vector2(character.moveSpeed * character.xDir, character.rb.linearVelocity.y);
         }
-    }
-
-    public override void StateExit()
-    {
-        base.StateExit();
-        character.currentLowerBodyState = character.lowerBodyIdle;
     }
 
     public override void StateEnter()
@@ -441,7 +415,7 @@ public class LowerBodyJump : LowerBodyState
         base.Start(_character);
 
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(0, -character.legMaxRadius);
+        followVector2.vector2 = new Vector2(0, -character.legMaxRadius * 0.6f);
         limbMode = followVector2;
     }
 
@@ -452,13 +426,7 @@ public class LowerBodyJump : LowerBodyState
         character.rb.linearVelocity = new Vector2((character.moveSpeed * .75f) * character.xDir, character.rb.linearVelocity.y);
 
         if (character.grounded == true && character.rb.linearVelocityY <= 0)
-            StateExit();
-    }
-
-    public override void StateExit()
-    {
-        base.StateExit();
-        character.currentLowerBodyState = character.lowerBodyIdle;
+            StateExit(character.lowerBodyIdle);
     }
 
     public override void StateEnter()
