@@ -138,18 +138,28 @@ public class Character : PrimaryClass
 
     protected void Jump()
     {
-        if (grounded && canJump)
+        if (currentLowerBodyState != lowerBodyClimb)
         {
-            canJump = false;
-            currentLowerBodyState.StateExit(lowerBodyJump);
-            currentUpperBodyState.StateExit(upperBodyJump);
+            if (grounded && canJump)
+            {
+                canJump = false;
+                currentLowerBodyState.StateExit(lowerBodyJump);
+                currentUpperBodyState.StateExit(upperBodyJump);
+            }
+        }
+        else if(!lowerBodyClimb.climbing)
+        {
+            lowerBodyClimb.climbing = true;
         }
     }
 
     protected void Climb()
     {
-        currentLowerBodyState.StateExit(lowerBodyClimb);
-        currentUpperBodyState.StateExit(upperBodyClimb);
+        if (currentLowerBodyState != lowerBodyClimb)
+        {
+            currentLowerBodyState.StateExit(lowerBodyClimb);
+            currentUpperBodyState.StateExit(upperBodyClimb);
+        }
     }
 
     protected void UpdateRotations()
@@ -400,7 +410,8 @@ public class LowerBodyJump : LowerBodyState
 
 public class LowerBodyClimb : LowerBodyState
 {
-    float climbForce = 10f;
+    float climbSpeed = .2f;
+    public bool climbing = false, hitY;
 
     protected override LimbMode CreateLimbMode()
     {
@@ -411,12 +422,35 @@ public class LowerBodyClimb : LowerBodyState
     public override void StateUpdate()
     {
         base.StateUpdate();
+
+        if(climbing)
+        {
+            Vector2 characterFixedPos = new Vector2(character.gameObject.transform.position.x,character.gameObject.transform.position.y - (character.bc.size.y/2));
+
+            if(!hitY)
+            { 
+                character.gameObject.transform.Translate(Vector2.up * climbSpeed);
+                if (characterFixedPos.y > character.climbPoint.y)
+                    hitY = true;
+            }
+            else
+            {
+                character.gameObject.transform.Translate(new Vector2(MathF.Sign(character.gameObject.transform.localScale.x),0)* climbSpeed);
+
+                if (character.grounded)
+                    StateExit(character.lowerBodyIdle);
+            }
+
+            Debug.Log("climbing");
+        }
     }
 
     public override void StateEnter()
     {
         base.StateEnter();
+        climbing = false;
         character.rb.linearVelocity = Vector2.zero;
+        character.grounded = false;
         character.rb.gravityScale = 0;
         character.bc.enabled = false;
     }
@@ -426,8 +460,6 @@ public class LowerBodyClimb : LowerBodyState
         base.StateExit(nextState);
         character.rb.gravityScale = 1;
         character.bc.enabled = true;
-        Vector2 forceDir = (Vector2)character.gameObject.transform.position - character.climbPoint;
-        character.rb.AddForce(forceDir.normalized * climbForce, ForceMode2D.Impulse);
     }
 }
 
