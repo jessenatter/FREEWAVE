@@ -50,10 +50,10 @@ public class Limb
 
         //Debug.Log(followTarget);
 
-        float _x = Mathf.Lerp(partA.transform.position.x,(followTarget.x * Mathf.Sign(character.xDir)) + partA.transform.position.x, lerpSpeed);
+        float _x = Mathf.Lerp(partA.transform.position.x,(followTarget.x * Mathf.Sign(character.gameObject.transform.localScale.x)) + partA.transform.position.x, lerpSpeed);
         float _y = Mathf.Lerp(partA.transform.position.y,followTarget.y + partA.transform.position.y, lerpSpeed);
 
-        followPos = new Vector2((followTarget.x * Mathf.Sign(character.xDir)) + partA.transform.position.x, followTarget.y + partA.transform.position.y);
+        followPos = new Vector2((followTarget.x * Mathf.Sign(character.gameObject.transform.localScale.x)) + partA.transform.position.x, followTarget.y + partA.transform.position.y);
         ApplyRotations();
     }
 

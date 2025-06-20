@@ -14,7 +14,7 @@ public class Character : PrimaryClass
     BoxCollider2D bc;
     SpriteRenderer sr;
     public Vector2 spawnPoint,climbPoint;
-    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.1f;
+    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.3f,tiltRotation = 10;
     public UpperBodyState currentUpperBodyState;
     public LowerBodyState currentLowerBodyState;
     public Sprite[] sprites;
@@ -101,6 +101,8 @@ public class Character : PrimaryClass
 
         currentLowerBodyState.StateUpdate();
         currentUpperBodyState.StateUpdate();
+
+        UpdateRotations();
     }
 
     void GroundedCheck()
@@ -157,9 +159,17 @@ public class Character : PrimaryClass
         currentUpperBodyState.StateExit(upperBodyClimb);
     }
 
-    protected void Rotations()
+    protected void UpdateRotations()
     {
-        //gameObject.transform.rotation = Mathf.Lerp(gameObject.transform.rotation, currentUpperBodyState, rotationLerp);
+        float bodyRotation = Mathf.LerpAngle(gameObject.transform.eulerAngles.z, currentLowerBodyState.rotation, rotationLerp);
+        float spine1rotation = Mathf.LerpAngle(spine1.transform.eulerAngles.z, bodyRotation + currentUpperBodyState.spine1rotation + 90 * Mathf.Sign(gameObject.transform.localScale.x), rotationLerp);
+        float spine2rotation = Mathf.LerpAngle(spine2.transform.eulerAngles.z, spine1rotation + currentUpperBodyState.spine2rotation, rotationLerp);
+        float headRotation = Mathf.LerpAngle(head.transform.eulerAngles.z, spine2rotation + currentUpperBodyState.headRotation - 90 * Mathf.Sign(gameObject.transform.localScale.x), rotationLerp);
+
+        gameObject.transform.rotation = Quaternion.Euler(0, 0, bodyRotation);
+        spine1.transform.rotation = Quaternion.Euler(0, 0, spine1rotation);
+        spine2.transform.rotation = Quaternion.Euler(0, 0, spine2rotation);
+        head.transform.rotation = Quaternion.Euler(0, 0, headRotation);
     }
 }
 
@@ -188,8 +198,8 @@ public class Player : Character
 public class BodyState 
 {
     protected Character character;
-    bool stateEntered;
     protected LimbMode limbMode;
+    public float rotation;
 
     public virtual void Start(Character _character)
     {
@@ -198,16 +208,12 @@ public class BodyState
 
     public virtual void StateUpdate()
     {
-        if(!stateEntered)
-        {
-            StateEnter();
-            stateEntered = true;
-        }
+
     }
 
     public virtual void StateExit(BodyState nextState)
     {
-        stateEntered = false;
+        
     }
 
     public virtual void StateEnter()
@@ -218,6 +224,8 @@ public class BodyState
 
 public class UpperBodyState : BodyState
 {
+    public float headRotation, spine1rotation, spine2rotation;
+
     public override void StateEnter()
     {
         base.StateEnter();
@@ -230,6 +238,7 @@ public class UpperBodyState : BodyState
     {
         base.StateExit(nextState);
         character.currentUpperBodyState = (UpperBodyState)nextState;
+        nextState.StateEnter();
     }
 }
 
@@ -247,6 +256,7 @@ public class LowerBodyState : BodyState
     {
         base.StateExit(nextState);
         character.currentLowerBodyState = (LowerBodyState)nextState;
+        nextState.StateEnter();
     }
 }
 
@@ -400,6 +410,8 @@ public class LowerBodyRun : LowerBodyState
         {
             character.rb.linearVelocity = new Vector2(character.moveSpeed * character.xDir, character.rb.linearVelocity.y);
         }
+
+        rotation = -character.xDir * character.tiltRotation;
     }
 
     public override void StateEnter()
@@ -427,6 +439,8 @@ public class LowerBodyJump : LowerBodyState
 
         if (character.grounded == true && character.rb.linearVelocityY <= 0)
             StateExit(character.lowerBodyIdle);
+
+        rotation = -character.xDir * character.tiltRotation;
     }
 
     public override void StateEnter()
