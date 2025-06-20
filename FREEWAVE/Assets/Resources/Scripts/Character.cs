@@ -14,7 +14,7 @@ public class Character : PrimaryClass
     BoxCollider2D bc;
     SpriteRenderer sr;
     public Vector2 spawnPoint,climbPoint;
-    public float moveSpeed = 1f,jumpForce = 5f;
+    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.1f;
     public UpperBodyState currentUpperBodyState;
     public LowerBodyState currentLowerBodyState;
     public Sprite[] sprites;
@@ -75,7 +75,7 @@ public class Character : PrimaryClass
     Limb StartLimb(bool isLeg, bool isBackLimb,GameObject _gameObject)
     {
         Limb limb = new Limb();
-        limb.Start(isBackLimb, isLeg,_gameObject);
+        limb.Start(isBackLimb, isLeg,_gameObject,this);
 
         if (isLeg)
         {
@@ -94,6 +94,7 @@ public class Character : PrimaryClass
     override public void Update()
     {
         GroundedCheck();
+        ClimbCheck();
 
         foreach (Limb limb in limbs)
             limb.Update();
@@ -159,6 +160,11 @@ public class Character : PrimaryClass
         currentUpperBodyState.StateExit();
         currentLowerBodyState = lowerBodyClimb;
         currentUpperBodyState = upperBodyClimb;
+    }
+
+    protected void Rotations()
+    {
+        //gameObject.transform.rotation = Mathf.Lerp(gameObject.transform.rotation, currentUpperBodyState, rotationLerp);
     }
 }
 
@@ -314,6 +320,9 @@ public class UpperBodyJump : UpperBodyState
         if (character.grounded == true && character.canJump)
             StateExit();
 
+        if (character.gameObject.transform.localScale.x != character.xDir && character.xDir != 0)
+            character.gameObject.transform.localScale = new Vector2(character.xDir, 1);
+
         base.StateUpdate();
     }
 
@@ -326,7 +335,20 @@ public class UpperBodyJump : UpperBodyState
 
 public class UpperBodyClimb : UpperBodyState
 {
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+    }
 
+    public override void StateEnter()
+    {
+        base.StateEnter();
+
+        FollowVector2 followVector2 = new FollowVector2();
+        followVector2.vector2 = new Vector2(character.armMaxRadius * 0.5f, character.armMaxRadius * 0.5f);
+
+        limbMode = followVector2;
+    }
 }
 
 #endregion
@@ -437,7 +459,10 @@ public class LowerBodyJump : LowerBodyState
 
 public class LowerBodyClimb : LowerBodyState
 {
-
+    public override void StateUpdate()
+    {
+        base.StateUpdate();
+    }
 }
 
 #endregion

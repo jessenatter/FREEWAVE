@@ -43,7 +43,13 @@ public class Manager : MonoBehaviour
 
     void FixedUpdate()
     {
-        foreach(PrimaryClass primary in alwaysUpdate)
+        if (Keyboard.current.rKey.IsPressed())
+        {
+            string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentScene);
+        }
+
+        foreach (PrimaryClass primary in alwaysUpdate)
             primary.Update();
     }
 }

@@ -4,6 +4,7 @@ using System;
 
 public class Limb
 {
+    Character character;
     float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed = 0.01f;
     public GameObject partA, partB, partC;
     public SpriteRenderer srA, srB, srC;
@@ -13,8 +14,10 @@ public class Limb
     public LimbMode currentLimbMode;
     Rest rest = new Rest();
 
-    public void Start(bool _isBackLimb,bool _isInverted,GameObject _gameObject)
+    public void Start(bool _isBackLimb,bool _isInverted,GameObject _gameObject,Character _character)
     {
+        character = _character;
+
         if (_isBackLimb)
             isBackLimb = true;
 
@@ -40,7 +43,7 @@ public class Limb
         else
             followTarget = currentLimbMode.Update(isBackLimb);
 
-        float _x = Mathf.Lerp(partA.transform.position.x,followTarget.x + partA.transform.position.x, lerpSpeed);
+        float _x = Mathf.Lerp(partA.transform.position.x,(followTarget.x * Mathf.Sign(character.xDir)) + partA.transform.position.x, lerpSpeed);
         float _y = Mathf.Lerp(partA.transform.position.y,followTarget.y + partA.transform.position.y, lerpSpeed);
 
         followPos = new Vector2(_x,_y);
