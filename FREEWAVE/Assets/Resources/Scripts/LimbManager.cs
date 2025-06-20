@@ -44,7 +44,6 @@ public class Limb
 
     public void Update()
     {
-
         flipped = Mathf.RoundToInt(Mathf.Sign(character.gameObject.transform.localScale.x));
 
         if (currentLimbMode == null)

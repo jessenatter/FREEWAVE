@@ -197,25 +197,15 @@ public class BodyState
     protected LimbMode limbMode;
     public float rotation;
 
-    public virtual void Start(Character _character)
-    {
-        character = _character;
-    }
+    public virtual void Start(Character _character) { character = _character; }
 
-    public virtual void StateUpdate()
-    {
+    public virtual void StateUpdate() { }
 
-    }
+    public virtual void StateExit(BodyState nextState) { }
 
-    public virtual void StateExit(BodyState nextState)
-    {
-        
-    }
+    public virtual void StateEnter() { }
 
-    public virtual void StateEnter()
-    {
-
-    }
+    protected virtual LimbMode CreateLimbMode() { return null; }
 }
 
 public class UpperBodyState : BodyState
@@ -225,6 +215,8 @@ public class UpperBodyState : BodyState
     public override void StateEnter()
     {
         base.StateEnter();
+
+        limbMode = CreateLimbMode();
 
         character.frontArm.currentLimbMode = limbMode;
         character.backArm.currentLimbMode = limbMode;
@@ -244,6 +236,8 @@ public class LowerBodyState : BodyState
     {
         base.StateEnter();
 
+        limbMode = CreateLimbMode();
+
         character.frontLeg.currentLimbMode = limbMode;
         character.backLeg.currentLimbMode = limbMode;
     }
@@ -257,65 +251,52 @@ public class LowerBodyState : BodyState
 }
 
 #region //upperbody states
-
 public class UpperBodyIdle : UpperBodyState
 {
-    public override void Start(Character _character)
-    {
-        base.Start(_character);
-        limbMode = null;
-    }
+    public override void Start(Character _character) { base.Start(_character); }
+
+    protected override LimbMode CreateLimbMode() { return null; }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
-
-        if (character.xDir != 0)
-            StateExit(character.upperBodyRun);
+        if (character.xDir != 0) StateExit(character.upperBodyRun);
     }
 }
 
 public class UpperBodyRun : UpperBodyState
 {
-    public override void Start(Character _character)
+    protected override LimbMode CreateLimbMode()
     {
-        base.Start(_character);
-
         ThreePoints threePoints = new ThreePoints();
         threePoints.pointA = new Vector2(-0.8f, -0.6f) * character.armMaxRadius;
         threePoints.pointB = new Vector2(0.8f, -0.6f) * character.armMaxRadius;
         threePoints.pointC = new Vector2(0f, -0.1f) * character.armMaxRadius;
-
         threePoints.duration = 75;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
-
-        limbMode = threePoints;
+        return threePoints;
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
-
         if (character.gameObject.transform.localScale.x != character.xDir && character.xDir != 0)
             character.gameObject.transform.localScale = new Vector2(character.xDir, 1);
 
-        if (character.xDir == 0)
-            StateExit(character.upperBodyIdle);
+        if (character.xDir == 0) StateExit(character.upperBodyIdle);
     }
 }
 
 public class UpperBodyJump : UpperBodyState
 {
     float reach = 0.5f;
-    public override void Start(Character _character)
+
+    protected override LimbMode CreateLimbMode()
     {
-        base.Start(_character);
-
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(0,reach) * character.armMaxRadius;
-
-        limbMode = followVector2;
+        followVector2.vector2 = new Vector2(0, -reach) * character.armMaxRadius;
+        return followVector2;
     }
 
     public override void StateUpdate()
@@ -332,43 +313,27 @@ public class UpperBodyJump : UpperBodyState
 
 public class UpperBodyClimb : UpperBodyState
 {
-    public override void Start(Character _character)
+    protected override LimbMode CreateLimbMode()
     {
-        base.Start(_character);
-    }
-
-    public override void StateEnter()
-    {
-        base.StateEnter();
-
         FollowVector2 followVector2 = new FollowVector2();
         followVector2.vector2 = new Vector2(character.armMaxRadius, character.armMaxRadius);
-
-        limbMode = followVector2;
+        return followVector2;
     }
 }
 
 #endregion
 
 #region //lowerbody states
-
 public class LowerBodyIdle : LowerBodyState
 {
     float decelerationLerp = 0.2f;
 
-    public override void Start(Character _character)
-    {
-        base.Start(_character);
-        limbMode = null;
-    }
+    protected override LimbMode CreateLimbMode() { return null; }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
-
-        if (character.xDir != 0)
-            StateExit(character.lowerBodyRun);
-
+        if (character.xDir != 0) StateExit(character.lowerBodyRun);
         character.rb.linearVelocityX = Mathf.Lerp(character.rb.linearVelocityX, 0, decelerationLerp);
     }
 
@@ -383,10 +348,8 @@ public class LowerBodyRun : LowerBodyState
 {
     float reach = 0.7f;
 
-    public override void Start(Character _character)
+    protected override LimbMode CreateLimbMode()
     {
-        base.Start(_character);
-
         ThreePoints threePoints = new ThreePoints();
         threePoints.pointA = new Vector2(reach, -1) * character.legMaxRadius;
         threePoints.pointB = new Vector2(-1, -1) * character.legMaxRadius;
@@ -394,45 +357,32 @@ public class LowerBodyRun : LowerBodyState
         threePoints.duration = 60;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
-
-        limbMode = threePoints;
+        return threePoints;
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
-
-        if (character.xDir == 0)
-            StateExit(character.lowerBodyIdle);
+        if (character.xDir == 0) StateExit(character.lowerBodyIdle);
         else
-        {
             character.rb.linearVelocity = new Vector2(character.moveSpeed * character.xDir, character.rb.linearVelocity.y);
-        }
 
         rotation = -character.xDir * character.tiltRotation;
-    }
-
-    public override void StateEnter()
-    {
-        base.StateEnter();
     }
 }
 
 public class LowerBodyJump : LowerBodyState
 {
-    public override void Start(Character _character)
+    protected override LimbMode CreateLimbMode()
     {
-        base.Start(_character);
-
         FollowVector2 followVector2 = new FollowVector2();
         followVector2.vector2 = new Vector2(character.legMaxRadius * 0.3f, -character.legMaxRadius * 0.6f);
-        limbMode = followVector2;
+        return followVector2;
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
-
         character.rb.linearVelocity = new Vector2((character.moveSpeed * .75f) * character.xDir, character.rb.linearVelocity.y);
 
         if (character.grounded == true && character.rb.linearVelocityY <= 0)
@@ -444,13 +394,20 @@ public class LowerBodyJump : LowerBodyState
     public override void StateEnter()
     {
         base.StateEnter();
-        character.rb.AddForce(character.jumpForce * Vector2.up,ForceMode2D.Impulse);
+        character.rb.AddForce(character.jumpForce * Vector2.up, ForceMode2D.Impulse);
     }
 }
 
 public class LowerBodyClimb : LowerBodyState
 {
     float climbForce = 10f;
+
+    protected override LimbMode CreateLimbMode()
+    {
+        // if you want a specific mode for climb, return it here
+        return null;
+    }
+
     public override void StateUpdate()
     {
         base.StateUpdate();
@@ -469,10 +426,10 @@ public class LowerBodyClimb : LowerBodyState
         base.StateExit(nextState);
         character.rb.gravityScale = 1;
         character.bc.enabled = true;
-
         Vector2 forceDir = (Vector2)character.gameObject.transform.position - character.climbPoint;
-        character.rb.AddForce(forceDir.normalized * climbForce,ForceMode2D.Impulse);
+        character.rb.AddForce(forceDir.normalized * climbForce, ForceMode2D.Impulse);
     }
 }
+
 
 #endregion
