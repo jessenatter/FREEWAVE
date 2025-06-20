@@ -11,10 +11,10 @@ public class Character : PrimaryClass
     List<Limb> limbs = new List<Limb>();
     public int xDir;
     public Rigidbody2D rb;
-    BoxCollider2D bc;
+    public BoxCollider2D bc;
     SpriteRenderer sr;
     public Vector2 spawnPoint,climbPoint;
-    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.3f,tiltRotation = 10;
+    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.5f,tiltRotation = 10;
     public UpperBodyState currentUpperBodyState;
     public LowerBodyState currentLowerBodyState;
     public Sprite[] sprites;
@@ -125,22 +125,15 @@ public class Character : PrimaryClass
 
     void ClimbCheck()
     {
-        Vector2 climbOrgin = new Vector2(head.transform.position.x + (Mathf.Sign(gameObject.transform.localScale.x) * 0.5f), 0);
+        Vector2 climbOrgin = new Vector2(gameObject.transform.position.x + Mathf.Sign(gameObject.transform.localScale.x) * 0.1f, gameObject.transform.position.y + 0.2f);
 
-        Vector2 boxSize = new Vector2(0.4f, 0.2f);
-        float distance = 0.1f;
-        RaycastHit2D top = Physics2D.BoxCast(climbOrgin, boxSize, 0, Vector2.up, distance,manager.groundMask);
+        float distance = 0.25f;
+        Vector2 boxSize = new Vector2(bc.size.x * 0.5f, bc.size.y * 0.25f);
+        RaycastHit2D top = Physics2D.BoxCast(climbOrgin, boxSize, 0, Vector2.up, distance, manager.groundMask);
         RaycastHit2D bottom = Physics2D.BoxCast(climbOrgin, boxSize, 0, Vector2.down, distance, manager.groundMask);
 
         if(top.collider == null && bottom.collider != null)
-        {
-            if(gameObject.transform.position.x > bottom.collider.transform.position.x)
-                climbPoint = new Vector2(bottom.collider.bounds.max.x,bottom.collider.bounds.max.y);
-            else
-                climbPoint = new Vector2(bottom.collider.bounds.min.x, bottom.collider.bounds.max.y);
-
             Climb();
-        }
     }
 
     protected void Jump()
@@ -178,10 +171,13 @@ public class Player : Character
     public override void Start(Manager _manager)
     {
         name = "Player";
-        moveSpeed = 3f;
+        moveSpeed = 4.5f;
         jumpForce = 5.5f;
 
         base.Start(_manager);
+        GameObject face = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Face"));
+        face.transform.position = head.transform.position;
+        face.transform.SetParent(head.transform);
     }
 
     public override void Update()
@@ -285,12 +281,12 @@ public class UpperBodyRun : UpperBodyState
     {
         base.Start(_character);
 
-        float reach = .5f;
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(-character.armMaxRadius, -character.armMaxRadius) * reach;
-        threePoints.pointB = new Vector2(0, -character.armMaxRadius) * reach;
-        threePoints.pointC = new Vector2(character.armMaxRadius, -character.armMaxRadius) * reach;
-        threePoints.duration = 50;
+        threePoints.pointA = new Vector2(-0.8f, -0.6f) * character.armMaxRadius;
+        threePoints.pointB = new Vector2(0.8f, -0.6f) * character.armMaxRadius;
+        threePoints.pointC = new Vector2(0f, -0.1f) * character.armMaxRadius;
+
+        threePoints.duration = 75;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
 
@@ -311,12 +307,13 @@ public class UpperBodyRun : UpperBodyState
 
 public class UpperBodyJump : UpperBodyState
 {
+    float reach = 0.5f;
     public override void Start(Character _character)
     {
         base.Start(_character);
 
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(character.armMaxRadius, character.armMaxRadius) * 0.65f;
+        followVector2.vector2 = new Vector2(0,reach) * character.armMaxRadius;
 
         limbMode = followVector2;
     }
@@ -357,7 +354,7 @@ public class UpperBodyClimb : UpperBodyState
 
 public class LowerBodyIdle : LowerBodyState
 {
-    float decelerationLerp = 0.1f;
+    float decelerationLerp = 0.2f;
 
     public override void Start(Character _character)
     {
@@ -384,16 +381,17 @@ public class LowerBodyIdle : LowerBodyState
 
 public class LowerBodyRun : LowerBodyState
 {
+    float reach = 0.7f;
+
     public override void Start(Character _character)
     {
         base.Start(_character);
 
-        float reach = 0.7f;
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(-character.legMaxRadius, -character.legMaxRadius) * reach;
-        threePoints.pointB = new Vector2(0, -character.legMaxRadius);
-        threePoints.pointC = new Vector2(character.legMaxRadius, -character.legMaxRadius) * reach;
-        threePoints.duration = 50;
+        threePoints.pointA = new Vector2(reach, -1) * character.legMaxRadius;
+        threePoints.pointB = new Vector2(-1, -1) * character.legMaxRadius;
+        threePoints.pointC = new Vector2(0, -reach) * character.legMaxRadius;
+        threePoints.duration = 60;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
 
@@ -427,7 +425,7 @@ public class LowerBodyJump : LowerBodyState
         base.Start(_character);
 
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(0, -character.legMaxRadius * 0.6f);
+        followVector2.vector2 = new Vector2(character.legMaxRadius * 0.3f, -character.legMaxRadius * 0.6f);
         limbMode = followVector2;
     }
 
@@ -452,9 +450,28 @@ public class LowerBodyJump : LowerBodyState
 
 public class LowerBodyClimb : LowerBodyState
 {
+    float climbForce = 10f;
     public override void StateUpdate()
     {
         base.StateUpdate();
+    }
+
+    public override void StateEnter()
+    {
+        base.StateEnter();
+        character.rb.linearVelocity = Vector2.zero;
+        character.rb.gravityScale = 0;
+        character.bc.enabled = false;
+    }
+
+    public override void StateExit(BodyState nextState)
+    {
+        base.StateExit(nextState);
+        character.rb.gravityScale = 1;
+        character.bc.enabled = true;
+
+        Vector2 forceDir = (Vector2)character.gameObject.transform.position - character.climbPoint;
+        character.rb.AddForce(forceDir.normalized * climbForce,ForceMode2D.Impulse);
     }
 }
 

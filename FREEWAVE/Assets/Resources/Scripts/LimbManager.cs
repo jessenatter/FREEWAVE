@@ -5,7 +5,7 @@ using System;
 public class Limb
 {
     Character character;
-    public float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed = 0.01f;
+    public float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed = 0.01f,baseRotation;
     public GameObject partA, partB, partC;
     public SpriteRenderer srA, srB, srC;
     int inverted, flipped = 1;
@@ -35,12 +35,16 @@ public class Limb
         lengthA = partA.transform.position.y - partB.transform.position.y;
         lengthB = partB.transform.position.y - partC.transform.position.y;
         lengthCmax = lengthA + lengthB;
+
+        baseRotation = partA.transform.eulerAngles.z;
+
         rest.restPos = new Vector2(0,-lengthCmax);
         followPos = rest.restPos;
     }
 
     public void Update()
     {
+
         flipped = Mathf.RoundToInt(Mathf.Sign(character.gameObject.transform.localScale.x));
 
         if (currentLimbMode == null)
@@ -48,12 +52,13 @@ public class Limb
         else
             followTarget = currentLimbMode.Update(isBackLimb);
 
-        //Debug.Log(followTarget);
+        Vector2 rotatedTarget = Quaternion.Euler(0, 0, baseRotation) * followTarget;
 
-        float _x = Mathf.Lerp(partA.transform.position.x,(followTarget.x * Mathf.Sign(character.gameObject.transform.localScale.x)) + partA.transform.position.x, lerpSpeed);
-        float _y = Mathf.Lerp(partA.transform.position.y,followTarget.y + partA.transform.position.y, lerpSpeed);
+        float _x = Mathf.Lerp(partA.transform.position.x, (rotatedTarget.x * Mathf.Sign(character.gameObject.transform.localScale.x)) + partA.transform.position.x, lerpSpeed);
+        float _y = Mathf.Lerp(partA.transform.position.y, rotatedTarget.y + partA.transform.position.y, lerpSpeed);
 
-        followPos = new Vector2((followTarget.x * Mathf.Sign(character.gameObject.transform.localScale.x)) + partA.transform.position.x, followTarget.y + partA.transform.position.y);
+        followPos = new Vector2((rotatedTarget.x * Mathf.Sign(character.gameObject.transform.localScale.x)) + partA.transform.position.x, rotatedTarget.y + partA.transform.position.y);
+
         ApplyRotations();
     }
 
@@ -63,19 +68,14 @@ public class Limb
 
         Vector2 direction = (_followPos - partA.transform.position).normalized;
         float _angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        rotation = _angle + 90;
+        rotation = _angle + baseRotation + 90;
 
         Vector2 _lengthC = _followPos - partA.transform.position;
-        lengthCcurrent = Mathf.Clamp(_lengthC.magnitude, 0, lengthCmax);
+        lengthCcurrent = Mathf.Clamp(_lengthC.magnitude, 0.001f, lengthCmax - 0.001f);
 
-        if (lengthCcurrent == lengthCmax)
+        if (lengthCcurrent >= lengthCmax - 0.001f)
         {
             angleA = rotation;
-            angleB = rotation;
-        }
-        else if (lengthCcurrent < 0.05)
-        {
-            angleA = rotation - 180;
             angleB = rotation;
         }
         else
@@ -107,9 +107,11 @@ public class Limb
     float CalculateAngle(float a, float b, float c)
     {
         float cosA = (b * b + c * c - a * a) / (2 * b * c);
+        cosA = Mathf.Clamp(cosA, -1f, 1f);
         float angleA = Mathf.Acos(cosA) * Mathf.Rad2Deg;
         return angleA;
     }
+
 }
 
 public class LimbMode
@@ -169,24 +171,33 @@ public class ThreePoints : LimbMode
         if (duration > 0)
             duration -= 1;
         else if (loop)
-        {
-            Vector2 _a = pointA;
-            Vector2 _c = pointC;
-            pointA = _c;
-            pointC = _a;
-
             duration = initDuration;
-        }
 
         float t = 1f - Mathf.Clamp01(duration / initDuration);
 
         if (isBackLimb)
-            t = 1f - t;
+            t = (t + 0.5f) % 1f;
 
-        Vector2 ab = Vector2.Lerp(pointA, pointB, t);
-        Vector2 bc = Vector2.Lerp(pointB, pointC, t);
-        return Vector2.Lerp(ab, bc, t);
+        float segment = 1f / 3f;
+
+        if (t < segment)
+        {
+            float segmentT = t / segment;
+            return Vector2.Lerp(pointA, pointB, segmentT);
+        }
+        else if (t < 2f * segment)
+        {
+            float segmentT = (t - segment) / segment;
+            return Vector2.Lerp(pointB, pointC, segmentT);
+        }
+        else
+        {
+            float segmentT = (t - 2f * segment) / segment;
+            return Vector2.Lerp(pointC, pointA, segmentT);
+        }
     }
 }
+
+
 
 
