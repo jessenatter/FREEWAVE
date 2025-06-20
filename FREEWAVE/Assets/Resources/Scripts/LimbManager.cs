@@ -32,7 +32,7 @@ public class Limb
         srB = partB.GetComponent<SpriteRenderer>();
         srC = partC.GetComponent<SpriteRenderer>();
 
-        rest.restPos = new Vector2(0,partC.transform.position.y-partA.transform.position.y);
+        rest.restPos = new Vector2(0,partC.transform.position.y - partA.transform.position.y);
         followPos = partC.transform.position;
     }
 
@@ -46,7 +46,7 @@ public class Limb
         float _x = Mathf.Lerp(partA.transform.position.x,(followTarget.x * Mathf.Sign(character.xDir)) + partA.transform.position.x, lerpSpeed);
         float _y = Mathf.Lerp(partA.transform.position.y,followTarget.y + partA.transform.position.y, lerpSpeed);
 
-        followPos = new Vector2(_x,_y);
+        followPos = new Vector2((followTarget.x * Mathf.Sign(character.xDir)) + partA.transform.position.x, followTarget.y + partA.transform.position.y);
         ApplyRotations();
     }
 

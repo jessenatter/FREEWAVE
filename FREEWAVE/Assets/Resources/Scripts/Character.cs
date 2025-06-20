@@ -101,6 +101,8 @@ public class Character : PrimaryClass
 
         currentLowerBodyState.StateUpdate();
         currentUpperBodyState.StateUpdate();
+
+        Debug.Log(currentUpperBodyState);
     }
 
     void GroundedCheck()
@@ -116,7 +118,6 @@ public class Character : PrimaryClass
             if (groundedTimer == groundedCD)
             {
                 grounded = false;
-                canJump = true;
                 groundedTimer = 0;
             }
         }
@@ -146,6 +147,7 @@ public class Character : PrimaryClass
     {
         if (grounded && canJump)
         {
+            Debug.Log("a");
             canJump = false;
             currentLowerBodyState.StateExit();
             currentUpperBodyState.StateExit();
@@ -174,6 +176,7 @@ public class Player : Character
     {
         name = "Player";
         moveSpeed = 3f;
+        jumpForce = 5.8f;
 
         base.Start(_manager);
     }
@@ -270,14 +273,16 @@ public class UpperBodyIdle : UpperBodyState
 
 public class UpperBodyRun : UpperBodyState
 {
+    float reach = 0.05f;
+
     public override void Start(Character _character)
     {
         base.Start(_character);
 
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(-character.armMaxRadius * 0.3f, -character.armMaxRadius * 0.3f);
-        threePoints.pointB = new Vector2(0, -character.armMaxRadius * 0.3f);
-        threePoints.pointC = new Vector2(character.armMaxRadius * 0.3f, -character.armMaxRadius * 0.3f);
+        threePoints.pointA = new Vector2(-character.armMaxRadius * reach, -character.armMaxRadius * reach);
+        threePoints.pointB = new Vector2(0, -character.armMaxRadius * reach);
+        threePoints.pointC = new Vector2(character.armMaxRadius * reach, -character.armMaxRadius * reach);
         threePoints.duration = 50;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
@@ -310,14 +315,14 @@ public class UpperBodyJump : UpperBodyState
         base.Start(_character);
 
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(character.armMaxRadius * 0.5f, character.armMaxRadius * 0.5f);
+        followVector2.vector2 = new Vector2(character.armMaxRadius, character.armMaxRadius);
 
         limbMode = followVector2;
     }
 
     public override void StateUpdate()
     {
-        if (character.grounded == true && character.canJump)
+        if (character.grounded == true && character.rb.linearVelocityY <= 0)
             StateExit();
 
         if (character.gameObject.transform.localScale.x != character.xDir && character.xDir != 0)
@@ -345,7 +350,7 @@ public class UpperBodyClimb : UpperBodyState
         base.StateEnter();
 
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(character.armMaxRadius * 0.5f, character.armMaxRadius * 0.5f);
+        followVector2.vector2 = new Vector2(character.armMaxRadius, character.armMaxRadius);
 
         limbMode = followVector2;
     }
@@ -380,6 +385,12 @@ public class LowerBodyIdle : LowerBodyState
         base.StateExit();
         character.currentLowerBodyState = character.lowerBodyRun;
     }
+
+    public override void StateEnter()
+    {
+        base.StateEnter();
+        character.canJump = true;
+    }
 }
 
 public class LowerBodyRun : LowerBodyState
@@ -389,9 +400,9 @@ public class LowerBodyRun : LowerBodyState
         base.Start(_character);
 
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(character.legMaxRadius * .3f, -character.legMaxRadius * .3f);
+        threePoints.pointA = new Vector2(character.legMaxRadius, -character.legMaxRadius);
         threePoints.pointB = new Vector2(0, -character.legMaxRadius);
-        threePoints.pointC = new Vector2(character.legMaxRadius * -.3f, -character.legMaxRadius * .3f);
+        threePoints.pointC = new Vector2(character.legMaxRadius, -character.legMaxRadius);
         threePoints.duration = 50;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
@@ -430,7 +441,7 @@ public class LowerBodyJump : LowerBodyState
         base.Start(_character);
 
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(character.legMaxRadius * 0.3f, -character.legMaxRadius * 0.5f);
+        followVector2.vector2 = new Vector2(0, -character.legMaxRadius);
         limbMode = followVector2;
     }
 
@@ -440,7 +451,7 @@ public class LowerBodyJump : LowerBodyState
 
         character.rb.linearVelocity = new Vector2((character.moveSpeed * .75f) * character.xDir, character.rb.linearVelocity.y);
 
-        if (character.grounded == true && character.canJump)
+        if (character.grounded == true && character.rb.linearVelocityY <= 0)
             StateExit();
     }
 
