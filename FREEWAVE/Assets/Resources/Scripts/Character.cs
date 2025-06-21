@@ -4,20 +4,21 @@ using System;
 
 public class Character : PrimaryClass
 {
-    protected string name;
+    public string name;
     public GameObject gameObject,spine1,spine2, head;
     public Limb frontArm, backArm, frontLeg, backLeg;
     public float armMaxRadius, legMaxRadius;
-    List<Limb> limbs = new List<Limb>();
+    protected List<Limb> limbs = new List<Limb>();
+    protected List<Limb> arms = new List<Limb>();
+    protected List<Limb> legs = new List<Limb>();
     public int xDir;
     public Rigidbody2D rb;
     public BoxCollider2D bc;
-    SpriteRenderer sr;
+    public SpriteRenderer sr;
     public Vector2 spawnPoint,climbPoint;
     public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.5f,tiltRotation = 10;
     public UpperBodyState currentUpperBodyState;
     public LowerBodyState currentLowerBodyState;
-    public Sprite[] sprites;
 
     public LowerBodyIdle lowerBodyIdle = new LowerBodyIdle();
     public LowerBodyRun lowerBodyRun = new LowerBodyRun();
@@ -36,15 +37,12 @@ public class Character : PrimaryClass
     {
         base.Start(_manager);
 
-        sprites = Resources.LoadAll<Sprite>("Sprites/Characters/" + name.ToString());
-
         gameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Character"));
         gameObject.name = name;
 
         rb = gameObject.GetComponent<Rigidbody2D>();
         bc = gameObject.GetComponent<BoxCollider2D>();
         sr = gameObject.GetComponent<SpriteRenderer>();
-        sr.sprite = sprites[0];
         gameObject.transform.position = spawnPoint;
 
         spine1 = gameObject.transform.GetChild(0).gameObject;
@@ -57,8 +55,10 @@ public class Character : PrimaryClass
         backArm = StartLimb(false, true,spine2.transform.GetChild(2).gameObject);
 
         limbs.AddRange(new[] { frontArm, backArm, frontLeg, backLeg });
-
-        head.GetComponent<SpriteRenderer>().sprite = sprites[5];
+        arms.Add(frontArm);
+        arms.Add(backArm);
+        legs.Add(frontLeg);
+        legs.Add(backLeg);
 
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
@@ -77,17 +77,6 @@ public class Character : PrimaryClass
     {
         Limb limb = new Limb();
         limb.Start(isBackLimb, isLeg,_gameObject,this);
-
-        if (isLeg)
-        {
-            limb.srA.sprite = sprites[1];
-            limb.srB.sprite = sprites[2];
-        }
-        else
-        {
-            limb.srA.sprite = sprites[3];
-            limb.srB.sprite = sprites[4];
-        }
 
         return limb;
     }
@@ -211,13 +200,51 @@ public class Player : Character
 
 public class Zombie : Character
 {
+    public Sprite[] headSprites, bodySprites, limbSprites;
+        
+    List<Sprite> legSprites = new List<Sprite>();
+    List<Sprite> armSprites = new List<Sprite>();
+    List<Sprite> footSprites = new List<Sprite>();
+    List<Sprite> bicepSprites = new List<Sprite>();
+
     public override void Start(Manager _manager)
     {
         name = "Zombie";
+        base.Start(_manager);
         moveSpeed = 3.5f;
         jumpForce = 5.5f;
 
-        base.Start(_manager);
+        headSprites = Resources.LoadAll<Sprite>("Sprites/Characters/ZombieParts/ZombieHeads");
+        bodySprites = Resources.LoadAll<Sprite>("Sprites/Characters/ZombieParts/ZombieBodies");
+        limbSprites = Resources.LoadAll<Sprite>("Sprites/Characters/ZombieParts/ZombieLimbs");
+
+        sr.sprite = bodySprites[UnityEngine.Random.Range(0, bodySprites.Length)];
+        head.GetComponent<SpriteRenderer>().sprite = headSprites[UnityEngine.Random.Range(0, headSprites.Length)];
+
+        foreach (var sprite in limbSprites)
+        {
+            if (sprite.name.Contains("Leg"))
+                legSprites.Add(sprite);
+            else if (sprite.name.Contains("Arm"))
+                armSprites.Add(sprite);
+            else if (sprite.name.Contains("Bicep"))
+                bicepSprites.Add(sprite);
+            else if (sprite.name.Contains("Foot"))
+                footSprites.Add(sprite);
+        }
+
+        foreach(Limb arm in arms)
+        {
+            arm.srA.sprite = bicepSprites[UnityEngine.Random.Range(0, bicepSprites.Count)];
+            arm.srB.sprite = armSprites[UnityEngine.Random.Range(0, armSprites.Count)];
+            arm.srC.sprite = null;
+        }
+
+        foreach (Limb leg in legs)
+        {
+            leg.srA.sprite = legSprites[UnityEngine.Random.Range(0, legSprites.Count)];
+            leg.srB.sprite = footSprites[UnityEngine.Random.Range(0, footSprites.Count)];
+        }
     }
 
     public override void Update()
