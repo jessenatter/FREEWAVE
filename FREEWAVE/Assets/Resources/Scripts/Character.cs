@@ -132,8 +132,15 @@ public class Character : PrimaryClass
         RaycastHit2D top = Physics2D.BoxCast(climbOrgin, boxSize, 0, Vector2.up, distance, manager.groundMask);
         RaycastHit2D bottom = Physics2D.BoxCast(climbOrgin, boxSize, 0, Vector2.down, distance, manager.groundMask);
 
-        if(top.collider == null && bottom.collider != null)
+        if (top.collider == null && bottom.collider != null)
+        {
+            if(gameObject.transform.position.x > bottom.collider.transform.position.x)
+                climbPoint = new Vector2(bottom.collider.bounds.max.x, bottom.collider.bounds.max.y);
+            else
+                climbPoint = new Vector2(bottom.collider.bounds.min.x, bottom.collider.bounds.max.y);
+
             Climb();
+        }
     }
 
     protected void Jump()
@@ -410,7 +417,7 @@ public class LowerBodyJump : LowerBodyState
 
 public class LowerBodyClimb : LowerBodyState
 {
-    float climbSpeed = .2f;
+    float climbSpeed = .05f;
     public bool climbing = false, hitY;
 
     protected override LimbMode CreateLimbMode()
@@ -435,13 +442,17 @@ public class LowerBodyClimb : LowerBodyState
             }
             else
             {
-                character.gameObject.transform.Translate(new Vector2(MathF.Sign(character.gameObject.transform.localScale.x),0)* climbSpeed);
+                int _xDir = MathF.Sign(character.gameObject.transform.localScale.x);
+                character.gameObject.transform.Translate(new Vector2(_xDir,0)* climbSpeed);
 
-                if (character.grounded)
-                    StateExit(character.lowerBodyIdle);
+                if (_xDir == 1)
+                {
+                    if (character.gameObject.transform.position.x > character.climbPoint.x)
+                        Exit();
+                }
+                else if (character.gameObject.transform.position.x < character.climbPoint.x)
+                    Exit();
             }
-
-            Debug.Log("climbing");
         }
     }
 
@@ -449,10 +460,16 @@ public class LowerBodyClimb : LowerBodyState
     {
         base.StateEnter();
         climbing = false;
+        hitY = false;
         character.rb.linearVelocity = Vector2.zero;
         character.grounded = false;
         character.rb.gravityScale = 0;
         character.bc.enabled = false;
+    }
+
+    void Exit()
+    {
+        StateExit(character.lowerBodyIdle);
     }
 
     public override void StateExit(BodyState nextState)
