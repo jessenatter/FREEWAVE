@@ -39,6 +39,7 @@ public class Character : PrimaryClass
         sprites = Resources.LoadAll<Sprite>("Sprites/Characters/" + name.ToString());
 
         gameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Character"));
+        gameObject.name = name;
 
         rb = gameObject.GetComponent<Rigidbody2D>();
         bc = gameObject.GetComponent<BoxCollider2D>();
@@ -207,6 +208,28 @@ public class Player : Character
         base.Update();
     }
 }
+
+public class Zombie : Character
+{
+    public override void Start(Manager _manager)
+    {
+        name = "Zombie";
+        moveSpeed = 3.5f;
+        jumpForce = 5.5f;
+
+        base.Start(_manager);
+    }
+
+    public override void Update()
+    {
+        xDir = Mathf.RoundToInt(-Mathf.Sign(gameObject.transform.position.x - manager.player.gameObject.transform.position.x));
+
+
+        base.Update();
+    }
+}
+
+#region body state logic
 
 public class BodyState 
 {
@@ -480,5 +503,7 @@ public class LowerBodyClimb : LowerBodyState
     }
 }
 
+
+#endregion
 
 #endregion

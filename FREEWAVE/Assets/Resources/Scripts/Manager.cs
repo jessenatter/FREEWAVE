@@ -9,6 +9,10 @@ public class Manager : MonoBehaviour
     CameraClass cameraClass = new CameraClass();
 
     List<PrimaryClass> alwaysUpdate = new List<PrimaryClass>();
+    List<Zombie> zombies = new List<Zombie>();
+
+    List<Vector2> zombieSpawnPoints = new List<Vector2>();
+    float spawnDistance = 3f;
 
     [HideInInspector] public int groundLayer, characterLayer, buildingLayer, shipLayer, environmentLayer;
     [HideInInspector] public LayerMask groundMask, characterMask, buildingMask, shipMask, environmentMask;
@@ -28,6 +32,17 @@ public class Manager : MonoBehaviour
 
         alwaysUpdate.Add(player);
         alwaysUpdate.Add(cameraClass);
+
+        zombieSpawnPoints.Add(new Vector2(40, 0));
+
+        foreach (Vector2 zombieSpawnPoint in zombieSpawnPoints)
+        {
+            Zombie newZombie = new Zombie();
+            newZombie.Start(this);
+            newZombie.gameObject.transform.position = zombieSpawnPoint;
+            zombies.Add(newZombie);
+            newZombie.gameObject.SetActive(false);
+        }
 
         foreach (PrimaryClass primary in alwaysUpdate)
             primary.Start(this);
@@ -51,6 +66,22 @@ public class Manager : MonoBehaviour
 
         foreach (PrimaryClass primary in alwaysUpdate)
             primary.Update();
+
+        foreach (Zombie zombie in zombies)
+            if (zombie.gameObject.activeInHierarchy)
+                zombie.Update();
+
+        for (int i = 0; i < zombieSpawnPoints.Count; i++)
+        {
+            Vector2 spawnPoint = zombieSpawnPoints[i];
+
+            if (Vector2.Distance(player.gameObject.transform.position, spawnPoint) < spawnDistance)
+                zombies[i].gameObject.SetActive(true);
+            else
+            {
+                //zombies[i].gameObject.SetActive(false);
+            }
+        }
     }
 }
 
