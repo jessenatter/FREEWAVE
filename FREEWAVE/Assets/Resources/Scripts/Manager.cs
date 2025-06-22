@@ -66,6 +66,8 @@ public class Manager : MonoBehaviour
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         grabAction = InputSystem.actions.FindAction("Grab");
+        attackAction = InputSystem.actions.FindAction("Attack");
+        dodgeAction = InputSystem.actions.FindAction("Dodge");
     }
 
     void FixedUpdate()
