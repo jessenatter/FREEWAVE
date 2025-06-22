@@ -9,8 +9,6 @@ public class Character : PrimaryClass
     public Limb frontArm, backArm, frontLeg, backLeg;
     public float armMaxRadius, legMaxRadius;
     protected List<Limb> limbs = new List<Limb>();
-    protected List<Limb> arms = new List<Limb>();
-    protected List<Limb> legs = new List<Limb>();
     public int xDir;
     public Rigidbody2D rb;
     public BoxCollider2D bc;
@@ -49,16 +47,12 @@ public class Character : PrimaryClass
         spine2 = spine1.transform.GetChild(0).gameObject;
         head = spine2.transform.GetChild(0).gameObject;
 
-        frontLeg = StartLimb(true, false,gameObject.transform.GetChild(1).gameObject);
-        backLeg = StartLimb(true, true, gameObject.transform.GetChild(2).gameObject);
-        frontArm = StartLimb(false, false,spine2.transform.GetChild(1).gameObject);
-        backArm = StartLimb(false, true,spine2.transform.GetChild(2).gameObject);
+        frontLeg = StartLimb(false, false,gameObject.transform.GetChild(1).gameObject);
+        backLeg = StartLimb(false, true, gameObject.transform.GetChild(2).gameObject);
+        frontArm = StartLimb(true, false,spine2.transform.GetChild(1).gameObject);
+        backArm = StartLimb(true, true,spine2.transform.GetChild(2).gameObject);
 
         limbs.AddRange(new[] { frontArm, backArm, frontLeg, backLeg });
-        arms.Add(frontArm);
-        arms.Add(backArm);
-        legs.Add(frontLeg);
-        legs.Add(backLeg);
 
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
@@ -73,10 +67,10 @@ public class Character : PrimaryClass
             bodyState.Start(this);
     }
 
-    Limb StartLimb(bool isLeg, bool isBackLimb,GameObject _gameObject)
+    Limb StartLimb(bool isArm, bool isBackLimb,GameObject _gameObject)
     {
         Limb limb = new Limb();
-        limb.Start(isBackLimb, isLeg,_gameObject,this);
+        limb.Start(isBackLimb,isArm,_gameObject,this);
 
         return limb;
     }
@@ -232,25 +226,11 @@ public class Zombie : Character
             else if (sprite.name.Contains("Foot"))
                 footSprites.Add(sprite);
         }
-
-        foreach(Limb arm in arms)
-        {
-            arm.srA.sprite = bicepSprites[UnityEngine.Random.Range(0, bicepSprites.Count)];
-            arm.srB.sprite = armSprites[UnityEngine.Random.Range(0, armSprites.Count)];
-            arm.srC.sprite = null;
-        }
-
-        foreach (Limb leg in legs)
-        {
-            leg.srA.sprite = legSprites[UnityEngine.Random.Range(0, legSprites.Count)];
-            leg.srB.sprite = footSprites[UnityEngine.Random.Range(0, footSprites.Count)];
-        }
     }
 
     public override void Update()
     {
         xDir = Mathf.RoundToInt(-Mathf.Sign(gameObject.transform.position.x - manager.player.gameObject.transform.position.x));
-
 
         base.Update();
     }
@@ -261,7 +241,7 @@ public class Zombie : Character
 public class BodyState 
 {
     protected Character character;
-    protected LimbMode limbMode;
+    public LimbMode limbMode;
     public float rotation;
 
     public virtual void Start(Character _character) { character = _character; }
@@ -271,8 +251,6 @@ public class BodyState
     public virtual void StateExit(BodyState nextState) { }
 
     public virtual void StateEnter() { }
-
-    protected virtual LimbMode CreateLimbMode() { return null; }
 }
 
 public class UpperBodyState : BodyState
@@ -282,11 +260,6 @@ public class UpperBodyState : BodyState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        limbMode = CreateLimbMode();
-
-        character.frontArm.currentLimbMode = limbMode;
-        character.backArm.currentLimbMode = limbMode;
     }
 
     public override void StateExit(BodyState nextState)
@@ -302,12 +275,8 @@ public class LowerBodyState : BodyState
     public override void StateEnter()
     {
         base.StateEnter();
-
-        limbMode = CreateLimbMode();
-
-        character.frontLeg.currentLimbMode = limbMode;
-        character.backLeg.currentLimbMode = limbMode;
     }
+
 
     public override void StateExit(BodyState nextState)
     {
@@ -322,29 +291,16 @@ public class UpperBodyIdle : UpperBodyState
 {
     public override void Start(Character _character) { base.Start(_character); }
 
-    protected override LimbMode CreateLimbMode() { return null; }
-
     public override void StateUpdate()
     {
         base.StateUpdate();
-        if (character.xDir != 0) StateExit(character.upperBodyRun);
+        if (character.xDir != 0)
+            StateExit(character.upperBodyRun);
     }
 }
 
 public class UpperBodyRun : UpperBodyState
 {
-    protected override LimbMode CreateLimbMode()
-    {
-        ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(-0.8f, -0.6f) * character.armMaxRadius;
-        threePoints.pointB = new Vector2(0.8f, -0.6f) * character.armMaxRadius;
-        threePoints.pointC = new Vector2(0f, -0.1f) * character.armMaxRadius;
-        threePoints.duration = 75;
-        threePoints.initDuration = threePoints.duration;
-        threePoints.loop = true;
-        return threePoints;
-    }
-
     public override void StateUpdate()
     {
         base.StateUpdate();
@@ -359,12 +315,7 @@ public class UpperBodyJump : UpperBodyState
 {
     float reach = 0.5f;
 
-    protected override LimbMode CreateLimbMode()
-    {
-        FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(0, -reach) * character.armMaxRadius;
-        return followVector2;
-    }
+
 
     public override void StateUpdate()
     {
@@ -380,12 +331,7 @@ public class UpperBodyJump : UpperBodyState
 
 public class UpperBodyClimb : UpperBodyState
 {
-    protected override LimbMode CreateLimbMode()
-    {
-        FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(character.armMaxRadius, character.armMaxRadius);
-        return followVector2;
-    }
+
 }
 
 #endregion
@@ -394,8 +340,6 @@ public class UpperBodyClimb : UpperBodyState
 public class LowerBodyIdle : LowerBodyState
 {
     float decelerationLerp = 0.2f;
-
-    protected override LimbMode CreateLimbMode() { return null; }
 
     public override void StateUpdate()
     {
@@ -413,20 +357,6 @@ public class LowerBodyIdle : LowerBodyState
 
 public class LowerBodyRun : LowerBodyState
 {
-    float reach = 0.7f;
-
-    protected override LimbMode CreateLimbMode()
-    {
-        ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(reach, -1) * character.legMaxRadius;
-        threePoints.pointB = new Vector2(-1, -1) * character.legMaxRadius;
-        threePoints.pointC = new Vector2(0, -reach) * character.legMaxRadius;
-        threePoints.duration = 60;
-        threePoints.initDuration = threePoints.duration;
-        threePoints.loop = true;
-        return threePoints;
-    }
-
     public override void StateUpdate()
     {
         base.StateUpdate();
@@ -440,13 +370,6 @@ public class LowerBodyRun : LowerBodyState
 
 public class LowerBodyJump : LowerBodyState
 {
-    protected override LimbMode CreateLimbMode()
-    {
-        FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(character.legMaxRadius * 0.3f, -character.legMaxRadius * 0.6f);
-        return followVector2;
-    }
-
     public override void StateUpdate()
     {
         base.StateUpdate();
@@ -469,12 +392,6 @@ public class LowerBodyClimb : LowerBodyState
 {
     float climbSpeed = .05f;
     public bool climbing = false, hitY;
-
-    protected override LimbMode CreateLimbMode()
-    {
-        // if you want a specific mode for climb, return it here
-        return null;
-    }
 
     public override void StateUpdate()
     {

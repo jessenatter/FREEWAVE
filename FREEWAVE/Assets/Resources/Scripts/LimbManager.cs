@@ -5,25 +5,17 @@ using System;
 public class Limb
 {
     Character character;
-    public float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation,lerpSpeed = 0.01f,baseRotation;
+    public float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation, lerpSpeed = 0.01f;
     public GameObject partA, partB, partC;
     public SpriteRenderer srA, srB, srC;
-    int inverted, flipped = 1;
-    Vector2 followPos, followTarget;
-    bool isBackLimb;
-    public LimbMode currentLimbMode;
+    public LimbMode currentMode;
+    public bool isBackLimb,isArm;
+    Vector2 currentFollowPos;
     Rest rest = new Rest();
 
-    public void Start(bool _isBackLimb,bool _isInverted,GameObject _gameObject,Character _character)
+    public void Start(bool _isBackLimb,bool _isArm, GameObject _gameObject,Character character)
     {
-        character = _character;
-
-        if (_isBackLimb)
-            isBackLimb = true;
-
-        if (_isInverted)
-            inverted = -1;
-
+        isArm = _isArm;
         partA = _gameObject;
         partB = _gameObject.transform.GetChild(0).gameObject;
         partC = partB.transform.GetChild(0).gameObject;
@@ -36,41 +28,35 @@ public class Limb
         lengthB = partB.transform.position.y - partC.transform.position.y;
         lengthCmax = lengthA + lengthB;
 
-        baseRotation = partA.transform.eulerAngles.z;
-
-        rest.restPos = new Vector2(0,-lengthCmax);
-        followPos = rest.restPos;
+        rest.maxReach = lengthCmax;
+        currentMode = rest;
     }
 
     public void Update()
     {
-        flipped = Mathf.RoundToInt(Mathf.Sign(character.gameObject.transform.localScale.x));
+        Vector2 targetPos = Vector2.zero;
 
-        if (currentLimbMode == null)
-            followTarget = rest.Update(isBackLimb);
+        if (currentMode.useLocalSpace)
+            targetPos = partA.transform.TransformPoint(currentMode.GetTargetPosition(isBackLimb));
         else
-            followTarget = currentLimbMode.Update(isBackLimb);
+            targetPos = currentMode.GetTargetPosition(isBackLimb);
 
-        Vector2 rotatedTarget = Quaternion.Euler(0, 0, baseRotation) * followTarget;
+        currentFollowPos = Vector2.Lerp(currentFollowPos, targetPos, lerpSpeed);
 
-        float _x = Mathf.Lerp(partA.transform.position.x, (rotatedTarget.x * Mathf.Sign(character.gameObject.transform.localScale.x)) + partA.transform.position.x, lerpSpeed);
-        float _y = Mathf.Lerp(partA.transform.position.y, rotatedTarget.y + partA.transform.position.y, lerpSpeed);
-
-        followPos = new Vector2((rotatedTarget.x * Mathf.Sign(character.gameObject.transform.localScale.x)) + partA.transform.position.x, rotatedTarget.y + partA.transform.position.y);
-
-        ApplyRotations();
+        ApplyRotations(currentFollowPos);
     }
 
-    void ApplyRotations()
+    void ApplyRotations(Vector3 followPos)
     {
-        Vector3 _followPos = new Vector3(followPos.x, followPos.y, 0);
+        Vector2 localTarget = followPos;
 
-        Vector2 direction = (_followPos - partA.transform.position).normalized;
-        float _angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        rotation = _angle + baseRotation + 90;
+        float dx = localTarget.x;
+        float dy = localTarget.y;
 
-        Vector2 _lengthC = _followPos - partA.transform.position;
-        lengthCcurrent = Mathf.Clamp(_lengthC.magnitude, 0.001f, lengthCmax - 0.001f);
+        float distance = Mathf.Sqrt(dx * dx + dy * dy);
+        lengthCcurrent = Mathf.Clamp(distance, 0.001f, lengthCmax - 0.001f);
+
+        float angleToTarget = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
 
         if (lengthCcurrent >= lengthCmax - 0.001f)
         {
@@ -78,20 +64,25 @@ public class Limb
             angleB = rotation;
         }
         else
-            FindAngles();
+        {
+            Vector3 triangleAngles = CalculateTriangleAngles(lengthA, lengthB, lengthCcurrent);
+            angleA = rotation - triangleAngles.y;
+            angleB = rotation + triangleAngles.x;
+        }
 
         angleA = Mathf.Repeat(angleA, 360);
         angleB = Mathf.Repeat(angleB, 360);
 
-        partA.transform.rotation = Quaternion.Euler(0, 0, angleA);
-        partB.transform.rotation = Quaternion.Euler(0, 0, angleB);
+        partA.transform.localRotation = Quaternion.Euler(0, 0, angleA);
+        partB.transform.localRotation = Quaternion.Euler(0, 0, angleB);
+
     }
 
     void FindAngles()
     {
         Vector3 triangleAngles = CalculateTriangleAngles(lengthA, lengthB, lengthCcurrent);
-        angleA = rotation - triangleAngles.y * inverted * flipped;
-        angleB = rotation + triangleAngles.x * inverted * flipped;
+        angleA = rotation - triangleAngles.y;
+        angleB = rotation + triangleAngles.x;
     }
 
     Vector3 CalculateTriangleAngles(float a, float b, float c)
@@ -110,25 +101,20 @@ public class Limb
         float angleA = Mathf.Acos(cosA) * Mathf.Rad2Deg;
         return angleA;
     }
-
 }
 
-public class LimbMode
+public abstract class LimbMode
 {
-    public virtual Vector2 Update(bool isBackLimb)
-    {
-        return Vector2.zero;
-    }
+    public bool useLocalSpace = true;
+    public abstract Vector2 GetTargetPosition(bool isBackLimb);
 }
 
 public class FollowVector2 : LimbMode
 {
     public Vector2 vector2;
 
-    public override Vector2 Update(bool isBackLimb)
+    public override Vector2 GetTargetPosition(bool isBackLimb)
     {
-        base.Update(isBackLimb);
-
         return vector2;
     }
 }
@@ -137,36 +123,32 @@ public class FollowGameObject : LimbMode
 {
     public GameObject followObject;
 
-    public override Vector2 Update(bool isBackLimb)
-    {
-        base.Update(isBackLimb);
+    FollowGameObject() { useLocalSpace = false; }
 
-        Vector2 followObjectRelativePos = followObject.transform.position;
-        return followObjectRelativePos;
+    public override Vector2 GetTargetPosition(bool isBackLimb)
+    {
+        return followObject.transform.position;
     }
 }
 
 public class Rest : LimbMode
 {
-    public Vector2 restPos;
+    public float maxReach;
 
-    public override Vector2 Update(bool isBackLimb)
+    public override Vector2 GetTargetPosition(bool isBackLimb)
     {
-        base.Update(isBackLimb);
-
-        return restPos;
+        return new Vector2(0, -1) * maxReach;
     }
 }
+
 public class ThreePoints : LimbMode
 {
     public Vector2 pointA, pointB, pointC;
     public float duration, initDuration;
     public bool loop;
 
-    public override Vector2 Update(bool isBackLimb)
+    public override Vector2 GetTargetPosition(bool isBackLimb)
     {
-        base.Update(isBackLimb);
-
         if (duration > 0)
             duration -= 1;
         else if (loop)
@@ -196,7 +178,3 @@ public class ThreePoints : LimbMode
         }
     }
 }
-
-
-
-
