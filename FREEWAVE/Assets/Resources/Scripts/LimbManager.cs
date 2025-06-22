@@ -57,7 +57,7 @@ public class Limb
     void ApplyRotations(Vector2 followPos)
     {
         lengthCcurrent = Vector2.Distance(partA.transform.position, followPos);
-        lengthCcurrent = Mathf.Clamp(lengthCcurrent, 0.001f, lengthCmax - 0.001f);
+        lengthCcurrent = Mathf.Clamp(lengthCcurrent, 0.001f, lengthCmax);
 
         float angleAnumerator = Mathf.Pow(lengthA, 2) + Mathf.Pow(lengthCcurrent, 2) - Mathf.Pow(lengthB, 2);
         float angleAdenominator = 2 * lengthA * lengthCcurrent;
@@ -83,11 +83,16 @@ public class Limb
         float angleBDeg = angleB * Mathf.Rad2Deg;
         float rotationDeg = rotation * Mathf.Rad2Deg;
 
-        if(isArm)
-            rotationDeg -= 90;
-
-        partA.transform.localRotation = Quaternion.Euler(0, 0, rotationDeg - angleADeg);
-        partB.transform.localRotation = Quaternion.Euler(0, 0, angleBDeg);
+        if (isArm)
+        {
+            partA.transform.localRotation = Quaternion.Euler(0, 0, rotationDeg - angleADeg);
+            partB.transform.localRotation = Quaternion.Euler(0, 0, 180 - angleBDeg);
+        }
+        else
+        {
+            partA.transform.localRotation = Quaternion.Euler(0, 0, rotationDeg + angleADeg + 90);
+            partB.transform.localRotation = Quaternion.Euler(0, 0, angleBDeg - 180);
+        }
     }
 
 }

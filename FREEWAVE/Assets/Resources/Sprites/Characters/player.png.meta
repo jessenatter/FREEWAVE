@@ -7948,6 +7948,28 @@ TextureImporter:
         'boneIndex[1]': 0
         'boneIndex[2]': 0
         'boneIndex[3]': 0
+    - serializedVersion: 2
+      name: player_0
+      rect:
+        serializedVersion: 2
+        x: 1583
+        y: 60
+        width: 206
+        height: 463
+      alignment: 9
+      pivot: {x: 0.37322998, y: 0.92396075}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 572cd3ecf2a9144b9beb920670d0f508
+      internalID: -895697420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -7969,6 +7991,7 @@ TextureImporter:
       4: 1871739406167786269
       5: 6757282713640645180
       player11111111: 4334783836991956000
+      player_0: -895697420
       player_10: -3861952770410913445
       player_11: 5044450397378941176
       player_13: 6426868497666326525
