@@ -7,6 +7,7 @@ public class CameraClass : PrimaryClass
     Camera cam;
     CameraState currentCameraState;
     PlatformingState platformingState = new PlatformingState();
+    CombatState combatState = new CombatState();
 
     public override void Start(Manager _manager)
     {
@@ -15,7 +16,7 @@ public class CameraClass : PrimaryClass
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
         List<CameraState> _cameraStates = new List<CameraState>();
-        _cameraStates.AddRange(new CameraState[] { platformingState });
+        _cameraStates.AddRange(new CameraState[] { platformingState, combatState });
 
         foreach (CameraState cameraState in _cameraStates)
             cameraState.StartCameraState(this, cam);
@@ -73,6 +74,51 @@ public class CameraClass : PrimaryClass
         public override void UpdateCameraState()
         {
             lookAheadX = cameraClass.manager.player.xDir * playerLookAheadX;
+
+            if (cameraClass.manager.closestZombie != null)
+                cameraClass.currentCameraState = cameraClass.combatState;
+            
+            base.UpdateCameraState();
+        }
+    }
+
+    public class CombatState : CameraState
+    {
+        GameObject combatObject;
+        float playerLookAheadX = .1f;
+        float waitingToLeaveStateCD = 200f,waitingToLeaveStateTimer;
+
+        public override void StartCameraState(CameraClass _cameraClass, Camera _cam)
+        {
+            base.StartCameraState(_cameraClass, _cam);
+
+            combatObject = new GameObject("CameraCombatObject");
+            target = combatObject;
+            lerpSpeedXY = 0.05f;
+            lerpSpeedZ = 0.03f;
+            lerpSpeedFOV = 0.005f;
+            targetZ = -5.5f;
+            targetFOV = 35f;
+        }
+
+        public override void UpdateCameraState()
+        {
+            if (cameraClass.manager.closestZombie == null)
+            {
+                waitingToLeaveStateTimer++;
+                if (waitingToLeaveStateTimer == waitingToLeaveStateCD)
+                    cameraClass.currentCameraState = cameraClass.platformingState;
+
+                lookAheadX = cameraClass.manager.player.xDir * playerLookAheadX;
+                combatObject.transform.position = new Vector2(cameraClass.manager.player.gameObject.transform.position.x + lookAheadX,cameraClass.manager.player.gameObject.transform.position.y);
+            }
+            else
+            {
+                Vector2 combatObjectPos = (cameraClass.manager.player.gameObject.transform.position + cameraClass.manager.closestZombie.gameObject.transform.position)/2;
+                combatObject.transform.position = combatObjectPos;
+                lookAheadX = 0;
+            }
+
             base.UpdateCameraState();
         }
     }

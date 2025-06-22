@@ -43,6 +43,9 @@ public class Limb
 
         currentFollowPos = Vector2.Lerp(currentFollowPos, targetPos, lerpSpeed);
 
+        if (isArm)
+            currentFollowPos = new Vector2(currentFollowPos.y, -currentFollowPos.x);
+
         ApplyRotations(currentFollowPos);
     }
 
@@ -75,7 +78,6 @@ public class Limb
 
         partA.transform.localRotation = Quaternion.Euler(0, 0, angleA);
         partB.transform.localRotation = Quaternion.Euler(0, 0, angleB);
-
     }
 
     void FindAngles()

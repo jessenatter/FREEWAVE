@@ -9,6 +9,8 @@ public class Character : PrimaryClass
     public Limb frontArm, backArm, frontLeg, backLeg;
     public float armMaxRadius, legMaxRadius;
     protected List<Limb> limbs = new List<Limb>();
+    protected List<Limb> arms = new List<Limb>();
+    protected List<Limb> legs = new List<Limb>();
     public int xDir;
     public Rigidbody2D rb;
     public BoxCollider2D bc;
@@ -53,6 +55,8 @@ public class Character : PrimaryClass
         backArm = StartLimb(true, true,spine2.transform.GetChild(2).gameObject);
 
         limbs.AddRange(new[] { frontArm, backArm, frontLeg, backLeg });
+        legs.Add(frontLeg); legs.Add(backLeg);
+        arms.Add(frontArm); arms.Add(backArm);
 
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
@@ -139,9 +143,7 @@ public class Character : PrimaryClass
             }
         }
         else if(!lowerBodyClimb.climbing)
-        {
             lowerBodyClimb.climbing = true;
-        }
     }
 
     protected void Climb()
@@ -226,6 +228,19 @@ public class Zombie : Character
             else if (sprite.name.Contains("Foot"))
                 footSprites.Add(sprite);
         }
+
+        foreach(Limb limb in arms)
+        {
+            limb.srA.sprite = bicepSprites[UnityEngine.Random.Range(0, bicepSprites.Count)];
+            limb.srB.sprite = armSprites[UnityEngine.Random.Range(0, armSprites.Count)];
+            limb.srC.sprite = null;
+        }
+
+        foreach(Limb limb in legs)
+        {
+            limb.srA.sprite = legSprites[UnityEngine.Random.Range(0, legSprites.Count)];
+            limb.srB.sprite = footSprites[UnityEngine.Random.Range(0, footSprites.Count)];
+        }    
     }
 
     public override void Update()
@@ -287,6 +302,7 @@ public class LowerBodyState : BodyState
 }
 
 #region //upperbody states
+
 public class UpperBodyIdle : UpperBodyState
 {
     public override void Start(Character _character) { base.Start(_character); }
@@ -313,10 +329,6 @@ public class UpperBodyRun : UpperBodyState
 
 public class UpperBodyJump : UpperBodyState
 {
-    float reach = 0.5f;
-
-
-
     public override void StateUpdate()
     {
         if (character.grounded == true && character.rb.linearVelocityY <= 0)
@@ -331,12 +343,18 @@ public class UpperBodyJump : UpperBodyState
 
 public class UpperBodyClimb : UpperBodyState
 {
+    
+}
+
+public class UpperBodyAttack : UpperBodyState
+{
 
 }
 
 #endregion
 
 #region //lowerbody states
+
 public class LowerBodyIdle : LowerBodyState
 {
     float decelerationLerp = 0.2f;
@@ -390,7 +408,7 @@ public class LowerBodyJump : LowerBodyState
 
 public class LowerBodyClimb : LowerBodyState
 {
-    float climbSpeed = .05f;
+    float climbSpeed = .1f;
     public bool climbing = false, hitY;
 
     public override void StateUpdate()
@@ -437,6 +455,7 @@ public class LowerBodyClimb : LowerBodyState
     void Exit()
     {
         StateExit(character.lowerBodyIdle);
+        character.currentUpperBodyState.StateExit(character.upperBodyIdle);
     }
 
     public override void StateExit(BodyState nextState)
@@ -447,6 +466,10 @@ public class LowerBodyClimb : LowerBodyState
     }
 }
 
+public class LowerBodyAttack : LowerBodyState
+{
+
+}
 
 #endregion
 

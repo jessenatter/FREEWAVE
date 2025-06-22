@@ -18,6 +18,9 @@ public class Manager : MonoBehaviour
     [HideInInspector] public LayerMask groundMask, characterMask, buildingMask, shipMask, environmentMask;
     [HideInInspector] public InputAction moveAction, jumpAction, attackAction, interactAction, dodgeAction, aimAction, shootAction,grabAction;
 
+    public Zombie closestZombie;
+    float shortestZombieDistance;
+
     private void Awake()
     {
         StartGameData();
@@ -76,9 +79,24 @@ public class Manager : MonoBehaviour
         foreach (PrimaryClass primary in alwaysUpdate)
             primary.Update();
 
+        closestZombie = null;
+        shortestZombieDistance = 1000;
+
         foreach (Zombie zombie in zombies)
+        {
             if (zombie.gameObject.activeInHierarchy)
+            {
+                float distanceFromZombie = Vector2.Distance(zombie.gameObject.transform.position, player.gameObject.transform.position);
+
+                if (distanceFromZombie < shortestZombieDistance)
+                {
+                    shortestZombieDistance = distanceFromZombie;
+                    closestZombie = zombie;
+                }
+
                 zombie.Update();
+            }
+        }
 
         for (int i = 0; i < zombieSpawnPoints.Count; i++)
         {
