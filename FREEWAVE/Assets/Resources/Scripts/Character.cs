@@ -171,15 +171,12 @@ public class Character : PrimaryClass
 
 public class Player : Character
 {
-    public GameObject handFollow, legFollow;
     public override void Start(Manager _manager)
     {
         name = "Player";
         moveSpeed = 4.5f;
         jumpForce = 5.5f;
 
-        handFollow = new GameObject("kill me");
-        legFollow = new GameObject("suck my balls");
         base.Start(_manager);
         GameObject face = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Face"));
         

@@ -12,7 +12,6 @@ public class Limb
     public bool isBackLimb,isArm;
     Vector2 currentFollowPos;
     Rest rest = new Rest();
-    FollowGameObject followGameObject;
 
     public void Start(bool _isBackLimb,bool _isArm, GameObject _gameObject,Character _character)
     {
@@ -30,14 +29,8 @@ public class Limb
         lengthB = Vector2.Distance(partB.transform.position, partC.transform.position);
         lengthCmax = lengthA + lengthB;
 
-        followGameObject = new FollowGameObject();
-
-        if (isArm)
-            followGameObject.followObject = character.manager.player.handFollow;
-        else
-            followGameObject.followObject = character.manager.player.legFollow;
-
-        currentMode = followGameObject;
+        currentMode = rest;
+        rest.maxReach = lengthCmax;
     }
 
     public void Update()
@@ -76,9 +69,6 @@ public class Limb
 
         rotation = Mathf.Atan2(rotationNumerator,rotationDenominator);
 
-        Debug.DrawLine(partA.transform.position, followPos, Color.red);
-        Debug.DrawRay(partA.transform.position, partA.transform.right * 0.5f, Color.green);
-
         float angleADeg = angleA * Mathf.Rad2Deg;
         float angleBDeg = angleB * Mathf.Rad2Deg;
         float rotationDeg = rotation * Mathf.Rad2Deg;
@@ -94,7 +84,6 @@ public class Limb
             partB.transform.localRotation = Quaternion.Euler(0, 0, angleBDeg - 180);
         }
     }
-
 }
 
 public abstract class LimbMode
@@ -131,10 +120,7 @@ public class Rest : LimbMode
 
     public override Vector2 GetTargetPosition(bool isBackLimb, bool isArm)
     {
-        if(isArm)
-            return new Vector2(-1, 0) * maxReach;
-        else
-            return new Vector2(0, -1) * maxReach;
+        return new Vector2(0, -1) * maxReach;
     }
 }
 
