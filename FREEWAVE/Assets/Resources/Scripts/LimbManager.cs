@@ -45,7 +45,7 @@ public class Limb
         Vector2 ajustedTarget = new Vector2(Mathf.Sign(character.gameObject.transform.localScale.x) * targetPos.x,targetPos.y);
         ajustedTarget = (Vector2)followObject.transform.parent.transform.position + ajustedTarget;
 
-        followObject.transform.position = Vector2.Lerp(followObject.transform.position, ajustedTarget, lerpSpeed);
+        //followObject.transform.position = Vector2.Lerp(followObject.transform.position, ajustedTarget, lerpSpeed);
 
         ApplyRotations(followObject.transform.position);
     }
