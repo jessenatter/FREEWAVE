@@ -6,11 +6,10 @@ public class Limb
 {
     Character character;
     public float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation, lerpSpeed = 1f;
-    public GameObject partA, partB, partC;
+    public GameObject partA, partB, partC,followObject;
     public SpriteRenderer srA, srB, srC;
     public LimbMode currentMode;
     public bool isBackLimb,isArm;
-    Vector2 currentFollowPos;
     Rest rest = new Rest();
 
     public void Start(bool _isBackLimb,bool _isArm, GameObject _gameObject,Character _character)
@@ -29,6 +28,8 @@ public class Limb
         lengthB = Vector2.Distance(partB.transform.position, partC.transform.position);
         lengthCmax = lengthA + lengthB;
 
+        followObject = new GameObject(partA.name + "followObject");
+        followObject.transform.SetParent(partA.transform.parent);
         currentMode = rest;
         rest.maxReach = lengthCmax;
     }
@@ -40,14 +41,13 @@ public class Limb
         if (currentMode == null)
             currentMode = rest;
 
-        if (currentMode.useLocalSpace)
-            targetPos = partA.transform.TransformPoint(currentMode.GetTargetPosition(isBackLimb,isArm));
-        else
-            targetPos = currentMode.GetTargetPosition(isBackLimb,isArm);
+        targetPos = currentMode.GetTargetPosition(isBackLimb,isArm);
+        Vector2 ajustedTarget = new Vector2(Mathf.Sign(character.gameObject.transform.localScale.x) * targetPos.x,targetPos.y);
+        ajustedTarget = (Vector2)followObject.transform.parent.transform.position + ajustedTarget;
 
-        currentFollowPos = Vector2.Lerp(currentFollowPos, targetPos, lerpSpeed);
+        followObject.transform.position = Vector2.Lerp(followObject.transform.position, ajustedTarget, lerpSpeed);
 
-        ApplyRotations(currentFollowPos);
+        ApplyRotations(followObject.transform.position);
     }
 
     void ApplyRotations(Vector2 followPos)
@@ -91,7 +91,6 @@ public class Limb
 
 public abstract class LimbMode
 {
-    public bool useLocalSpace = true;
     public abstract Vector2 GetTargetPosition(bool isBackLimb,bool isArm);
 }
 
@@ -102,18 +101,6 @@ public class FollowVector2 : LimbMode
     public override Vector2 GetTargetPosition(bool isBackLimb, bool isArm)
     {
         return vector2;
-    }
-}
-
-public class FollowGameObject : LimbMode
-{
-    public GameObject followObject;
-
-    public FollowGameObject() { useLocalSpace = false; }
-
-    public override Vector2 GetTargetPosition(bool isBackLimb, bool isArm)
-    {
-        return followObject.transform.position;
     }
 }
 
