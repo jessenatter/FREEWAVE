@@ -157,12 +157,11 @@ public class Character : PrimaryClass
 
     protected void UpdateRotations()
     {
-        float bodyRotation = Mathf.LerpAngle(gameObject.transform.eulerAngles.z, currentLowerBodyState.rotation, rotationLerp);
-        float spine1rotation = Mathf.LerpAngle(spine1.transform.eulerAngles.z, bodyRotation + currentUpperBodyState.spine1rotation + 90 * Mathf.Sign(gameObject.transform.localScale.x), rotationLerp);
-        float spine2rotation = Mathf.LerpAngle(spine2.transform.eulerAngles.z, spine1rotation + currentUpperBodyState.spine2rotation, rotationLerp);
-        float headRotation = Mathf.LerpAngle(head.transform.eulerAngles.z, spine2rotation + currentUpperBodyState.headRotation - 90 * Mathf.Sign(gameObject.transform.localScale.x), rotationLerp);
+        float tilt = Mathf.LerpAngle(0, currentLowerBodyState.rotation, rotationLerp);
+        float spine1rotation = tilt + currentUpperBodyState.spine1rotation + 90 * Mathf.Sign(gameObject.transform.localScale.x);
+        float spine2rotation = spine1rotation + currentUpperBodyState.spine2rotation;
+        float headRotation = spine2rotation + currentUpperBodyState.headRotation - 90 * Mathf.Sign(gameObject.transform.localScale.x);
 
-        gameObject.transform.rotation = Quaternion.Euler(0, 0, bodyRotation);
         spine1.transform.rotation = Quaternion.Euler(0, 0, spine1rotation);
         spine2.transform.rotation = Quaternion.Euler(0, 0, spine2rotation);
         head.transform.rotation = Quaternion.Euler(0, 0, headRotation);
