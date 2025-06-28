@@ -36,7 +36,10 @@ public class Limb
     public void Update()
     {
         Vector2 targetPos;
-        
+
+        if (currentMode == null)
+            currentMode = rest;
+
         if (currentMode.useLocalSpace)
             targetPos = partA.transform.TransformPoint(currentMode.GetTargetPosition(isBackLimb,isArm));
         else

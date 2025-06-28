@@ -275,6 +275,9 @@ public class UpperBodyState : BodyState
     public override void StateEnter()
     {
         base.StateEnter();
+
+        character.frontArm.currentMode = limbMode;
+        character.backArm.currentMode = limbMode;
     }
 
     public override void StateExit(BodyState nextState)
@@ -290,6 +293,9 @@ public class LowerBodyState : BodyState
     public override void StateEnter()
     {
         base.StateEnter();
+
+        character.frontLeg.currentMode = limbMode;
+        character.backLeg.currentMode = limbMode;
     }
 
 
@@ -388,6 +394,14 @@ public class LowerBodyRun : LowerBodyState
 
 public class LowerBodyJump : LowerBodyState
 {
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+        FollowVector2 followVector2 = new FollowVector2();
+        followVector2.vector2 = new Vector2(0.3f, -0.7f) * character.legMaxRadius;
+        limbMode = followVector2;
+    }
+
     public override void StateUpdate()
     {
         base.StateUpdate();
