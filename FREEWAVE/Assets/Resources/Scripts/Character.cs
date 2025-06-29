@@ -323,6 +323,19 @@ public class UpperBodyIdle : UpperBodyState
 
 public class UpperBodyRun : UpperBodyState
 {
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+        ThreePoints threePoints = new ThreePoints();
+        threePoints.pointA = new Vector2(0.3f, -1f) * character.armMaxRadius;
+        threePoints.pointB = new Vector2(-0.6f, -1f) * character.armMaxRadius;
+        threePoints.pointC = new Vector2(0.1f, -0.5f) * character.armMaxRadius;
+        threePoints.duration = 50;
+        threePoints.initDuration = threePoints.duration;
+        threePoints.loop = true;
+        limbMode = threePoints;
+    }
+
     public override void StateUpdate()
     {
         base.StateUpdate();
