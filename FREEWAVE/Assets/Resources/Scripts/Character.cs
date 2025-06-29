@@ -335,6 +335,14 @@ public class UpperBodyRun : UpperBodyState
 
 public class UpperBodyJump : UpperBodyState
 {
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+        FollowVector2 followVector2 = new FollowVector2();
+        followVector2.vector2 = new Vector2(0.5f, 0.7f) * character.armMaxRadius;
+        limbMode = followVector2;
+    }
+
     public override void StateUpdate()
     {
         if (character.grounded == true && character.rb.linearVelocityY <= 0)
@@ -381,6 +389,19 @@ public class LowerBodyIdle : LowerBodyState
 
 public class LowerBodyRun : LowerBodyState
 {
+    public override void Start(Character _character)
+    {
+        base.Start(_character);
+        ThreePoints threePoints = new ThreePoints();
+        threePoints.pointA = new Vector2(0.3f, -1f) * character.legMaxRadius;
+        threePoints.pointB = new Vector2(-0.6f, -1f) * character.legMaxRadius;
+        threePoints.pointC = new Vector2(0.1f, -0.5f) * character.legMaxRadius;
+        threePoints.duration = 50;
+        threePoints.initDuration = threePoints.duration;
+        threePoints.loop = true;
+        limbMode = threePoints;
+    }
+
     public override void StateUpdate()
     {
         base.StateUpdate();
@@ -398,7 +419,7 @@ public class LowerBodyJump : LowerBodyState
     {
         base.Start(_character);
         FollowVector2 followVector2 = new FollowVector2();
-        followVector2.vector2 = new Vector2(0.3f, -0.7f) * character.legMaxRadius;
+        followVector2.vector2 = new Vector2(0.2f, -0.8f) * character.legMaxRadius;
         limbMode = followVector2;
     }
 
