@@ -14,6 +14,7 @@ public class Limb
 
     public void Start(bool _isBackLimb,bool _isArm, GameObject _gameObject,Character _character)
     {
+        isBackLimb = _isBackLimb;
         character = _character;
         isArm = _isArm;
         partA = _gameObject;
