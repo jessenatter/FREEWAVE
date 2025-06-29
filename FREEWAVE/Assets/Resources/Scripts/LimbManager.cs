@@ -42,7 +42,8 @@ public class Limb
             currentMode = rest;
 
         targetPos = currentMode.GetTargetPosition(isBackLimb,isArm);
-        Vector2 ajustedTarget = (Vector2)followObject.transform.parent.transform.position + targetPos;
+
+        Vector2 ajustedTarget = (Vector2)partA.transform.position + targetPos;
 
         followObject.transform.position = Vector2.Lerp(followObject.transform.position, ajustedTarget, lerpSpeed);
 
