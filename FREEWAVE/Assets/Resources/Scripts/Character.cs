@@ -16,7 +16,7 @@ public class Character : PrimaryClass
     public BoxCollider2D bc;
     public SpriteRenderer sr;
     public Vector2 spawnPoint,climbPoint;
-    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.5f,tiltRotation = 10;
+    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.5f,tiltRotation = 15,runAnimationDuration = 75;
     public UpperBodyState currentUpperBodyState;
     public LowerBodyState currentLowerBodyState;
 
@@ -327,10 +327,10 @@ public class UpperBodyRun : UpperBodyState
     {
         base.Start(_character);
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(0.3f, -1f) * character.armMaxRadius;
-        threePoints.pointB = new Vector2(-0.6f, -1f) * character.armMaxRadius;
-        threePoints.pointC = new Vector2(0.1f, -0.5f) * character.armMaxRadius;
-        threePoints.duration = 50;
+        threePoints.pointA = new Vector2(0.8f, -.5f) * character.armMaxRadius;
+        threePoints.pointB = new Vector2(-0.3f, -.8f) * character.armMaxRadius;
+        threePoints.pointC = new Vector2(0.2f, -.3f) * character.armMaxRadius;
+        threePoints.duration = character.runAnimationDuration;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
         limbMode = threePoints;
@@ -409,7 +409,7 @@ public class LowerBodyRun : LowerBodyState
         threePoints.pointA = new Vector2(0.2f, -0.8f) * character.legMaxRadius;
         threePoints.pointB = new Vector2(-0.6f, -1f) * character.legMaxRadius;
         threePoints.pointC = new Vector2(0.1f, -0.6f) * character.legMaxRadius;
-        threePoints.duration = 50;
+        threePoints.duration = character.runAnimationDuration;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
         limbMode = threePoints;
