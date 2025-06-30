@@ -5,7 +5,7 @@ using System;
 public class Limb
 {
     Character character;
-    public float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation, lerpSpeed = 1f;
+    public float lengthA, lengthB, lengthCcurrent, lengthCmax, angleA, angleB, rotation, lerpSpeed = .075f;
     public GameObject partA, partB, partC,followObject;
     public SpriteRenderer srA, srB, srC;
     public LimbMode currentMode;
@@ -46,7 +46,7 @@ public class Limb
 
         Vector2 ajustedTarget = (Vector2)partA.transform.position + targetPos;
 
-        followObject.transform.position = Vector2.Lerp(followObject.transform.position, ajustedTarget, lerpSpeed);
+        followObject.transform.position = Vector2.Lerp(followObject.transform.position, ajustedTarget,Time.time * lerpSpeed);
 
         ApplyRotations(followObject.transform.position);
     }

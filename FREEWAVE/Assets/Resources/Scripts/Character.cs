@@ -406,9 +406,9 @@ public class LowerBodyRun : LowerBodyState
     {
         base.Start(_character);
         ThreePoints threePoints = new ThreePoints();
-        threePoints.pointA = new Vector2(0.3f, -1f) * character.legMaxRadius;
+        threePoints.pointA = new Vector2(0.2f, -0.8f) * character.legMaxRadius;
         threePoints.pointB = new Vector2(-0.6f, -1f) * character.legMaxRadius;
-        threePoints.pointC = new Vector2(0.1f, -0.5f) * character.legMaxRadius;
+        threePoints.pointC = new Vector2(0.1f, -0.6f) * character.legMaxRadius;
         threePoints.duration = 50;
         threePoints.initDuration = threePoints.duration;
         threePoints.loop = true;
