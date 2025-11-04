@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 7
+  version: 10
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -62,3 +62,4 @@ Material:
     - _OutlineColor: {r: 2.9960785, g: 0.99116963, b: 0.4381058, a: 0}
     - _OutlineColor2: {r: 0.8490566, g: 0.31639373, b: 0.31639373, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
