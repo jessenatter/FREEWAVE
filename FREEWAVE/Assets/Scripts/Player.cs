@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    float moveSpeed = 3f;
-    float jumpForce = 5f;
+    float moveSpeed = 3.5f;
+    float jumpForce = 2f;
 
     bool grounded,isJumping;
 
@@ -19,24 +19,43 @@ public class Player : MonoBehaviour
 
     float xInput;
 
+    Ship ship;
+
+    float maxDistanceFromShip = 1f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
+        ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
     }
 
     void Update() //reading input, visuals
+    {
+        if (manager.GameState == Manager.gameState.playerControl)
+            GetInputs();
+    }
+
+    void FixedUpdate() //rb stuff
+    {
+        if (manager.GameState == Manager.gameState.playerControl)
+            MovementUpdate();
+    }
+    
+    void GetInputs()
     {
         xInput = manager.moveAction.ReadValue<Vector2>().x;
 
         if (manager.jumpAction.IsPressed())
             Jump();
-    }
 
-    void FixedUpdate() //rb stuff
+        if (manager.interactAction.IsPressed())
+            Interact();
+    }
+    void MovementUpdate()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f,groundLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
 
         if (hit.collider != null)
         {
@@ -56,7 +75,6 @@ public class Player : MonoBehaviour
 
         rb.linearVelocityX = xInput * moveSpeed;
     }
-    
     void Jump()
     {
         if (grounded && !isJumping)
@@ -64,5 +82,12 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isJumping = true;
         }
+    }
+    void Interact()
+    {
+        Vector2 distanceFromShip = transform.position - ship.transform.position;
+
+        if (distanceFromShip.magnitude > maxDistanceFromShip)
+            manager.EnterShip();
     }
 }
