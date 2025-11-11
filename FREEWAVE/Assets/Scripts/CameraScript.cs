@@ -16,6 +16,7 @@ public class CameraScript : MonoBehaviour
         ship = GameObject.FindGameObjectWithTag("Ship");
 
         initZ = transform.position.z;
+        
         target = player;
     }
 

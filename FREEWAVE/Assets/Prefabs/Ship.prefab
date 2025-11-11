@@ -141,8 +141,8 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 0.32, y: -0.3}
       - {x: -0.32, y: -0.3}
-      - {x: -0.17, y: 0.35}
-      - {x: 0.17, y: 0.35}
+      - {x: -0.15, y: 0.35}
+      - {x: 0.15, y: 0.35}
   m_UseDelaunayMesh: 0
 --- !u!50 &7419037112842728500
 Rigidbody2D:
@@ -183,3 +183,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42184647a10c468895f9243a7bcd348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  rb: {fileID: 0}

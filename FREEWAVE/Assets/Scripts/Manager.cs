@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -60,9 +61,14 @@ public class Manager : MonoBehaviour
     }
     public void EnterShip()
     {
-        GameState = gameState.shipControl;
-        player.gameObject.SetActive(false);
-        cam.EnterShip();
+        if (Mathf.Round(ship.rb.rotation) == 0 || Mathf.Round(ship.rb.rotation) == 360)
+        {
+            GameState = gameState.shipControl;
+            player.gameObject.SetActive(false);
+            cam.EnterShip();
+        }
+        else
+            FlipShip();
     }
     public void ExitShip()
     {
@@ -70,5 +76,11 @@ public class Manager : MonoBehaviour
         player.gameObject.SetActive(true);
         player.transform.position = ship.transform.position;
         cam.ExitShip();
+    }
+
+    public void FlipShip()
+    {
+        ship.transform.position += new Vector3(0, 1f,0f);
+        ship.rb.rotation = 0;
     }
 }

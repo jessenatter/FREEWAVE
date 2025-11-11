@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Ship : MonoBehaviour
 {
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     Manager manager;
 
     float turnForce = 20, turnTorque = 3, moveForce = 75;
@@ -53,24 +53,7 @@ public class Ship : MonoBehaviour
             rb.AddForce(transform.up * moveForce);
 
         if (reverseEngine)
-            rb.AddForce(-transform.up * moveForce);
-
-        if (mainEngine || reverseEngine)
-        {
-            float distanceFromTargetAngle = 0;
-            float directionOfForce = 0;
-            float maxTorqueToApply = 15;
-
-            if ((mainEngine || reverseEngine) && xInput == 0)
-            {
-                float angleDiff = Mathf.DeltaAngle(rb.rotation, 0f);
-                float torqueStrength = 10f;
-
-                rb.AddTorque(angleDiff * torqueStrength * Time.fixedDeltaTime);
-            }
-
-            rb.AddTorque(distanceFromTargetAngle * directionOfForce);
-        }          
+            rb.AddForce(-transform.up * moveForce); 
 
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
     }       
