@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Ship : MonoBehaviour
@@ -10,6 +11,8 @@ public class Ship : MonoBehaviour
     float xInput;
 
     bool inShip, mainEngine, reverseEngine;
+
+    float ajustLerp = 0.1f;
 
     void Start()
     {
@@ -52,9 +55,23 @@ public class Ship : MonoBehaviour
         if (reverseEngine)
             rb.AddForce(-transform.up * moveForce);
 
-        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
+        if (mainEngine || reverseEngine)
+        {
+            float distanceFromTargetAngle = 0;
+            float directionOfForce = 0;
+            float maxTorqueToApply = 15;
 
-        //Debug.Log(transform.rotation.z);
-        Debug.Log(transform.eulerAngles.z);
+            if ((mainEngine || reverseEngine) && xInput == 0)
+            {
+                float angleDiff = Mathf.DeltaAngle(rb.rotation, 0f);
+                float torqueStrength = 10f;
+
+                rb.AddTorque(angleDiff * torqueStrength * Time.fixedDeltaTime);
+            }
+
+            rb.AddTorque(distanceFromTargetAngle * directionOfForce);
+        }          
+
+        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
     }       
 }

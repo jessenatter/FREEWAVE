@@ -68,6 +68,7 @@ public class Manager : MonoBehaviour
     {
         GameState = gameState.playerControl;
         player.gameObject.SetActive(true);
+        player.transform.position = ship.transform.position;
         cam.ExitShip();
     }
 }
