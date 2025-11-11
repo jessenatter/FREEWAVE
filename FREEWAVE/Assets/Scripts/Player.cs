@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
 
     float maxDistanceFromShip = 1f;
 
+    public bool canEnterShip;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -87,7 +89,9 @@ public class Player : MonoBehaviour
     {
         Vector2 distanceFromShip = transform.position - ship.transform.position;
 
-        if (distanceFromShip.magnitude > maxDistanceFromShip)
-            manager.EnterShip();
+        if (distanceFromShip.magnitude < maxDistanceFromShip)
+            canEnterShip = true;
+        else
+            canEnterShip = false;
     }
 }

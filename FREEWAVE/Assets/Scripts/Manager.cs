@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    public InputAction moveAction, jumpAction,interactAction;
+    public InputAction moveAction, jumpAction,interactAction,dashAction;
     public Player player;
 
     public Ship ship;
@@ -19,11 +19,14 @@ public class Manager : MonoBehaviour
 
     public gameState GameState = gameState.playerControl;
 
+    bool interactKeyReleased = true;
+
     void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         interactAction = InputSystem.actions.FindAction("Interact");
+        dashAction = InputSystem.actions.FindAction("Dash");
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
@@ -34,17 +37,37 @@ public class Manager : MonoBehaviour
     {
         if (Keyboard.current.rKey.isPressed)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
 
+        EnterExitShipCheck();
+        
+    }
+    void EnterExitShipCheck()
+    {
+        if (interactAction.IsPressed())
+        {
+            if (interactKeyReleased == true)
+            {
+                interactKeyReleased = false;
+
+                if (GameState == gameState.shipControl)
+                    ExitShip();
+                else if (player.canEnterShip)
+                    EnterShip();
+            }
+        }
+        else
+            interactKeyReleased = true;
+    }
     public void EnterShip()
     {
         GameState = gameState.shipControl;
         player.gameObject.SetActive(false);
+        cam.EnterShip();
     }
-
     public void ExitShip()
     {
         GameState = gameState.playerControl;
         player.gameObject.SetActive(true);
+        cam.ExitShip();
     }
 }
