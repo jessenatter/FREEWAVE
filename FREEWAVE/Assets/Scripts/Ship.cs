@@ -8,6 +8,8 @@ public class Ship : MonoBehaviour
 
     float turnForce = 25, turnTorque = 5, moveForce = 90;
     float maxSpeed = 15;
+
+    float boostForce = 40;
     float xInput;
 
     bool inShip, mainEngine, reverseEngine;
@@ -15,6 +17,8 @@ public class Ship : MonoBehaviour
     float ajustLerp = 0.1f;
 
     [SerializeField] GameObject mainFlame, reverseFlame, leftFlame, rightFlame;
+
+    [SerializeField] LayerMask breakableWallLayer;
 
     void Start()
     {
@@ -38,9 +42,10 @@ public class Ship : MonoBehaviour
         if (inShip)
             UpdateMovement();
     }
-    
+
     void ReadInputs()
     {
+        xInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(manager.moveAction.ReadValue<Vector2>().x);
         xInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(manager.moveAction.ReadValue<Vector2>().x);
         mainEngine = manager.jumpAction.IsPressed();
         reverseEngine = manager.dashAction.IsPressed();
@@ -55,7 +60,7 @@ public class Ship : MonoBehaviour
             rightFlame.SetActive(true);
         else
             rightFlame.SetActive(false);
-        
+
         if (Mathf.Sign(xInput) == -1)
             leftFlame.SetActive(true);
         else
@@ -78,5 +83,20 @@ public class Ship : MonoBehaviour
             reverseFlame.SetActive(false);
 
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
+    }
+
+    void BreakableWallCheck()
+    {
+        float distance = 10f;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, distance, breakableWallLayer);
+        if(hit == true)
+        {
+            
+        }
+    }
+
+    void Boost()
+    {
+        rb.AddForce(transform.up * boostForce,ForceMode2D.Impulse);
     }       
 }
