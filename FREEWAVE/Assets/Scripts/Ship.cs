@@ -6,13 +6,15 @@ public class Ship : MonoBehaviour
     public Rigidbody2D rb;
     Manager manager;
 
-    float turnForce = 20, turnTorque = 3, moveForce = 75;
-    float maxSpeed = 10;
+    float turnForce = 25, turnTorque = 5, moveForce = 90;
+    float maxSpeed = 15;
     float xInput;
 
     bool inShip, mainEngine, reverseEngine;
 
     float ajustLerp = 0.1f;
+
+    [SerializeField] GameObject mainFlame, reverseFlame, leftFlame, rightFlame;
 
     void Start()
     {
@@ -49,11 +51,31 @@ public class Ship : MonoBehaviour
         rb.AddForce(transform.up * forceDir * turnForce);
         rb.AddTorque(turnTorque * forceDir.x);
 
+        if (Mathf.Sign(xInput) == 1 && xInput != 0)
+            rightFlame.SetActive(true);
+        else
+            rightFlame.SetActive(false);
+        
+        if (Mathf.Sign(xInput) == -1)
+            leftFlame.SetActive(true);
+        else
+            leftFlame.SetActive(false);
+
         if (mainEngine)
+        {
             rb.AddForce(transform.up * moveForce);
+            mainFlame.SetActive(true);
+        }
+        else
+            mainFlame.SetActive(false);
 
         if (reverseEngine)
-            rb.AddForce(-transform.up * moveForce); 
+        {
+            rb.AddForce(-transform.up * moveForce);
+            reverseFlame.SetActive(true);
+        }
+        else
+            reverseFlame.SetActive(false);
 
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
     }       
