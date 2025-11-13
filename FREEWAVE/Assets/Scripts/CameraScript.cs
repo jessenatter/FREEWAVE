@@ -6,7 +6,7 @@ public class CameraScript : MonoBehaviour
 
     GameObject target,player,ship;
 
-    float lerpSpeedxy = 0.1f, lerpSpeedz = 0.05f;
+    float lerpSpeedxy = 10f, lerpSpeedz = 10f;
     float initZ;
     
     void Start()
@@ -25,9 +25,11 @@ public class CameraScript : MonoBehaviour
         GameObject targetObject = target;
         float targetZ = initZ;
 
-        Vector3 targetPos = new Vector3(targetObject.transform.position.x, targetObject.transform.position.y, targetZ);
-        transform.position = Vector2.Lerp(transform.position, targetPos, lerpSpeedxy);
-        transform.position = new Vector3(transform.position.x,transform.position.y,Mathf.Lerp(transform.position.z, targetZ, lerpSpeedz));
+        float _x = Mathf.Lerp(transform.position.x, targetObject.transform.position.x, lerpSpeedxy * Time.deltaTime);
+        float _y = Mathf.Lerp(transform.position.y, targetObject.transform.position.y, lerpSpeedxy * Time.deltaTime);
+        float _z = Mathf.Lerp(transform.position.z, targetZ, lerpSpeedz * Time.deltaTime);
+
+        transform.position = new Vector3(_x, _y, _z);
     }
 
     void FixedUpdate()
