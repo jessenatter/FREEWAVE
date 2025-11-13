@@ -20,6 +20,14 @@ public class Ship : MonoBehaviour
 
     [SerializeField] LayerMask breakableWallLayer;
 
+    bool mainEngineReleased = true, waitingForDoubleClick;
+
+    float doubleClickTimer = 15, doubleClickTimerCurrent;
+
+    bool breakingWall = false;
+
+    Breakable breakable;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -52,6 +60,28 @@ public class Ship : MonoBehaviour
     }
     void UpdateMovement()
     {
+
+        if (!breakingWall)
+            RegularMovementUpdate();
+        else
+            BreakingUpdate();
+
+        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
+    }
+
+    void BreakableWallCheck()
+    {
+        float distance = 10f;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, distance, breakableWallLayer);
+        if (hit == true)
+        {
+            breakingWall = true;
+            breakable = hit.collider.gameObject.GetComponent<Breakable>();
+        }
+    }
+
+    void RegularMovementUpdate()
+    {
         Vector2 forceDir = new Vector2(xInput, 0);
         rb.AddForce(transform.up * forceDir * turnForce);
         rb.AddTorque(turnTorque * forceDir.x);
@@ -70,9 +100,35 @@ public class Ship : MonoBehaviour
         {
             rb.AddForce(transform.up * moveForce);
             mainFlame.SetActive(true);
+
+            if (waitingForDoubleClick)
+            {
+                if (mainEngineReleased)
+                {
+                    Boost();
+                    waitingForDoubleClick = false;
+                }
+            }
+            else
+                waitingForDoubleClick = true;
+
+            mainEngineReleased = false;
         }
         else
+        {
             mainFlame.SetActive(false);
+            mainEngineReleased = true;
+        }
+
+        if(waitingForDoubleClick)
+        {
+            doubleClickTimerCurrent++;
+            if(doubleClickTimerCurrent == doubleClickTimer)
+            {
+                doubleClickTimerCurrent = 0;
+                waitingForDoubleClick = false;
+            }
+        }
 
         if (reverseEngine)
         {
@@ -81,22 +137,27 @@ public class Ship : MonoBehaviour
         }
         else
             reverseFlame.SetActive(false);
-
-        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
     }
-
-    void BreakableWallCheck()
+    
+    void BreakingUpdate()
     {
-        float distance = 10f;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, distance, breakableWallLayer);
-        if(hit == true)
+        Vector2 toBreakable = breakable.transform.position - transform.position;
+
+        float boostSpeed = 15;
+        rb.linearVelocity = toBreakable.normalized * boostSpeed;
+        if(toBreakable.magnitude < 1.2f)
         {
-            
+            breakable.Break();
+            breakingWall = false;
+
+            float breakBoostForce = 15f;
+            rb.AddForce(toBreakable.normalized * breakBoostForce,ForceMode2D.Impulse);
         }
     }
 
     void Boost()
     {
-        rb.AddForce(transform.up * boostForce,ForceMode2D.Impulse);
+        rb.AddForce(transform.up * boostForce, ForceMode2D.Impulse);
+        BreakableWallCheck();
     }       
 }
