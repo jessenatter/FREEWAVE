@@ -61,7 +61,7 @@ public class Manager : MonoBehaviour
     }
     public void EnterShip()
     {
-        if (Mathf.Round(ship.rb.rotation) == 0 || Mathf.Round(ship.rb.rotation) == 360)
+        if (ship.rb.rotation >= 0 && ship.rb.rotation <= 45 || ship.rb.rotation <= 360 && ship.rb.rotation >= 315)
         {
             GameState = gameState.shipControl;
             player.gameObject.SetActive(false);
