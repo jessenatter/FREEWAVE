@@ -1,15 +1,15 @@
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     float moveSpeed = 3.5f;
     float jumpForce = 2f;
 
-    bool grounded,isJumping;
+    bool grounded,isJumping,isGrappling,grappleIsShooting;
 
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
 
-    [SerializeField] LayerMask groundLayer;
+    [SerializeField] LayerMask groundLayer,grappleLayer;
 
     Rigidbody2D rb;
 
@@ -23,7 +23,11 @@ public class Player : MonoBehaviour
 
     float maxDistanceFromShip = 1f;
 
-    public bool canEnterShip;
+    public bool canEnterShip,aiming;
+
+    Vector2 mouseWorld,grapplePoint;
+
+    [SerializeField] GameObject grappleBullet;
 
     void Start()
     {
@@ -37,12 +41,24 @@ public class Player : MonoBehaviour
     {
         if (manager.GameState == Manager.gameState.playerControl)
             GetInputs();
+
+       
     }
 
     void FixedUpdate() //rb stuff
     {
         if (manager.GameState == Manager.gameState.playerControl)
-            MovementUpdate();
+        {
+            if(!isGrappling)
+                MovementUpdate();
+            else
+                GrappleStateUpdate();
+        }
+
+        if(aiming)
+        {
+            UpdateMouseObject();
+        }
     }
     
     void GetInputs()
@@ -54,6 +70,14 @@ public class Player : MonoBehaviour
 
         if (manager.interactAction.IsPressed())
             Interact();
+        
+        if(Mouse.current.rightButton.isPressed)
+            aiming = true;
+        else
+            aiming = false;
+        
+        if(Mouse.current.leftButton.isPressed && aiming)
+            Shoot();
     }
     void MovementUpdate()
     {
@@ -93,5 +117,55 @@ public class Player : MonoBehaviour
             canEnterShip = true;
         else
             canEnterShip = false;
+    }
+    void UpdateMouseObject()
+    {
+        Vector2 mousePos = manager.pointAction.ReadValue<Vector2>();
+        mouseWorld = manager.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, manager.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
+        manager.mouseObject.transform.position = mouseWorld;
+    }
+
+    void Shoot()
+    {
+        Vector2 dir = mouseWorld - (Vector2)transform.position;
+        float distance = 50f;
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distance, grappleLayer);
+
+        if(hit == true)
+        {
+            if(!isGrappling)
+            {
+                isGrappling = true;
+                grapplePoint = hit.point;
+                grappleBullet.transform.position = grapplePoint;
+                rb.gravityScale = 0;
+            }
+        }
+    }
+    void GrappleStateUpdate()
+    {
+        if(grappleIsShooting)
+            GrappleShootingUpdate();
+        else
+            GrapplingUpdate();
+    }
+    void GrappleShootingUpdate()
+    {
+        
+    }
+    
+    void GrapplingUpdate()
+    {
+        Vector2 dir = grapplePoint - (Vector2)transform.position;
+        float grappleSpeed = 15f;
+
+        rb.AddForce(dir.normalized * grappleSpeed);
+
+        if(dir.magnitude < 1f)
+        {
+            isGrappling = false;
+            rb.gravityScale = 1;
+        }
     }
 }

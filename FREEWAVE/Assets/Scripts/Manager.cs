@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    public InputAction moveAction, jumpAction,interactAction,dashAction;
+    public InputAction moveAction, jumpAction,interactAction,dashAction,pointAction;
     public Player player;
 
     public Ship ship;
@@ -22,12 +22,15 @@ public class Manager : MonoBehaviour
 
     bool interactKeyReleased = true;
 
+    [SerializeField] public GameObject mouseObject;
+
     void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         interactAction = InputSystem.actions.FindAction("Interact");
         dashAction = InputSystem.actions.FindAction("Dash");
+        pointAction = InputSystem.actions.FindAction("Point");
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();

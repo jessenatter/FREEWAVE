@@ -6,7 +6,7 @@ public class Ship : MonoBehaviour
     public Rigidbody2D rb;
     Manager manager;
 
-    float turnForce = 25, turnTorque = 5, moveForce = 90;
+    float turnForce = 40, turnTorque = 10, moveForce = 90;
     float maxSpeed = 15;
 
     float boostForce = 40;
@@ -53,8 +53,7 @@ public class Ship : MonoBehaviour
 
     void ReadInputs()
     {
-        xInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(manager.moveAction.ReadValue<Vector2>().x);
-        xInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(manager.moveAction.ReadValue<Vector2>().x);
+        xInput = -Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(manager.moveAction.ReadValue<Vector2>().x);
         mainEngine = manager.jumpAction.IsPressed();
         reverseEngine = manager.dashAction.IsPressed();
     }

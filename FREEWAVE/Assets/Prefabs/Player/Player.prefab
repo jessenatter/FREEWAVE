@@ -108,6 +108,11 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 320
+  grappleLayer:
+    serializedVersion: 2
+    m_Bits: 832
+  canEnterShip: 0
+  aiming: 0
 --- !u!61 &349077460423240389
 BoxCollider2D:
   m_ObjectHideFlags: 0
