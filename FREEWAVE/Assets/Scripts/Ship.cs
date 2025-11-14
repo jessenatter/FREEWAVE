@@ -144,14 +144,22 @@ public class Ship : MonoBehaviour
 
         float boostSpeed = 15;
         rb.linearVelocity = toBreakable.normalized * boostSpeed;
-        if(toBreakable.magnitude < 1.2f)
+        if (toBreakable.magnitude < 1.2f)
         {
             breakable.Break();
             breakingWall = false;
 
             float breakBoostForce = 15f;
-            rb.AddForce(toBreakable.normalized * breakBoostForce,ForceMode2D.Impulse);
+            rb.AddForce(toBreakable.normalized * breakBoostForce, ForceMode2D.Impulse);
         }
+
+        float angle = Mathf.Atan2(toBreakable.y, toBreakable.x) * Mathf.Rad2Deg;
+        float rotationSpeed = 360f;
+
+        float step = rotationSpeed * Time.fixedDeltaTime;
+        float targetAngle = Mathf.MoveTowardsAngle(transform.eulerAngles.z, angle, step);
+
+        transform.rotation = Quaternion.Euler(0, 0, targetAngle);
     }
 
     void Boost()
