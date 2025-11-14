@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     Vector2 mouseWorld,grapplePoint;
 
     [SerializeField] GameObject grappleBullet;
+    
+    LineRenderer lineRenderer;
 
     void Start()
     {
@@ -35,6 +37,12 @@ public class Player : MonoBehaviour
         bc = GetComponent<BoxCollider2D>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
+        lineRenderer = GetComponent<LineRenderer>();
+        
+        lineRenderer.positionCount = 2;
+        float width = 0.015f;
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
     }
 
     void Update() //reading input, visuals
@@ -140,6 +148,7 @@ public class Player : MonoBehaviour
                 grapplePoint = hit.point;
                 grappleBullet.transform.position = grapplePoint;
                 rb.gravityScale = 0;
+                lineRenderer.enabled = true;
             }
         }
     }
@@ -149,6 +158,9 @@ public class Player : MonoBehaviour
             GrappleShootingUpdate();
         else
             GrapplingUpdate();
+
+        lineRenderer.SetPosition(0,transform.position);
+        lineRenderer.SetPosition(1,grappleBullet.transform.position);
     }
     void GrappleShootingUpdate()
     {
@@ -166,6 +178,7 @@ public class Player : MonoBehaviour
         {
             isGrappling = false;
             rb.gravityScale = 1;
+            lineRenderer.enabled = false;
         }
     }
 }

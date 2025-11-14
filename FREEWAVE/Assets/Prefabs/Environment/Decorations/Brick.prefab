@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4043700464991026361}
   - component: {fileID: 5289672961791487220}
   - component: {fileID: 2388652507777005733}
+  - component: {fileID: 7575442389864748067}
   m_Layer: 0
   m_Name: Brick
   m_TagString: Untagged
@@ -165,3 +166,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7575442389864748067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7236414151164614611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1f9cebf80ac4e91982790e6617b810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
+  startLayer: 8
+  endLayer: 10
+  destroyOnSecondTimer: 1
