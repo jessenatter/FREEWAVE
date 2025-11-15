@@ -6,7 +6,7 @@ public class Ship : MonoBehaviour
     public Rigidbody2D rb;
     Manager manager;
 
-    float turnForce = 40, turnTorque = 10, moveForce = 90;
+    float turnForce = 40, turnAmmountStart = 1,turnAmmountCurrent,turnAmmountMax = 5, moveForce = 90;
     float maxSpeed = 15;
 
     float boostForce = 40;
@@ -28,10 +28,13 @@ public class Ship : MonoBehaviour
 
     Breakable breakable;
 
+    float lastForceXDir;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
+        turnAmmountCurrent = turnAmmountStart;
     }
 
     void Update()
@@ -82,7 +85,23 @@ public class Ship : MonoBehaviour
     {
         Vector2 forceDir = new Vector2(xInput, 0);
         //rb.AddForce(transform.up * forceDir * turnForce);
-        rb.AddTorque(turnTorque * forceDir.x);
+        //rb.AddTorque(turnTorque * forceDir.x);
+
+        if(xInput != 0)
+        {
+            turnAmmountCurrent += .1f;
+            turnAmmountCurrent = Mathf.Clamp(turnAmmountCurrent,turnAmmountStart,turnAmmountMax);
+            transform.Rotate(0,0,turnAmmountCurrent * forceDir.x);
+            lastForceXDir = forceDir.x;
+        }
+        else
+        {
+            if(turnAmmountCurrent != turnAmmountStart)
+            {
+                rb.totalTorque = turnAmmountCurrent * 30 * lastForceXDir;
+                turnAmmountCurrent = turnAmmountStart;
+            }
+        }
 
         if (Mathf.Sign(xInput) == 1 && xInput != 0)
             rightFlame.SetActive(true);
