@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    public InputAction moveAction, jumpAction,interactAction,dashAction,pointAction;
+    public InputAction moveAction, jumpAction,interactAction,dashAction,pointAction,attackAction;
     public Player player;
 
     public Ship ship;
@@ -31,6 +31,7 @@ public class Manager : MonoBehaviour
         interactAction = InputSystem.actions.FindAction("Interact");
         dashAction = InputSystem.actions.FindAction("Dash");
         pointAction = InputSystem.actions.FindAction("Point");
+        attackAction = InputSystem.actions.FindAction("Attack");
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();

@@ -98,7 +98,7 @@ public class Ship : MonoBehaviour
         {
             if(turnAmmountCurrent != turnAmmountStart)
             {
-                rb.totalTorque = turnAmmountCurrent * 30 * lastForceXDir;
+                rb.totalTorque += turnAmmountCurrent * 30 * lastForceXDir;
                 turnAmmountCurrent = turnAmmountStart;
             }
         }

@@ -1024,6 +1024,15 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  attackAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 3a5e23d4-aaa9-4ebf-be8f-f52b35e5c1af
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   player: {fileID: 0}
   ship: {fileID: 0}
   cam: {fileID: 0}
@@ -1070,7 +1079,7 @@ Transform:
   m_GameObject: {fileID: 1044795759}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.8, y: -3.73, z: 0}
+  m_LocalPosition: {x: 40.1, y: -3.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1167,7 +1176,7 @@ Transform:
   m_GameObject: {fileID: 1091510883}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.56, y: -3.73, z: 0}
+  m_LocalPosition: {x: 18.86, y: -3.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1393,7 +1402,7 @@ Transform:
   m_GameObject: {fileID: 1470746228}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.8, y: 8.63, z: 0}
+  m_LocalPosition: {x: 40.1, y: 8.63, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1829,7 +1838,7 @@ Transform:
   m_GameObject: {fileID: 1886316403}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 48.1, y: -3.73, z: 0}
+  m_LocalPosition: {x: 62.399998, y: -3.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2115,7 +2124,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 810187087101162151, guid: 684b7692f77934ed3b8043c762cfc579, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 14.3
       objectReference: {fileID: 0}
     - target: {fileID: 810187087101162151, guid: 684b7692f77934ed3b8043c762cfc579, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2156,6 +2165,10 @@ PrefabInstance:
     - target: {fileID: 1623576972700810800, guid: 684b7692f77934ed3b8043c762cfc579, type: 3}
       propertyPath: m_Name
       value: Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419037112842728500, guid: 684b7692f77934ed3b8043c762cfc579, type: 3}
+      propertyPath: m_GravityScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2237,7 +2250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8743046475274102034, guid: e8056b5212d97406da24456f44615881, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.32
+      value: -2.4
       objectReference: {fileID: 0}
     - target: {fileID: 8743046475274102034, guid: e8056b5212d97406da24456f44615881, type: 3}
       propertyPath: m_LocalPosition.z

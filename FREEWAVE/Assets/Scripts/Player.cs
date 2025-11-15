@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
     float moveSpeed = 3.5f;
     float jumpForce = 2f;
 
-    bool grounded,isJumping,isGrappling,grappleIsShooting;
+    bool grounded,isJumping,grappleIsShooting;
 
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
 
@@ -30,6 +30,21 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject grappleBullet;
     
     LineRenderer lineRenderer;
+
+    public enum playerState
+    {
+        movement,
+        grappling,
+        attacking,
+        attackingDown,
+        dashAttacking,
+    }
+
+    public playerState currentPlayerState = playerState.movement;
+
+    float attackTimer = 30,attackTimerCurrent;
+
+    float dashAttackTimer = 50,dashAttackTimerCurrent;
 
     void Start()
     {
@@ -57,10 +72,17 @@ public class Player : MonoBehaviour
     {
         if (manager.GameState == Manager.gameState.playerControl)
         {
-            if(!isGrappling)
+            if(currentPlayerState == playerState.movement)
                 MovementUpdate();
-            else
+            else if(currentPlayerState == playerState.grappling)
                 GrappleStateUpdate();
+            else if(currentPlayerState == playerState.attacking)
+                AttackUpdate();
+            else if(currentPlayerState == playerState.attackingDown)
+                DownAttackUpdate();
+            else if(currentPlayerState == playerState.dashAttacking)
+                DashAttackUpdate();
+
         }
 
         if(aiming)
@@ -132,7 +154,6 @@ public class Player : MonoBehaviour
         mouseWorld = manager.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, manager.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
         manager.mouseObject.transform.position = mouseWorld;
     }
-
     void Shoot()
     {
         Vector2 dir = mouseWorld - (Vector2)transform.position;
@@ -142,14 +163,11 @@ public class Player : MonoBehaviour
 
         if(hit == true)
         {
-            if(!isGrappling)
-            {
-                isGrappling = true;
-                grapplePoint = hit.point;
-                grappleBullet.transform.position = grapplePoint;
-                rb.gravityScale = 0;
-                lineRenderer.enabled = true;
-            }
+            currentPlayerState = playerState.grappling;
+            grapplePoint = hit.point;
+            grappleBullet.transform.position = grapplePoint;
+            rb.gravityScale = 0;
+            lineRenderer.enabled = true;
         }
     }
     void GrappleStateUpdate()
@@ -165,8 +183,7 @@ public class Player : MonoBehaviour
     void GrappleShootingUpdate()
     {
         
-    }
-    
+    } 
     void GrapplingUpdate()
     {
         Vector2 dir = grapplePoint - (Vector2)transform.position;
@@ -176,9 +193,38 @@ public class Player : MonoBehaviour
 
         if(dir.magnitude < 1f)
         {
-            isGrappling = false;
+            currentPlayerState = playerState.movement;
             rb.gravityScale = 1;
             lineRenderer.enabled = false;
         }
+    }
+
+    void Attack()
+    {
+        
+    }
+
+    void DashAttack()
+    {
+        
+    }
+
+    void DownAttack()
+    {
+        
+    }
+    void AttackUpdate()
+    {
+        
+    }
+
+    void DownAttackUpdate()
+    {
+        
+    }
+
+    void DashAttackUpdate()
+    {
+        
     }
 }
