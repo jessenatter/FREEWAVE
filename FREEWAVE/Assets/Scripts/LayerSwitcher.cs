@@ -6,7 +6,7 @@ public class LayerSwitcher : MonoBehaviour
 
     float changeLayerTimer = 100;
 
-    float destroyTimer = 2000;
+    float destroyTimer = 1000;
 
     [SerializeField] bool destroyOnSecondTimer;
 

@@ -1,16 +1,39 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    Player player;
 
-    // Update is called once per frame
-    void Update()
+    float awarenessDistance = 3f;
+
+    float awarenessTimer = 100,awarenessTimerCurrent;
+
+    protected override void Start()
     {
-        
+        base.Start();
+
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        moveSpeed = 1.5f;
+        jumpForce = 1.5f;
+    }
+    protected override void Update()
+    {
+        base.Update();
+
+        Vector2 playerEnemyVector = player.transform.position - transform.position;
+
+        if(playerEnemyVector.magnitude < awarenessDistance)
+            characterIsActive = true;
+        else if(playerEnemyVector.magnitude > awarenessDistance + 1f)
+        {
+            awarenessTimerCurrent++;
+            if(awarenessTimerCurrent == awarenessTimer)
+            {
+                awarenessTimerCurrent = 0;
+                characterIsActive = false;
+            }
+        }
+
+        xInput = playerEnemyVector.x;
     }
 }

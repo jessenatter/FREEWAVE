@@ -1,56 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    float moveSpeed = 3.5f;
-    float jumpForce = 2f;
-
-    bool grounded,isJumping,grappleIsShooting;
-
-    float cayoteTimer = 10, cayoteTimerCurrent = 0;
-
-    [SerializeField] LayerMask groundLayer,grappleLayer;
-
-    Rigidbody2D rb;
-
-    BoxCollider2D bc;
-
-    Manager manager;
-
-    float xInput;
-
+    bool isGrappling,grappleIsShooting;
+    [SerializeField] LayerMask grappleLayer;
     Ship ship;
-
     float maxDistanceFromShip = 1f;
-
     public bool canEnterShip,aiming;
-
     Vector2 mouseWorld,grapplePoint;
-
     [SerializeField] GameObject grappleBullet;
-    
     LineRenderer lineRenderer;
-
-    public enum playerState
+    override protected void Start()
     {
-        movement,
-        grappling,
-        attacking,
-        attackingDown,
-        dashAttacking,
-    }
+        base.Start();
 
-    public playerState currentPlayerState = playerState.movement;
-
-    float attackTimer = 30,attackTimerCurrent;
-
-    float dashAttackTimer = 50,dashAttackTimerCurrent;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        bc = GetComponent<BoxCollider2D>();
-        manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
         lineRenderer = GetComponent<LineRenderer>();
         
@@ -59,38 +22,34 @@ public class Player : MonoBehaviour
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;
     }
-
-    void Update() //reading input, visuals
+    override protected void Update() //reading input, visuals
     {
-        if (manager.GameState == Manager.gameState.playerControl)
-            GetInputs();
+        base.Update();
 
-       
-    }
-
-    void FixedUpdate() //rb stuff
-    {
         if (manager.GameState == Manager.gameState.playerControl)
         {
-            if(currentPlayerState == playerState.movement)
-                MovementUpdate();
-            else if(currentPlayerState == playerState.grappling)
-                GrappleStateUpdate();
-            else if(currentPlayerState == playerState.attacking)
-                AttackUpdate();
-            else if(currentPlayerState == playerState.attackingDown)
-                DownAttackUpdate();
-            else if(currentPlayerState == playerState.dashAttacking)
-                DashAttackUpdate();
-
+            characterIsActive = true;
+            GetInputs();
         }
+        else
+            characterIsActive = false;
+    }
+    override protected void FixedUpdate() //rb stuff
+    {
+        base.FixedUpdate();
 
         if(aiming)
         {
             UpdateMouseObject();
         }
     }
-    
+    protected override void MovementUpdate()
+    {
+        if(!isGrappling)
+            base.MovementUpdate();
+        else 
+            GrappleStateUpdate();
+    }
     void GetInputs()
     {
         xInput = manager.moveAction.ReadValue<Vector2>().x;
@@ -108,36 +67,6 @@ public class Player : MonoBehaviour
         
         if(Mouse.current.leftButton.isPressed && aiming)
             Shoot();
-    }
-    void MovementUpdate()
-    {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
-
-        if (hit.collider != null)
-        {
-            grounded = true;
-            cayoteTimerCurrent = 0;
-            isJumping = false;
-        }
-        else if (grounded)
-        {
-            cayoteTimerCurrent++;
-            if (cayoteTimerCurrent == cayoteTimer)
-            {
-                grounded = false;
-                cayoteTimerCurrent = 0;
-            }
-        }
-
-        rb.linearVelocityX = xInput * moveSpeed;
-    }
-    void Jump()
-    {
-        if (grounded && !isJumping)
-        {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            isJumping = true;
-        }
     }
     void Interact()
     {
@@ -163,7 +92,7 @@ public class Player : MonoBehaviour
 
         if(hit == true)
         {
-            currentPlayerState = playerState.grappling;
+            isGrappling = true;
             grapplePoint = hit.point;
             grappleBullet.transform.position = grapplePoint;
             rb.gravityScale = 0;
@@ -193,38 +122,9 @@ public class Player : MonoBehaviour
 
         if(dir.magnitude < 1f)
         {
-            currentPlayerState = playerState.movement;
+            isGrappling = false;
             rb.gravityScale = 1;
             lineRenderer.enabled = false;
         }
-    }
-
-    void Attack()
-    {
-        
-    }
-
-    void DashAttack()
-    {
-        
-    }
-
-    void DownAttack()
-    {
-        
-    }
-    void AttackUpdate()
-    {
-        
-    }
-
-    void DownAttackUpdate()
-    {
-        
-    }
-
-    void DashAttackUpdate()
-    {
-        
     }
 }

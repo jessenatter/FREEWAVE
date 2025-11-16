@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -6929434692893956410}
   m_Layer: 0
   m_Name: Zombie
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -178,3 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308e65213d02341e29ac31c3fdf27917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  currentCharacterState: 0
