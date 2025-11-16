@@ -161,4 +161,12 @@ public class Player : Character
         GrappleCancel();//first bc gravity opperations
         base.DownAttack();
     }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        //set up to check for enemy & damage
+        //Enemy enemy = null;
+        //damageToRecive = enemy.damage;
+        base.OnTriggerEnter2D(collision);
+    }
 }

@@ -4,9 +4,9 @@ public class Enemy : Character
 {
     Player player;
 
-    float awarenessDistance = 3f;
+    float awarenessDistance = 5f;
 
-    float awarenessTimer = 100,awarenessTimerCurrent;
+    float awarenessTimer = 1000,awarenessTimerCurrent;
 
     protected override void Start()
     {
@@ -23,8 +23,11 @@ public class Enemy : Character
         Vector2 playerEnemyVector = player.transform.position - transform.position;
 
         if(playerEnemyVector.magnitude < awarenessDistance)
+        {
             characterIsActive = true;
-        else if(playerEnemyVector.magnitude > awarenessDistance + 1f)
+            awarenessTimerCurrent = 0;
+        }
+        else if(playerEnemyVector.magnitude > awarenessDistance * 3f)
         {
             awarenessTimerCurrent++;
             if(awarenessTimerCurrent == awarenessTimer)
@@ -34,6 +37,12 @@ public class Enemy : Character
             }
         }
 
-        xInput = playerEnemyVector.x;
+        xInput = Mathf.Sign(playerEnemyVector.x);
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        damageToRecive = player.damage;
+        base.OnTriggerEnter2D(collision);
     }
 }

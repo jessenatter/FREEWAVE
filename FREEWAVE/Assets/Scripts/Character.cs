@@ -27,6 +27,8 @@ public class Character : MonoBehaviour
     protected bool characterIsActive,getAttackInput,groundedHit;
     GameObject attackCollider,downAttackCollider;
     [SerializeField] int hurtLayer;
+
+    public float health = 10,damage = 1,damageToRecive;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -121,12 +123,21 @@ public class Character : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 5f;
     }
-    protected virtual void Hurt(Vector2 hurtDir)
+    protected virtual void Hurt(Vector2 hurtDir,float damage)
     {
         if(currentCharacterState == characterState.hurting) return;
 
         rb.AddForce(hurtDir * knockbackForce,ForceMode2D.Impulse);
         currentCharacterState = characterState.hurting;
+        health -= damage;
+        health = Mathf.Clamp(health,0,10);
+        if(health == 0)
+            Die();
+    }
+
+    protected virtual void Die()
+    {
+        Destroy(gameObject);
     }
     void AttackUpdate()
     {
@@ -162,19 +173,22 @@ public class Character : MonoBehaviour
     void HurtUpdate()
     {
         hurtTimerCurrent++;
-        if(hurtTimerCurrent == hurtTimer)
+        if(hurtTimerCurrent >= hurtTimer)
         {
-            hurtTimerCurrent = 0;
-            currentCharacterState = characterState.movement;
+            if(groundedHit)
+            {
+                hurtTimerCurrent = 0;
+                currentCharacterState = characterState.movement;
+            }
         }
     }
-    void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer == hurtLayer)
         {
             float _x = Mathf.Sign(transform.position.x - collision.gameObject.transform.position.x);
             Vector2 hurtVec = new Vector2(_x,1);
-            Hurt(hurtVec);
+            Hurt(hurtVec,damageToRecive);
         }
     }
 }
