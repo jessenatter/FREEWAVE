@@ -1,8 +1,11 @@
+using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    protected float moveSpeed = 3.5f, jumpForce = 2f,xInput,dashXinput,dashAttackSpeed = 5f;
+    protected float moveSpeed = 3.5f, jumpForce = 2f,dashAttackSpeed = 10f,knockbackForce = 5f;
+    protected float xInput,yInput,dashXinput;
     bool grounded,isJumping;
     [SerializeField] protected LayerMask groundLayer;
     protected Rigidbody2D rb;
@@ -18,11 +21,12 @@ public class Character : MonoBehaviour
     }
     public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
-    protected float attackTimer = 30,attackTimerCurrent;
-    protected float dashAttackTimer = 50,dashAttackTimerCurrent;
-    protected float hurtTimer = 50,hurtTimerCurrent;
-    protected bool characterIsActive;
+    protected float attackTimer = 10,attackTimerCurrent;
+    protected float dashAttackTimer = 25,dashAttackTimerCurrent;
+    protected float hurtTimer = 30,hurtTimerCurrent;
+    protected bool characterIsActive,getAttackInput,groundedHit;
     GameObject attackCollider,downAttackCollider;
+    [SerializeField] int hurtLayer;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -33,7 +37,24 @@ public class Character : MonoBehaviour
     }
     protected virtual void Update()
     {
-        
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
+
+        if(hit.collider != null)
+            groundedHit = true;
+        else
+            groundedHit = false;
+
+        if(getAttackInput)
+        {
+            if(xInput == 0 && (Mathf.Sign(yInput) != -1 || grounded))
+                Attack();
+            else if(grounded)
+                DashAttack();
+            else if(Mathf.Sign(yInput) == -1)
+                DownAttack();
+            else if(!grounded)
+                Attack();
+        }
     }
     protected virtual void FixedUpdate() //rb stuff
     {
@@ -53,9 +74,10 @@ public class Character : MonoBehaviour
     }
     protected virtual void MovementUpdate()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
+        if(xInput != 0)
+            transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * Mathf.Sign(xInput),transform.localScale.y);
 
-        if (hit.collider != null)
+        if (groundedHit)
         {
             grounded = true;
             cayoteTimerCurrent = 0;
@@ -81,26 +103,29 @@ public class Character : MonoBehaviour
             isJumping = true;
         }
     }
-    protected void Attack()
+    protected virtual void Attack()
     {
         currentCharacterState = characterState.attacking;
         attackCollider.SetActive(true);
     }
-    protected void DashAttack()
+    protected virtual void DashAttack()
     {
         currentCharacterState = characterState.dashAttacking;
         attackCollider.SetActive(true);
         dashXinput = xInput;
     }
-    protected void DownAttack()
+    protected virtual void DownAttack()
     {
         currentCharacterState = characterState.attackingDown;
         downAttackCollider.SetActive(true);
         rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = 1.5f;
+        rb.gravityScale = 5f;
     }
-    protected void Hurt()
+    protected virtual void Hurt(Vector2 hurtDir)
     {
+        if(currentCharacterState == characterState.hurting) return;
+
+        rb.AddForce(hurtDir * knockbackForce,ForceMode2D.Impulse);
         currentCharacterState = characterState.hurting;
     }
     void AttackUpdate()
@@ -115,9 +140,7 @@ public class Character : MonoBehaviour
     }
     void DownAttackUpdate()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
-
-        if(hit.collider != null)
+        if(groundedHit)
         {
             currentCharacterState = characterState.movement;
             downAttackCollider.SetActive(false);
@@ -143,6 +166,15 @@ public class Character : MonoBehaviour
         {
             hurtTimerCurrent = 0;
             currentCharacterState = characterState.movement;
+        }
+    }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == hurtLayer)
+        {
+            float _x = Mathf.Sign(transform.position.x - collision.gameObject.transform.position.x);
+            Vector2 hurtVec = new Vector2(_x,1);
+            Hurt(hurtVec);
         }
     }
 }

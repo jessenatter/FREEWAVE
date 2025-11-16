@@ -6,15 +6,14 @@ public class Ship : MonoBehaviour
     public Rigidbody2D rb;
     Manager manager;
 
-    float turnForce = 40, turnAmmountStart = 1,turnAmmountCurrent,turnAmmountMax = 5, moveForce = 90;
+    float turnForceMax = 5, turnTimer = 50,turnTimerCurrent,turnAmmount, moveForce = 80;
+    [SerializeField] AnimationCurve turnCurve;
     float maxSpeed = 15;
 
     float boostForce = 40;
-    float xInput;
+    float xInput,lastXinput;
 
     bool inShip, mainEngine, reverseEngine;
-
-    float ajustLerp = 0.1f;
 
     [SerializeField] GameObject mainFlame, reverseFlame, leftFlame, rightFlame;
 
@@ -28,13 +27,10 @@ public class Ship : MonoBehaviour
 
     Breakable breakable;
 
-    float lastForceXDir;
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
-        turnAmmountCurrent = turnAmmountStart;
     }
 
     void Update()
@@ -57,6 +53,10 @@ public class Ship : MonoBehaviour
     void ReadInputs()
     {
         xInput = -Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(manager.moveAction.ReadValue<Vector2>().x);
+        
+        if(xInput != 0)
+            lastXinput = xInput;
+
         mainEngine = manager.jumpAction.IsPressed();
         reverseEngine = manager.dashAction.IsPressed();
     }
@@ -83,23 +83,22 @@ public class Ship : MonoBehaviour
 
     void RegularMovementUpdate()
     {
-        Vector2 forceDir = new Vector2(xInput, 0);
-        //rb.AddForce(transform.up * forceDir * turnForce);
-        //rb.AddTorque(turnTorque * forceDir.x);
-
-        if(xInput != 0)
+        if(xInput != 0 && Mathf.Sign(xInput) == lastXinput) 
         {
-            turnAmmountCurrent += .1f;
-            turnAmmountCurrent = Mathf.Clamp(turnAmmountCurrent,turnAmmountStart,turnAmmountMax);
-            transform.Rotate(0,0,turnAmmountCurrent * forceDir.x);
-            lastForceXDir = forceDir.x;
+            rb.angularVelocity = 0;
+            turnTimerCurrent++;
+            turnTimerCurrent = Mathf.Clamp(turnTimerCurrent,0,turnTimer);
+            float t = turnTimerCurrent/turnTimer;
+            turnAmmount = turnCurve.Evaluate(t);
+            transform.Rotate(0,0,turnAmmount * xInput * turnForceMax);
         }
         else
         {
-            if(turnAmmountCurrent != turnAmmountStart)
+            if(turnTimerCurrent != 0)
             {
-                rb.totalTorque += turnAmmountCurrent * 30 * lastForceXDir;
-                turnAmmountCurrent = turnAmmountStart;
+                rb.angularVelocity = 0;
+                rb.AddTorque(turnAmmount * 200 * Mathf.Sign(lastXinput));
+                turnTimerCurrent = 0;
             }
         }
 

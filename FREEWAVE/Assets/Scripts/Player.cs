@@ -53,6 +53,7 @@ public class Player : Character
     void GetInputs()
     {
         xInput = manager.moveAction.ReadValue<Vector2>().x;
+        yInput = manager.moveAction.ReadValue<Vector2>().y;
 
         if (manager.jumpAction.IsPressed())
             Jump();
@@ -65,8 +66,15 @@ public class Player : Character
         else
             aiming = false;
         
-        if(Mouse.current.leftButton.isPressed && aiming)
-            Shoot();
+        if(Mouse.current.leftButton.isPressed)
+        {
+            if(aiming)
+                Shoot();
+            else
+                getAttackInput = true;
+        }
+        else
+            getAttackInput = false;
     }
     void Interact()
     {
@@ -81,7 +89,7 @@ public class Player : Character
     {
         Vector2 mousePos = manager.pointAction.ReadValue<Vector2>();
         mouseWorld = manager.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, manager.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
-        manager.mouseObject.transform.position = mouseWorld;
+        manager.mouseObject.transform.position = Vector2.Lerp(transform.position,mouseWorld,.5f);
     }
     void Shoot()
     {
@@ -120,11 +128,37 @@ public class Player : Character
 
         rb.AddForce(dir.normalized * grappleSpeed);
 
-        if(dir.magnitude < 1f)
-        {
-            isGrappling = false;
-            rb.gravityScale = 1;
-            lineRenderer.enabled = false;
-        }
+        if(dir.magnitude < 1.5f)
+            GrappleCancel();
+    }
+    void GrappleCancel()
+    {
+        isGrappling = false;
+        rb.gravityScale = 1;
+        lineRenderer.enabled = false;
+    }
+
+    protected override void Jump()
+    {
+        base.Jump();
+        GrappleCancel();
+    }
+
+    protected override void Attack()
+    {
+        base.Attack();
+        GrappleCancel();
+    }
+
+    protected override void DashAttack()
+    {
+        base.DashAttack();
+        GrappleCancel();
+    }
+
+    protected override void DownAttack()
+    {
+        GrappleCancel();//first bc gravity opperations
+        base.DownAttack();
     }
 }

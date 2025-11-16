@@ -18,8 +18,8 @@ TagManager:
   - Building
   - BreakableWall
   - DecorativeCollidables
-  - 
-  - 
+  - PlayerAttackCollider
+  - EnemyAttackCollider
   - 
   - 
   - 

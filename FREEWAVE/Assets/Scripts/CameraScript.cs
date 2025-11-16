@@ -10,6 +10,9 @@ public class CameraScript : MonoBehaviour
     float lerpSpeedxy = 10f, lerpSpeedz = 10f;
     float initZ,initFOV;
 
+    float shipFOV = 80,playerFOV = 65,aimFOV = 70;
+
+    float shipZ = -10,playerZ = -8,aimZ = -9;
     public Camera cameraComponent;
     
     Player playerScript;
@@ -34,17 +37,35 @@ public class CameraScript : MonoBehaviour
     {
         Vector2 targetVector = target.transform.position;
 
-        if(playerScript.aiming)
-            targetVector = (player.transform.position + cursor.transform.position)/2;
-
         float targetZ = initZ;
         float targetFOV = initFOV;
+        Vector2 lookAhead = Vector2.zero;
 
-        float _x = Mathf.Lerp(transform.position.x, targetVector.x, lerpSpeedxy * Time.deltaTime);
-        float _y = Mathf.Lerp(transform.position.y, targetVector.y, lerpSpeedxy * Time.deltaTime);
+        if(manager.GameState == Manager.gameState.playerControl)
+        {
+            targetZ = playerZ;
+            targetFOV = playerFOV;
+            lookAhead = new Vector2(0,1);
+
+            if(playerScript.aiming)
+            {
+                targetZ = aimZ;
+                targetFOV = aimFOV;
+                targetVector = Vector2.Lerp(player.transform.position,cursor.transform.position,.7f);
+            }
+        }
+        else
+        {
+            targetZ = shipZ;
+            targetFOV = shipFOV;
+        }
+
+        float _x = Mathf.Lerp(transform.position.x, targetVector.x + lookAhead.x, lerpSpeedxy * Time.deltaTime);
+        float _y = Mathf.Lerp(transform.position.y, targetVector.y + lookAhead.y, lerpSpeedxy * Time.deltaTime);
         float _z = Mathf.Lerp(transform.position.z, targetZ, lerpSpeedz * Time.deltaTime);
-        float FOV = Mathf.Lerp(cameraComponent.fieldOfView,targetFOV,lerpSpeedz);
+        float FOV = Mathf.Lerp(cameraComponent.fieldOfView,targetFOV,lerpSpeedz * Time.deltaTime);
 
+        cameraComponent.fieldOfView = FOV;
         transform.position = new Vector3(_x, _y, _z);
     }
 
