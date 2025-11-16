@@ -2,51 +2,39 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    protected float moveSpeed = 3.5f;
-    protected float jumpForce = 2f;
-
+    protected float moveSpeed = 3.5f, jumpForce = 2f,xInput,dashXinput,dashAttackSpeed = 5f;
     bool grounded,isJumping;
-
-    float cayoteTimer = 10, cayoteTimerCurrent = 0;
-
     [SerializeField] protected LayerMask groundLayer;
-
     protected Rigidbody2D rb;
-
     protected BoxCollider2D bc;
-
     protected Manager manager;
-
-    protected float xInput;
-
     public enum characterState
     {
         movement,
         attacking,
         attackingDown,
         dashAttacking,
+        hurting,
     }
-
     public characterState currentCharacterState = characterState.movement;
-
-    float attackTimer = 30,attackTimerCurrent;
-
-    float dashAttackTimer = 50,dashAttackTimerCurrent;
-
+    float cayoteTimer = 10, cayoteTimerCurrent = 0;
+    protected float attackTimer = 30,attackTimerCurrent;
+    protected float dashAttackTimer = 50,dashAttackTimerCurrent;
+    protected float hurtTimer = 50,hurtTimerCurrent;
     protected bool characterIsActive;
-
+    GameObject attackCollider,downAttackCollider;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
+        attackCollider = transform.GetChild(0).gameObject;
+        downAttackCollider = transform.GetChild(1).gameObject;
     }
-
     protected virtual void Update()
     {
         
     }
-
     protected virtual void FixedUpdate() //rb stuff
     {
         if(characterIsActive)
@@ -59,9 +47,10 @@ public class Character : MonoBehaviour
                 DownAttackUpdate();
             else if(currentCharacterState == characterState.dashAttacking)
                 DashAttackUpdate();
+            else if(currentCharacterState == characterState.hurting)
+                HurtUpdate();
         }
     }
-
     protected virtual void MovementUpdate()
     {
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
@@ -92,32 +81,68 @@ public class Character : MonoBehaviour
             isJumping = true;
         }
     }
-    void Attack()
+    protected void Attack()
     {
-        
+        currentCharacterState = characterState.attacking;
+        attackCollider.SetActive(true);
     }
-
-    void DashAttack()
+    protected void DashAttack()
     {
-        
+        currentCharacterState = characterState.dashAttacking;
+        attackCollider.SetActive(true);
+        dashXinput = xInput;
     }
-
-    void DownAttack()
+    protected void DownAttack()
     {
-        
+        currentCharacterState = characterState.attackingDown;
+        downAttackCollider.SetActive(true);
+        rb.linearVelocity = Vector2.zero;
+        rb.gravityScale = 1.5f;
+    }
+    protected void Hurt()
+    {
+        currentCharacterState = characterState.hurting;
     }
     void AttackUpdate()
     {
-        
+        attackTimerCurrent++;
+        if(attackTimerCurrent == attackTimer)
+        {
+            attackTimerCurrent = 0;
+            currentCharacterState = characterState.movement;
+            attackCollider.SetActive(false);
+        }
     }
-
     void DownAttackUpdate()
     {
-        
-    }
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
 
+        if(hit.collider != null)
+        {
+            currentCharacterState = characterState.movement;
+            downAttackCollider.SetActive(false);
+            rb.gravityScale = 1;
+        }
+    }
     void DashAttackUpdate()
     {
+        dashAttackTimerCurrent++;
+        if(dashAttackTimerCurrent == dashAttackTimer)
+        {
+            dashAttackTimerCurrent = 0;
+            currentCharacterState = characterState.movement;
+            attackCollider.SetActive(false);
+        }
         
+        rb.linearVelocityX = dashXinput * dashAttackSpeed;
+    }
+    void HurtUpdate()
+    {
+        hurtTimerCurrent++;
+        if(hurtTimerCurrent == hurtTimer)
+        {
+            hurtTimerCurrent = 0;
+            currentCharacterState = characterState.movement;
+        }
     }
 }
