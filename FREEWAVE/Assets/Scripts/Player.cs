@@ -170,4 +170,10 @@ public class Player : Character
         //damageToRecive = enemy.damage;
         base.OnTriggerEnter2D(collision);
     }
+
+    public void ExitShip()
+    {
+        float exitMultiplier = 2f;
+        rb.AddForce(ship.rb.linearVelocity * exitMultiplier,ForceMode2D.Impulse);
+    }
 }

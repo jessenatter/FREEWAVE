@@ -80,6 +80,7 @@ public class Manager : MonoBehaviour
         player.gameObject.SetActive(true);
         player.transform.position = ship.transform.position;
         cam.ExitShip();
+        player.ExitShip();
     }
 
     public void FlipShip()

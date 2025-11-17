@@ -16,6 +16,7 @@ public class Ship : MonoBehaviour
     bool inShip, mainEngine, reverseEngine;
 
     [SerializeField] GameObject mainFlame, reverseFlame, leftFlame, rightFlame;
+    [SerializeField] ParticleSystem mainSmoke, reverseSmoke1,reverseSmoke2, leftSmoke, rightSmoke;
 
     [SerializeField] LayerMask breakableWallLayer;
 
@@ -103,17 +104,30 @@ public class Ship : MonoBehaviour
         }
 
         if (Mathf.Sign(xInput) == 1 && xInput != 0)
+        {
             rightFlame.SetActive(true);
+            rightSmoke.Play();
+        }
         else
+        {
             rightFlame.SetActive(false);
+            rightSmoke.Stop();
+        }
 
         if (Mathf.Sign(xInput) == -1)
+        {
             leftFlame.SetActive(true);
+            leftSmoke.Play();
+        }
         else
+        {
             leftFlame.SetActive(false);
+            leftSmoke.Stop();
+        }
 
         if (mainEngine)
         {
+            mainSmoke.Play();
             rb.AddForce(transform.up * moveForce);
             mainFlame.SetActive(true);
 
@@ -132,6 +146,7 @@ public class Ship : MonoBehaviour
         }
         else
         {
+            mainSmoke.Stop();
             mainFlame.SetActive(false);
             mainEngineReleased = true;
         }
@@ -148,11 +163,17 @@ public class Ship : MonoBehaviour
 
         if (reverseEngine)
         {
+            reverseSmoke1.Play();
+            reverseSmoke2.Play();
             rb.AddForce(-transform.up * moveForce);
             reverseFlame.SetActive(true);
         }
         else
+        {
             reverseFlame.SetActive(false);
+            reverseSmoke1.Stop();
+            reverseSmoke2.Stop();
+        }
     }
     
     void BreakingUpdate()
