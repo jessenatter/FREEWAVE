@@ -28,6 +28,7 @@ public class Ship : MonoBehaviour
 
     Breakable breakable;
 
+    [SerializeField] GameObject explosion;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -194,7 +195,10 @@ public class Ship : MonoBehaviour
 
     void Boost()
     {
-        rb.AddForce(transform.up * boostForce, ForceMode2D.Impulse);
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(transform.up * boostForce, ForceMode2D.Impulse); 
         BreakableWallCheck();
+        GameObject _explosion = Instantiate(explosion);
+        _explosion.transform.position = mainFlame.transform.position;
     }       
 }

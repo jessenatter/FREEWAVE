@@ -512,6 +512,7 @@ MonoBehaviour:
   breakableWallLayer:
     serializedVersion: 2
     m_Bits: 512
+  explosion: {fileID: 3715073506139763776, guid: a5fe5b8f5fc4e495dacfc2cb39323b05, type: 3}
 --- !u!1 &4939738787676685949
 GameObject:
   m_ObjectHideFlags: 0
