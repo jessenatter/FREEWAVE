@@ -5,29 +5,23 @@ public class Ship : MonoBehaviour
 {
     public Rigidbody2D rb;
     Manager manager;
-
     float turnForceMax = 5, turnTimer = 50,turnTimerCurrent,turnAmmount, moveForce = 80;
     [SerializeField] AnimationCurve turnCurve;
     float maxSpeed = 15;
-
     float boostForce = 40;
     float xInput,lastXinput;
-
     bool inShip, mainEngine, reverseEngine;
-
     [SerializeField] GameObject mainFlame, reverseFlame, leftFlame, rightFlame;
     [SerializeField] ParticleSystem mainSmoke, reverseSmoke1,reverseSmoke2, leftSmoke, rightSmoke;
-
     [SerializeField] LayerMask breakableWallLayer;
-
     bool mainEngineReleased = true, waitingForDoubleClick;
-
     float doubleClickTimer = 15, doubleClickTimerCurrent;
+    float boostTimer = 40,boostTimerCurrent;
+    bool canBoost = true;
 
+    float tryBoostTimer = 50,tryBoostTimerCurrent;
     bool breakingWall = false;
-
     Breakable breakable;
-
     [SerializeField] GameObject explosion;
     void Start()
     {
@@ -50,6 +44,16 @@ public class Ship : MonoBehaviour
     {
         if (inShip)
             UpdateMovement();
+
+        if(!canBoost)
+        {
+            boostTimerCurrent++;
+            if(boostTimerCurrent == boostTimer)
+            {
+                canBoost = true;
+                boostTimerCurrent = 0;
+            }
+        }
     }
 
     void ReadInputs()
@@ -190,15 +194,28 @@ public class Ship : MonoBehaviour
 
             float breakBoostForce = 15f;
             rb.AddForce(toBreakable.normalized * breakBoostForce,ForceMode2D.Impulse);
+            tryBoostTimerCurrent = 0;
+        }
+
+        tryBoostTimerCurrent++;
+
+        if(tryBoostTimerCurrent == tryBoostTimer)
+        {
+            tryBoostTimerCurrent = 0;
+            breakingWall = false;
         }
     }
 
     void Boost()
     {
-        rb.linearVelocity = Vector2.zero;
-        rb.AddForce(transform.up * boostForce, ForceMode2D.Impulse); 
-        BreakableWallCheck();
-        GameObject _explosion = Instantiate(explosion);
-        _explosion.transform.position = mainFlame.transform.position;
+        if(canBoost)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForce(transform.up * boostForce, ForceMode2D.Impulse); 
+            BreakableWallCheck();
+            GameObject _explosion = Instantiate(explosion);
+            _explosion.transform.position = mainFlame.transform.position;
+            canBoost = false;
+        }
     }       
 }

@@ -27,7 +27,7 @@ public class Character : MonoBehaviour
     protected bool characterIsActive,getAttackInput,groundedHit;
     GameObject attackCollider,downAttackCollider;
     [SerializeField] int hurtLayer;
-
+    CharacterAnimator characterAnimator;
     public float health = 10,damage = 1,damageToRecive;
     protected virtual void Start()
     {
@@ -36,6 +36,7 @@ public class Character : MonoBehaviour
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
         attackCollider = transform.GetChild(0).gameObject;
         downAttackCollider = transform.GetChild(1).gameObject;
+        characterAnimator = GetComponent<CharacterAnimator>();
     }
     protected virtual void Update()
     {
