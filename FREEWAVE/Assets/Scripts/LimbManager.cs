@@ -50,6 +50,12 @@ public class LimbManager : MonoBehaviour
 
         int nextIndex = (currentPoint + 1) % currentLimbState.points.Count;
         
+        if(isBackLimb)
+        {
+            currentPoint = (int)Mathf.Repeat(currentPoint + 2,currentLimbState.points.Count);
+            nextIndex = (int)Mathf.Repeat(nextIndex + 2,currentLimbState.points.Count);
+        }
+
         Vector2 thisPoint = currentLimbState.points[currentPoint];
         Vector2 nextPoint = currentLimbState.points[nextIndex];
 
@@ -62,12 +68,6 @@ public class LimbManager : MonoBehaviour
         transform.position = Vector2.Lerp(transform.position, exactTarget, Time.deltaTime * _speed);
     }   
 
-    void Loop()
-    {
-        currentTime = 0;
-        currentPoint = 0;
-        waitingForExit = false;
-    }
     public void ExitState()
     {
         currentTime = 0;
