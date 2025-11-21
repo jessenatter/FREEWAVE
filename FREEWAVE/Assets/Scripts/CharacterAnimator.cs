@@ -40,7 +40,7 @@ public class CharacterAnimator : MonoBehaviour
     public upperBodyState currentUpperBodyState;
     public lowerBodyState lowerBodyRun,lowerBodyJump,lowerBodyIdle;
     public upperBodyState upperBodyRun,upperBodyJump,upperBodyIdle;
-    float idleStateDuration = 150f,runStateDuration = 70f,jumpDuration = 50f;
+    float idleStateDuration = 150f,runStateDuration = 30f;
     void Start()
     {
         //idle
@@ -74,12 +74,12 @@ public class CharacterAnimator : MonoBehaviour
         //jump
         List<Vector2> _lowerJumpPoints = new List<Vector2>(); 
         _lowerJumpPoints.Add(new Vector2(0.1f,0.2f));
-        LimbManager.limbState _lowerJump = new LimbManager.limbState(_lowerJumpPoints,jumpDuration,false);
+        LimbManager.limbState _lowerJump = new LimbManager.limbState(_lowerJumpPoints,0.1f,false);
         lowerBodyJump = new lowerBodyState(_lowerJump,_lowerJump,this);
 
         List<Vector2> _upperJumpPoints = new List<Vector2>();
         _upperJumpPoints.Add(new Vector2(0.3f,0.7f)); 
-        LimbManager.limbState _upperJump = new LimbManager.limbState(_upperJumpPoints,jumpDuration,false);
+        LimbManager.limbState _upperJump = new LimbManager.limbState(_upperJumpPoints,0.1f,false);
         upperBodyJump = new upperBodyState(_upperJump,_upperJump,this);
 
         currentLowerBodyState = lowerBodyIdle;
