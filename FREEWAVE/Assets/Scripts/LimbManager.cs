@@ -56,9 +56,9 @@ public class LimbManager : MonoBehaviour
         Vector2 characterDirectionVec = new Vector2(Mathf.Sign(character.transform.localScale.x),1);
         Vector2 initRestPos = (Vector2)orgin.transform.position + (initOffsetFromOrgin * characterDirectionVec);
 
-        Vector2 exactTarget = initRestPos + Vector2.Lerp(thisPoint, nextPoint, lerpAmmount);
+        Vector2 exactTarget = initRestPos + (Vector2.Lerp(thisPoint, nextPoint, lerpAmmount) * characterDirectionVec);
 
-        float _speed = 5f;
+        float _speed = 7f;
         transform.position = Vector2.Lerp(transform.position, exactTarget, Time.deltaTime * _speed);
     }   
 

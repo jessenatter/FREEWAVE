@@ -7,7 +7,7 @@ public class Building : MonoBehaviour
     float alpha = 1;
     SpriteRenderer sr;
 
-    float lerpSpeed = 3f;
+    float lerpSpeed = 5f;
     void Start()
     {
         sr = transform.GetChild(0).GetComponent<SpriteRenderer>();

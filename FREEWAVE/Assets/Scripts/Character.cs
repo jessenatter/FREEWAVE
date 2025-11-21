@@ -157,7 +157,8 @@ public class Character : MonoBehaviour
         {
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyRun;
         }
-        else if(isJumping)
+        
+        if(isJumping)
         {
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyJump;
         }

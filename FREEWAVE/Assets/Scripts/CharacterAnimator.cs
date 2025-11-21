@@ -75,14 +75,12 @@ public class CharacterAnimator : MonoBehaviour
 
         //jump
         List<Vector2> _lowerJumpPoints = new List<Vector2>(); 
-        _lowerJumpPoints.Add(Vector2.zero); 
-        _lowerJumpPoints.Add(Vector2.zero);
+        _lowerJumpPoints.Add(new Vector2(0.5f,0.5f));
         LimbManager.limbState _lowerJump = new LimbManager.limbState(_lowerJumpPoints,jumpDuration,false);
         lowerBodyJump = new lowerBodyState(_lowerJump,_lowerJump,this);
 
         List<Vector2> _upperJumpPoints = new List<Vector2>();
-        _upperJumpPoints.Add(Vector2.zero); 
-        _upperJumpPoints.Add(new Vector2(0,0.01f));
+        _upperJumpPoints.Add(new Vector2(0.5f,0.5f)); 
         LimbManager.limbState _upperJump = new LimbManager.limbState(_upperJumpPoints,jumpDuration,false);
         upperBodyJump = new upperBodyState(_upperJump,_upperJump,this);
 
