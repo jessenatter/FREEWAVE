@@ -10,6 +10,8 @@ public class LimbManager : MonoBehaviour
     public limbState currentLimbState;
     float currentTime;
     bool waitingForExit;
+
+    [SerializeField] bool isBackLimb;
     public class limbState
     {
         public List<Vector2> points = new List<Vector2>();
@@ -41,12 +43,13 @@ public class LimbManager : MonoBehaviour
         float durationPerPoint = currentLimbState.duration / currentLimbState.points.Count;
 
         float t = currentTime / durationPerPoint;
+
         currentPoint = Mathf.FloorToInt(t) % currentLimbState.points.Count;
 
         float lerpAmmount = t - Mathf.Floor(t);
 
         int nextIndex = (currentPoint + 1) % currentLimbState.points.Count;
-
+        
         Vector2 thisPoint = currentLimbState.points[currentPoint];
         Vector2 nextPoint = currentLimbState.points[nextIndex];
 

@@ -28,6 +28,8 @@ public class Character : MonoBehaviour
     GameObject attackCollider,downAttackCollider;
     [SerializeField] int hurtLayer;
     CharacterAnimator characterAnimator;
+    CharacterAnimator.lowerBodyState previousLowerBodyState;
+    CharacterAnimator.upperBodyState previousUpperBodyState;
     public float health = 10,damage = 1,damageToRecive;
     protected virtual void Start()
     {
@@ -97,6 +99,8 @@ public class Character : MonoBehaviour
         }
 
         rb.linearVelocityX = xInput * moveSpeed;
+
+        AnimatorUpdate();
     }
     protected virtual void Jump()
     {
@@ -135,10 +139,37 @@ public class Character : MonoBehaviour
         if(health == 0)
             Die();
     }
-
     protected virtual void Die()
     {
         Destroy(gameObject);
+    }
+
+    void AnimatorUpdate()
+    {
+        if(xInput == 0)
+        {
+            if(!isJumping)
+            {
+                characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyIdle;
+            }
+        }
+        else if(!isJumping)
+        {
+            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyRun;
+        }
+        else if(isJumping)
+        {
+            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyJump;
+        }
+
+        if(characterAnimator.currentLowerBodyState != previousLowerBodyState)
+            characterAnimator.currentLowerBodyState.EnterState();
+
+        if(characterAnimator.currentUpperBodyState != previousUpperBodyState)
+            characterAnimator.currentUpperBodyState.EnterState();
+
+        previousLowerBodyState = characterAnimator.currentLowerBodyState;
+        previousUpperBodyState = characterAnimator.currentUpperBodyState;
     }
     void AttackUpdate()
     {

@@ -40,10 +40,11 @@ public class CharacterAnimator : MonoBehaviour
     public upperBodyState currentUpperBodyState;
     public lowerBodyState lowerBodyRun,lowerBodyJump,lowerBodyIdle;
     public upperBodyState upperBodyRun,upperBodyJump,upperBodyIdle;
-    float idleStateDuration = 100f;
+    float idleStateDuration = 150f,runStateDuration = 70f,jumpDuration = 50f;
     void Start()
     {
-        List<Vector2> _lowerIdlePoints = new List<Vector2>(); //these vector2s need to be treated as offsets
+        //idle
+        List<Vector2> _lowerIdlePoints = new List<Vector2>();
         _lowerIdlePoints.Add(Vector2.zero); 
         _lowerIdlePoints.Add(Vector2.zero);
         LimbManager.limbState _lowerIdle = new LimbManager.limbState(_lowerIdlePoints,idleStateDuration,true);
@@ -51,9 +52,39 @@ public class CharacterAnimator : MonoBehaviour
 
         List<Vector2> _upperIdlePoints = new List<Vector2>();
         _upperIdlePoints.Add(Vector2.zero); 
-        _upperIdlePoints.Add(new Vector2(0,0.05f));
+        _upperIdlePoints.Add(new Vector2(0,0.01f));
         LimbManager.limbState _upperIdle = new LimbManager.limbState(_upperIdlePoints,idleStateDuration,true);
         upperBodyIdle = new upperBodyState(_upperIdle,_upperIdle,this);
+
+        //run
+        List<Vector2> _lowerRunPoints = new List<Vector2>();
+        float _x = 0.1f;
+        float _y = 0.1f;
+        _lowerRunPoints.Add(new Vector2(-_x,_y));
+        _lowerRunPoints.Add(new Vector2(0,_y));
+        _lowerRunPoints.Add(new Vector2(_x,_y)); 
+        _lowerRunPoints.Add(Vector2.zero);
+        LimbManager.limbState _lowerRun = new LimbManager.limbState(_lowerRunPoints,runStateDuration,true);
+        lowerBodyRun = new lowerBodyState(_lowerRun,_lowerRun,this);
+
+        List<Vector2> _upperRunPoints = new List<Vector2>();
+        _upperRunPoints.Add(Vector2.zero); 
+        _upperRunPoints.Add(new Vector2(0,0.01f));
+        LimbManager.limbState _upperRun = new LimbManager.limbState(_upperRunPoints,runStateDuration,true);
+        upperBodyRun = new upperBodyState(_upperRun,_upperRun,this);
+
+        //jump
+        List<Vector2> _lowerJumpPoints = new List<Vector2>(); 
+        _lowerJumpPoints.Add(Vector2.zero); 
+        _lowerJumpPoints.Add(Vector2.zero);
+        LimbManager.limbState _lowerJump = new LimbManager.limbState(_lowerJumpPoints,jumpDuration,false);
+        lowerBodyJump = new lowerBodyState(_lowerJump,_lowerJump,this);
+
+        List<Vector2> _upperJumpPoints = new List<Vector2>();
+        _upperJumpPoints.Add(Vector2.zero); 
+        _upperJumpPoints.Add(new Vector2(0,0.01f));
+        LimbManager.limbState _upperJump = new LimbManager.limbState(_upperJumpPoints,jumpDuration,false);
+        upperBodyJump = new upperBodyState(_upperJump,_upperJump,this);
 
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
@@ -67,11 +98,6 @@ public class CharacterAnimator : MonoBehaviour
         
     }
     void FixedUpdate()
-    {
-        
-    }
-
-    void EnterBodyState()
     {
         
     }
