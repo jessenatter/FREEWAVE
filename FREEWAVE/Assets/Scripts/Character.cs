@@ -31,6 +31,8 @@ public class Character : MonoBehaviour
     CharacterAnimator.lowerBodyState previousLowerBodyState;
     CharacterAnimator.upperBodyState previousUpperBodyState;
     public float health = 10,damage = 1,damageToRecive;
+
+    [SerializeField] bool useAnimatior = true;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -38,7 +40,9 @@ public class Character : MonoBehaviour
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
         attackCollider = transform.GetChild(0).gameObject;
         downAttackCollider = transform.GetChild(1).gameObject;
-        characterAnimator = GetComponent<CharacterAnimator>();
+
+        if(useAnimatior)
+            characterAnimator = GetComponent<CharacterAnimator>();
     }
     protected virtual void Update()
     {
@@ -100,7 +104,8 @@ public class Character : MonoBehaviour
 
         rb.linearVelocityX = xInput * moveSpeed;
 
-        AnimatorUpdate();
+        if(useAnimatior)
+            AnimatorUpdate();
     }
     protected virtual void Jump()
     {

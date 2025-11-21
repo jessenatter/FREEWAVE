@@ -459,3 +459,7 @@ MonoBehaviour:
     m_Bits: 320
   currentCharacterState: 0
   hurtLayer: 11
+  health: 10
+  damage: 1
+  damageToRecive: 0
+  useAnimatior: 0
