@@ -63,8 +63,8 @@ public class CharacterAnimator : MonoBehaviour
         _upperIdlePoints.Add(Vector2.zero); 
         _upperIdlePoints.Add(new Vector2(0,0.01f));
         LimbManager.limbState _upperIdle = new LimbManager.limbState(_upperIdlePoints,idleStateDuration,true);
-        Vector2 idleRotationSpine2 = new Vector2(3,357);
-        Vector2 idleRotationHead = new Vector2(3,357);
+        Vector2 idleRotationSpine2 = new Vector2(3,-3);
+        Vector2 idleRotationHead = new Vector2(3,-3);
         upperBodyIdle = new upperBodyState(_upperIdle,_upperIdle,this,Vector2.zero,idleRotationSpine2,idleRotationHead,idleStateDuration);
 
         //run
@@ -80,7 +80,8 @@ public class CharacterAnimator : MonoBehaviour
         _upperRunPoints.Add(Vector2.zero); 
         _upperRunPoints.Add(new Vector2(0,0.01f));
         LimbManager.limbState _upperRun = new LimbManager.limbState(_upperRunPoints,runStateDuration,true);
-        upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,runStateDuration);
+        Vector2 spine2runRotation = new Vector2(80,80);
+        upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,spine2runRotation,Vector2.zero,Vector2.zero,runStateDuration);
 
         //jump
         List<Vector2> _lowerJumpPoints = new List<Vector2>(); 
@@ -91,7 +92,7 @@ public class CharacterAnimator : MonoBehaviour
         List<Vector2> _upperJumpPoints = new List<Vector2>();
         _upperJumpPoints.Add(new Vector2(0.3f,0.7f)); 
         LimbManager.limbState _upperJump = new LimbManager.limbState(_upperJumpPoints,0.1f,false);
-        upperBodyJump = new upperBodyState(_upperJump,_upperJump,this,1);
+        upperBodyJump = new upperBodyState(_upperJump,_upperJump,this,Vector2.zero,Vector2.zero,Vector2.zero,1);
 
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
@@ -100,6 +101,7 @@ public class CharacterAnimator : MonoBehaviour
         currentUpperBodyState.EnterState();
     }
 
+/*
     void Update()
     {
         float t = currentStateTimer / currentUpperBodyState.duration;
@@ -125,4 +127,6 @@ public class CharacterAnimator : MonoBehaviour
             currentStateTimer = 0;
         }
     }
+
+*/
 }
