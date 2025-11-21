@@ -5,7 +5,6 @@ public class CharacterAnimator : MonoBehaviour
 {
     [SerializeField] LimbManager frontArm,backArm,frontLeg,backLeg;
     [SerializeField] GameObject spine1,spine2,head;
-
     public class bodyState
     {
         public LimbManager.limbState front,back;
@@ -27,7 +26,6 @@ public class CharacterAnimator : MonoBehaviour
             characterAnimator.frontLeg.currentLimbState = front;
         }
     }
-
     public class upperBodyState : bodyState
     {
         public upperBodyState(LimbManager.limbState _front, LimbManager.limbState _back,CharacterAnimator _characterAnimator) : base(_front, _back,_characterAnimator) {}
@@ -38,13 +36,10 @@ public class CharacterAnimator : MonoBehaviour
             characterAnimator.frontArm.currentLimbState = front;
         }
     }
-
     public lowerBodyState currentLowerBodyState;
     public upperBodyState currentUpperBodyState;
-    
     public lowerBodyState lowerBodyRun,lowerBodyJump,lowerBodyIdle;
     public upperBodyState upperBodyRun,upperBodyJump,upperBodyIdle;
-
     float idleStateDuration = 100f;
     void Start()
     {
@@ -56,7 +51,7 @@ public class CharacterAnimator : MonoBehaviour
 
         List<Vector2> _upperIdlePoints = new List<Vector2>();
         _upperIdlePoints.Add(Vector2.zero); 
-        _upperIdlePoints.Add(new Vector2(0,0.3f));
+        _upperIdlePoints.Add(new Vector2(0,0.05f));
         LimbManager.limbState _upperIdle = new LimbManager.limbState(_upperIdlePoints,idleStateDuration,true);
         upperBodyIdle = new upperBodyState(_upperIdle,_upperIdle,this);
 

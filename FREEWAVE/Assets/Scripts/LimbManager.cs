@@ -9,6 +9,7 @@ public class LimbManager : MonoBehaviour
     int currentPoint = 0;
     public limbState currentLimbState;
     float currentTime;
+    bool waitingForExit;
     public class limbState
     {
         public List<Vector2> points = new List<Vector2>();
@@ -26,50 +27,43 @@ public class LimbManager : MonoBehaviour
     {
         initOffsetFromOrgin = transform.position - orgin.transform.position;
     }
-
     void Update()
     {
         UpdatePoints();
     }
+
     void FixedUpdate()
     {
-
+        currentTime++;
     }
     void UpdatePoints()
     {
+        float durationPerPoint = currentLimbState.duration / currentLimbState.points.Count;
+
+        float t = currentTime / durationPerPoint;
+        currentPoint = Mathf.FloorToInt(t) % currentLimbState.points.Count;
+
+        float lerpAmmount = t - Mathf.Floor(t);
+
+        int nextIndex = (currentPoint + 1) % currentLimbState.points.Count;
+
         Vector2 thisPoint = currentLimbState.points[currentPoint];
-        Vector2 nextPoint = currentLimbState.points[currentPoint + 1];
-        
-        float durationPerPoint = currentLimbState.duration / (currentLimbState.points.Count - 1);
-
-        if (currentTime >= (currentPoint + 1) * durationPerPoint)
-        {
-            currentPoint++;
-
-            if (currentPoint >= currentLimbState.points.Count - 1)
-            {
-                if(currentLimbState.loop)
-                    Loop();
-                else 
-                    ExitState();
-            }
-
-            thisPoint = currentLimbState.points[currentPoint];
-            nextPoint = currentLimbState.points[currentPoint + 1];
-        }
-
-        float lerpAmmount = (currentTime % durationPerPoint) / durationPerPoint;
+        Vector2 nextPoint = currentLimbState.points[nextIndex];
 
         Vector2 characterDirectionVec = new Vector2(Mathf.Sign(character.transform.localScale.x),1);
         Vector2 initRestPos = (Vector2)orgin.transform.position + (initOffsetFromOrgin * characterDirectionVec);
-        Vector2 exactTarget = initRestPos + Vector2.Lerp(thisPoint, nextPoint,lerpAmmount);
-        float _speed = 2f;
-        transform.position = Vector2.Lerp(transform.position,exactTarget,Time.deltaTime * _speed);
-    }
+
+        Vector2 exactTarget = initRestPos + Vector2.Lerp(thisPoint, nextPoint, lerpAmmount);
+
+        float _speed = 5f;
+        transform.position = Vector2.Lerp(transform.position, exactTarget, Time.deltaTime * _speed);
+    }   
+
     void Loop()
     {
         currentTime = 0;
         currentPoint = 0;
+        waitingForExit = false;
     }
     public void ExitState()
     {
