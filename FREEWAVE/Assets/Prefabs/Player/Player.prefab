@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 5127408724313624016}
   - component: {fileID: 5233330409553057072}
   m_Layer: 0
-  m_Name: New LimbSolver2D
+  m_Name: BackArm LimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 3396656467244786244}
   - component: {fileID: 34627072284485360}
   m_Layer: 0
-  m_Name: LegLimbSolver2D_Target
+  m_Name: BackLegLimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -480,7 +480,7 @@ GameObject:
   - component: {fileID: 4864264914255996869}
   - component: {fileID: 8886658936976804533}
   m_Layer: 0
-  m_Name: Leg LimbSolver2D
+  m_Name: FrontLeg LimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: 473495110338061205}
   - component: {fileID: 195173193110786067}
   m_Layer: 0
-  m_Name: ArmLimbSolver2D_Target
+  m_Name: FrontArmLimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -780,7 +780,7 @@ GameObject:
   - component: {fileID: 6061505685649980409}
   - component: {fileID: 9122168827841221073}
   m_Layer: 0
-  m_Name: LegLimbSolver2D
+  m_Name: BackLegLimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -845,7 +845,7 @@ GameObject:
   - component: {fileID: 7283696706154831352}
   - component: {fileID: 6929894993793596373}
   m_Layer: 0
-  m_Name: ArmLimbSolver2D
+  m_Name: FrontArmLimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1642,7 +1642,7 @@ GameObject:
   - component: {fileID: 5780193579937926885}
   - component: {fileID: 2130291040402310664}
   m_Layer: 0
-  m_Name: New LimbSolver2D_Target
+  m_Name: BackArmLimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1948,7 +1948,7 @@ GameObject:
   - component: {fileID: 6080997845896608288}
   - component: {fileID: 3553377719571135029}
   m_Layer: 0
-  m_Name: Leg LimbSolver2D_Target
+  m_Name: FrontLeg LimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2366,8 +2366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aa1da6f5aedf4a74b6f00c1bf3d7202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimator
-  frontArm: {fileID: 2130291040402310664}
-  backArm: {fileID: 195173193110786067}
+  frontArm: {fileID: 195173193110786067}
+  backArm: {fileID: 2130291040402310664}
   frontLeg: {fileID: 3553377719571135029}
   backLeg: {fileID: 34627072284485360}
   spine1: {fileID: 3113873679232731552}

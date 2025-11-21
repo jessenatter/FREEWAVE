@@ -151,15 +151,18 @@ public class Character : MonoBehaviour
             if(!isJumping)
             {
                 characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyIdle;
+                characterAnimator.currentUpperBodyState = characterAnimator.upperBodyIdle;
             }
         }
         else if(!isJumping)
         {
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyRun;
+            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyRun;
         }
         
         if(isJumping)
         {
+            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyJump;
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyJump;
         }
 

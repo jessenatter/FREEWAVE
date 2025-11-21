@@ -58,11 +58,9 @@ public class CharacterAnimator : MonoBehaviour
 
         //run
         List<Vector2> _lowerRunPoints = new List<Vector2>();
-        float _x = 0.1f;
-        float _y = 0.1f;
-        _lowerRunPoints.Add(new Vector2(-_x,_y));
-        _lowerRunPoints.Add(new Vector2(0,_y));
-        _lowerRunPoints.Add(new Vector2(_x,_y)); 
+        _lowerRunPoints.Add(new Vector2(-0.3f,0.1f));
+        _lowerRunPoints.Add(new Vector2(0,0.2f));
+        _lowerRunPoints.Add(new Vector2(0.1f,0.1f)); 
         _lowerRunPoints.Add(Vector2.zero);
         LimbManager.limbState _lowerRun = new LimbManager.limbState(_lowerRunPoints,runStateDuration,true);
         lowerBodyRun = new lowerBodyState(_lowerRun,_lowerRun,this);
@@ -80,7 +78,7 @@ public class CharacterAnimator : MonoBehaviour
         lowerBodyJump = new lowerBodyState(_lowerJump,_lowerJump,this);
 
         List<Vector2> _upperJumpPoints = new List<Vector2>();
-        _upperJumpPoints.Add(new Vector2(0.5f,0.5f)); 
+        _upperJumpPoints.Add(new Vector2(0.3f,0.7f)); 
         LimbManager.limbState _upperJump = new LimbManager.limbState(_upperJumpPoints,jumpDuration,false);
         upperBodyJump = new upperBodyState(_upperJump,_upperJump,this);
 
