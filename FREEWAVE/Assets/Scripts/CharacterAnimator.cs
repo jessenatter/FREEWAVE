@@ -32,17 +32,26 @@ public class CharacterAnimator : MonoBehaviour
     }
     public class upperBodyState : bodyState
     {
-        public upperBodyState(LimbManager.limbState _front, LimbManager.limbState _back,CharacterAnimator _characterAnimator,Vector2 spine1,Vector2 spine2,Vector2 head,float _duration) : base(_front, _back,_characterAnimator,_duration)
+        public bool loop;
+        public upperBodyState(LimbManager.limbState _front, LimbManager.limbState _back,CharacterAnimator _characterAnimator,Vector2 spine1,Vector2 spine2,Vector2 head,float _duration,bool _loop) : base(_front, _back,_characterAnimator,_duration)
         {
             spine1rotation = spine1;
             spine2rotation = spine2;
             headRotation = head;
+            loop = _loop;
         }
         public Vector2 spine1rotation,spine2rotation,headRotation;
         public void EnterState()
         {
             characterAnimator.backArm.currentLimbState = back;
             characterAnimator.frontArm.currentLimbState = front;
+        }
+
+        public void loopRotations()
+        {
+            spine1rotation = new Vector2(spine1rotation.y,spine1rotation.x);
+            spine2rotation = new Vector2(spine2rotation.y,spine2rotation.x);
+            headRotation = new Vector2(headRotation.y,headRotation.x);
         }
     }
     public lowerBodyState currentLowerBodyState;
@@ -65,7 +74,7 @@ public class CharacterAnimator : MonoBehaviour
         LimbManager.limbState _upperIdle = new LimbManager.limbState(_upperIdlePoints,idleStateDuration,true);
         Vector2 idleRotationSpine2 = new Vector2(3,-3);
         Vector2 idleRotationHead = new Vector2(3,-3);
-        upperBodyIdle = new upperBodyState(_upperIdle,_upperIdle,this,Vector2.zero,idleRotationSpine2,idleRotationHead,idleStateDuration);
+        upperBodyIdle = new upperBodyState(_upperIdle,_upperIdle,this,Vector2.zero,idleRotationSpine2,idleRotationHead,idleStateDuration,true);
 
         //run
         List<Vector2> _lowerRunPoints = new List<Vector2>();
@@ -81,7 +90,7 @@ public class CharacterAnimator : MonoBehaviour
         _upperRunPoints.Add(new Vector2(0,0.01f));
         LimbManager.limbState _upperRun = new LimbManager.limbState(_upperRunPoints,runStateDuration,true);
         Vector2 spine2runRotation = new Vector2(3,-3);
-        upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,spine2runRotation,Vector2.zero,Vector2.zero,runStateDuration);
+        upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,spine2runRotation,Vector2.zero,Vector2.zero,runStateDuration,true);
 
         //jump
         List<Vector2> _lowerJumpPoints = new List<Vector2>(); 
@@ -92,7 +101,7 @@ public class CharacterAnimator : MonoBehaviour
         List<Vector2> _upperJumpPoints = new List<Vector2>();
         _upperJumpPoints.Add(new Vector2(0.3f,0.7f)); 
         LimbManager.limbState _upperJump = new LimbManager.limbState(_upperJumpPoints,0.1f,false);
-        upperBodyJump = new upperBodyState(_upperJump,_upperJump,this,Vector2.zero,Vector2.zero,Vector2.zero,1);
+        upperBodyJump = new upperBodyState(_upperJump,_upperJump,this,Vector2.zero,Vector2.zero,Vector2.zero,1,false);
 
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
@@ -129,6 +138,8 @@ public class CharacterAnimator : MonoBehaviour
         if(currentStateTimer == currentUpperBodyState.duration)
         {
             currentStateTimer = 0;
+            if(currentUpperBodyState.loop)
+                currentUpperBodyState.loopRotations();
         }
     }
 }
