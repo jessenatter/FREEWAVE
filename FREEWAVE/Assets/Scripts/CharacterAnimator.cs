@@ -56,6 +56,8 @@ public class CharacterAnimator : MonoBehaviour
     }
     public lowerBodyState currentLowerBodyState;
     public upperBodyState currentUpperBodyState;
+    
+    upperBodyState prevUpperBodyState;
     public lowerBodyState lowerBodyRun,lowerBodyJump,lowerBodyIdle;
     public upperBodyState upperBodyRun,upperBodyJump,upperBodyIdle;
     float idleStateDuration = 150f,runStateDuration = 30f;
@@ -86,10 +88,12 @@ public class CharacterAnimator : MonoBehaviour
         lowerBodyRun = new lowerBodyState(_lowerRun,_lowerRun,this,runStateDuration);
 
         List<Vector2> _upperRunPoints = new List<Vector2>();
-        _upperRunPoints.Add(Vector2.zero); 
-        _upperRunPoints.Add(new Vector2(0,0.01f));
+        _upperRunPoints.Add(new Vector2(0f,0.3f)); 
+        _upperRunPoints.Add(new Vector2(0.1f,0.4f));
+        _upperRunPoints.Add(new Vector2(-0.1f,0.4f));
+        _upperRunPoints.Add(new Vector2(0,0.3f));
         LimbManager.limbState _upperRun = new LimbManager.limbState(_upperRunPoints,runStateDuration,true);
-        Vector2 spine2runRotation = new Vector2(3,-3);
+        Vector2 spine2runRotation = new Vector2(350,345);
         upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,spine2runRotation,Vector2.zero,Vector2.zero,runStateDuration,true);
 
         //jump
@@ -108,6 +112,8 @@ public class CharacterAnimator : MonoBehaviour
 
         currentLowerBodyState.EnterState();
         currentUpperBodyState.EnterState();
+
+        prevUpperBodyState = currentUpperBodyState;
     }
     void Update()
     {
@@ -128,12 +134,18 @@ public class CharacterAnimator : MonoBehaviour
         headAngle = Mathf.Lerp(head.transform.eulerAngles.z,headTargetAngle,lerpSpeed);
 
         int xDir = (int)Mathf.Sign(transform.localScale.x);
-        spine1.transform.eulerAngles = new Vector3(0, 0, spine1angle + 90 * xDir);
-        spine2.transform.eulerAngles = new Vector3(0, 0, spine2angle + 90 * xDir);
-        head.transform.eulerAngles = new Vector3(0, 0, headAngle + 90 * xDir);
+        spine1.transform.eulerAngles = new Vector3(0, 0, spine1angle * xDir+ 90 * xDir);
+        spine2.transform.eulerAngles = new Vector3(0, 0, spine1angle* xDir + spine2angle * xDir+ 90 * xDir);
+        head.transform.eulerAngles = new Vector3(0, 0, spine1angle* xDir + spine2angle * xDir+ headAngle * xDir+ 90 * xDir);
     }
     void FixedUpdate()
     {
+        if(currentUpperBodyState != prevUpperBodyState)
+        {
+            currentStateTimer = 0;
+            prevUpperBodyState = currentUpperBodyState;
+        }
+
         currentStateTimer++;
         if(currentStateTimer == currentUpperBodyState.duration)
         {
