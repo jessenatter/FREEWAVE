@@ -80,7 +80,7 @@ public class CharacterAnimator : MonoBehaviour
         _upperRunPoints.Add(Vector2.zero); 
         _upperRunPoints.Add(new Vector2(0,0.01f));
         LimbManager.limbState _upperRun = new LimbManager.limbState(_upperRunPoints,runStateDuration,true);
-        Vector2 spine2runRotation = new Vector2(80,80);
+        Vector2 spine2runRotation = new Vector2(3,-3);
         upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,spine2runRotation,Vector2.zero,Vector2.zero,runStateDuration);
 
         //jump
@@ -100,9 +100,12 @@ public class CharacterAnimator : MonoBehaviour
         currentLowerBodyState.EnterState();
         currentUpperBodyState.EnterState();
     }
-
-/*
     void Update()
+    {
+        RotationUpdate();
+    }
+
+    void RotationUpdate()
     {
         float t = currentStateTimer / currentUpperBodyState.duration;
         float lerpSpeed = 5f;
@@ -115,9 +118,10 @@ public class CharacterAnimator : MonoBehaviour
         spine2angle = Mathf.Lerp(spine2.transform.eulerAngles.z,spine2targetAngle,lerpSpeed);
         headAngle = Mathf.Lerp(head.transform.eulerAngles.z,headTargetAngle,lerpSpeed);
 
-        spine1.transform.eulerAngles = new Vector3(0, 0, spine1angle);
-        spine2.transform.eulerAngles = new Vector3(0, 0, spine2angle);
-        head.transform.eulerAngles = new Vector3(0, 0, headAngle);
+        int xDir = (int)Mathf.Sign(transform.localScale.x);
+        spine1.transform.eulerAngles = new Vector3(0, 0, spine1angle + 90 * xDir);
+        spine2.transform.eulerAngles = new Vector3(0, 0, spine2angle + 90 * xDir);
+        head.transform.eulerAngles = new Vector3(0, 0, headAngle + 90 * xDir);
     }
     void FixedUpdate()
     {
@@ -127,6 +131,4 @@ public class CharacterAnimator : MonoBehaviour
             currentStateTimer = 0;
         }
     }
-
-*/
 }
