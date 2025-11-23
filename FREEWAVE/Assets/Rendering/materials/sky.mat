@@ -58,9 +58,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DistortionSize: 2
-    - _DistortionSpeed: 0.1
-    - _DistortionStrength: 0.03
+    - _DistortionSize: 2.5
+    - _DistortionSpeed: 0.05
+    - _DistortionStrength: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
