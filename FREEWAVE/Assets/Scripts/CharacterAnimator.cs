@@ -88,10 +88,10 @@ public class CharacterAnimator : MonoBehaviour
         lowerBodyRun = new lowerBodyState(_lowerRun,_lowerRun,this,runStateDuration);
 
         List<Vector2> _upperRunPoints = new List<Vector2>();
-        _upperRunPoints.Add(new Vector2(0f,0.3f)); 
-        _upperRunPoints.Add(new Vector2(0.1f,0.4f));
-        _upperRunPoints.Add(new Vector2(-0.1f,0.4f));
-        _upperRunPoints.Add(new Vector2(0,0.3f));
+        _upperRunPoints.Add(Vector2.zero);
+        _upperRunPoints.Add(new Vector2(0.3f,0.2f));
+        _upperRunPoints.Add(new Vector2(-0.2f,0.3f));
+        _upperRunPoints.Add(new Vector2(-0.4f,0.2f)); 
         LimbManager.limbState _upperRun = new LimbManager.limbState(_upperRunPoints,runStateDuration,true);
         Vector2 spine2runRotation = new Vector2(350,345);
         upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,spine2runRotation,Vector2.zero,Vector2.zero,runStateDuration,true);

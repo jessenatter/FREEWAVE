@@ -6,6 +6,12 @@ public class Enemy : Character
 
     float awarenessDistance = 5f;
 
+    float attackDistance = 1f;
+
+    float attackChargeTimer = 50f,attackChargeTimerCurrent;
+
+    bool chargingAttack;
+
     float awarenessTimer = 1000,awarenessTimerCurrent;
 
     protected override void Start()
@@ -21,7 +27,7 @@ public class Enemy : Character
         base.Update();
 
         Vector2 playerEnemyVector = player.transform.position - transform.position;
-
+    
         if(playerEnemyVector.magnitude < awarenessDistance)
         {
             characterIsActive = true;
@@ -37,12 +43,35 @@ public class Enemy : Character
             }
         }
 
+        if(playerEnemyVector.magnitude < attackDistance)
+            startChargingAttack();
+
         xInput = Mathf.Sign(playerEnemyVector.x);
+
+        if(chargingAttack)
+        {
+            xInput = 0;
+            attackChargeTimerCurrent++;
+            if(attackChargeTimerCurrent == attackChargeTimer)
+            {
+                attackChargeTimerCurrent = 0;
+                chargingAttack = false;
+                Attack();
+            }
+        }
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         damageToRecive = player.damage;
         base.OnTriggerEnter2D(collision);
+    }
+
+    void startChargingAttack()
+    {
+        if(currentCharacterState != characterState.attacking && currentCharacterState != characterState.hurting)
+        {
+            chargingAttack = true;
+        }
     }
 }

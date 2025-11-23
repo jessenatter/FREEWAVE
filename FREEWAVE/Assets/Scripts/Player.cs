@@ -10,6 +10,9 @@ public class Player : Character
     Vector2 mouseWorld,grapplePoint;
     [SerializeField] GameObject grappleBullet,testIK;
     LineRenderer lineRenderer;
+
+    float grappleTimer = 30,grappleTimerCurrent;
+    bool canGrapple;
     override protected void Start()
     {
         base.Start();
@@ -49,6 +52,16 @@ public class Player : Character
             base.MovementUpdate();
         else 
             GrappleStateUpdate();
+
+        if(!canGrapple)
+        {
+            grappleTimerCurrent++;
+            if(grappleTimerCurrent == grappleTimer)
+            {
+                canGrapple = true;
+                grappleTimerCurrent = 0;
+            }
+        }
     }
     void GetInputs()
     {
@@ -99,13 +112,14 @@ public class Player : Character
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distance, grappleLayer);
 
-        if(hit == true)
+        if(hit == true && canGrapple)
         {
             isGrappling = true;
             grapplePoint = hit.point;
             grappleBullet.transform.position = grapplePoint;
             rb.gravityScale = 0;
             lineRenderer.enabled = true;
+            canGrapple = false;
         }
     }
     void GrappleStateUpdate()
