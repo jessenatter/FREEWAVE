@@ -97,6 +97,9 @@ public class Player : Character
             canEnterShip = true;
         else
             canEnterShip = false;
+
+        if(canEnterShip)
+            manager.EnterShip();
     }
     void UpdateMouseObject()
     {

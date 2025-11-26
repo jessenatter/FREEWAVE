@@ -56,8 +56,6 @@ public class Manager : MonoBehaviour
 
                 if (GameState == gameState.shipControl)
                     ExitShip();
-                else if (player.canEnterShip)
-                    EnterShip();
             }
         }
         else
