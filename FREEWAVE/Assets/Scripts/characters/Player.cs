@@ -10,9 +10,9 @@ public class Player : Character
     Vector2 mouseWorld,grapplePoint;
     [SerializeField] GameObject grappleBullet,testIK;
     LineRenderer lineRenderer;
-
     float grappleTimer = 30,grappleTimerCurrent;
-    bool canGrapple;
+    bool canGrapple,interactKeyReleased;
+    CameraScript cam;
     override protected void Start()
     {
         base.Start();
@@ -24,18 +24,15 @@ public class Player : Character
         float width = 0.015f;
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;
+        characterIsActive = true;
+        cam = manager.cam;
     }
     override protected void Update() //reading input, visuals
     {
         base.Update();
 
-        if (manager.GameState == Manager.gameState.playerControl)
-        {
-            characterIsActive = true;
+        if(characterIsActive)
             GetInputs();
-        }
-        else
-            characterIsActive = false;
     }
     override protected void FixedUpdate() //rb stuff
     {
@@ -72,7 +69,14 @@ public class Player : Character
             Jump();
 
         if (manager.interactAction.IsPressed())
-            Interact();
+        {
+            if(interactKeyReleased)
+                Interact();
+                
+            interactKeyReleased = false;
+        }
+        else
+            interactKeyReleased = true;
         
         if(Mouse.current.rightButton.isPressed)
             aiming = true;
@@ -99,7 +103,12 @@ public class Player : Character
             canEnterShip = false;
 
         if(canEnterShip)
-            manager.EnterShip();
+        {
+            if (ship.rb.rotation >= 0 && ship.rb.rotation <= 45 || ship.rb.rotation <= 360 && ship.rb.rotation >= 315)
+                EnterShip();
+            else
+                FlipShip();
+        }
     }
     void UpdateMouseObject()
     {
@@ -188,9 +197,25 @@ public class Player : Character
         base.OnTriggerEnter2D(collision);
     }
 
+    public void EnterShip()
+    {
+        characterIsActive = false;
+        gameObject.SetActive(false);
+        cam.EnterShip();
+        ship.EnterShip();
+    }
     public void ExitShip()
     {
+        transform.position = ship.transform.position;
+        characterIsActive = true;
         float exitMultiplier = 2f;
         rb.AddForce(ship.rb.linearVelocity * exitMultiplier,ForceMode2D.Impulse);
+        cam.ExitShip();
+
+    }
+    public void FlipShip()
+    {
+        ship.transform.position += new Vector3(0, 1f,0f);
+        ship.rb.rotation = 0;
     }
 }

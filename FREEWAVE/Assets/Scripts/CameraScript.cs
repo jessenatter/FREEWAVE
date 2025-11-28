@@ -41,7 +41,7 @@ public class CameraScript : MonoBehaviour
         float targetFOV = initFOV;
         Vector2 lookAhead = Vector2.zero;
 
-        if(manager.GameState == Manager.gameState.playerControl)
+        if((playerScript.characterIsActive))
         {
             targetZ = playerZ;
             targetFOV = playerFOV;

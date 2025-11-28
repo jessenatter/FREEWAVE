@@ -7,24 +7,10 @@ public class Manager : MonoBehaviour
 {
     public InputAction moveAction, jumpAction,interactAction,dashAction,pointAction,attackAction;
     public Player player;
-
     public Ship ship;
-
     public CameraScript cam;
-
-    public enum gameState
-    {
-        playerControl,
-        shipControl,
-    }
-
-    public gameState GameState = gameState.playerControl;
-
-    bool interactKeyReleased = true;
-
     [SerializeField] public GameObject mouseObject;
-
-    void Start()
+    void Awake() //awake runs before start 
     {
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
@@ -42,48 +28,6 @@ public class Manager : MonoBehaviour
     {
         if (Keyboard.current.rKey.isPressed)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-        EnterExitShipCheck();
         
-    }
-    void EnterExitShipCheck()
-    {
-        if (interactAction.IsPressed())
-        {
-            if (interactKeyReleased == true)
-            {
-                interactKeyReleased = false;
-
-                if (GameState == gameState.shipControl)
-                    ExitShip();
-            }
-        }
-        else
-            interactKeyReleased = true;
-    }
-    public void EnterShip()
-    {
-        if (ship.rb.rotation >= 0 && ship.rb.rotation <= 45 || ship.rb.rotation <= 360 && ship.rb.rotation >= 315)
-        {
-            GameState = gameState.shipControl;
-            player.gameObject.SetActive(false);
-            cam.EnterShip();
-        }
-        else
-            FlipShip();
-    }
-    public void ExitShip()
-    {
-        GameState = gameState.playerControl;
-        player.gameObject.SetActive(true);
-        player.transform.position = ship.transform.position;
-        cam.ExitShip();
-        player.ExitShip();
-    }
-
-    public void FlipShip()
-    {
-        ship.transform.position += new Vector3(0, 1f,0f);
-        ship.rb.rotation = 0;
     }
 }

@@ -24,7 +24,7 @@ public class Character : MonoBehaviour
     protected float attackTimer = 10,attackTimerCurrent;
     protected float dashAttackTimer = 25,dashAttackTimerCurrent;
     protected float hurtTimer = 30,hurtTimerCurrent;
-    protected bool characterIsActive,getAttackInput,groundedHit;
+    public bool characterIsActive,getAttackInput,groundedHit;
     GameObject attackCollider,downAttackCollider;
     [SerializeField] int hurtLayer;
     CharacterAnimator characterAnimator;
