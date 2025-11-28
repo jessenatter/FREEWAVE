@@ -88,8 +88,6 @@ public class LimbManager : MonoBehaviour
         if(isBackLimb && currentLimbState.backLimbPoints.Count != 0)
             pointsToUse = currentLimbState.backLimbPoints;
 
-        print(pointsToUse.Count);
-
         float durationPerPoint = currentLimbState.duration / pointsToUse.Count;
 
         float t = currentTime / durationPerPoint;

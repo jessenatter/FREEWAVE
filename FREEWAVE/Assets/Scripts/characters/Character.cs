@@ -159,7 +159,7 @@ public class Character : MonoBehaviour
     {
         if(xInput == 0)
         {
-            if(!isJumping)
+            if(!isJumping && currentCharacterState != characterState.attacking && currentCharacterState != characterState.dashAttacking && currentCharacterState != characterState.attackingDown && currentCharacterState != characterState.hurting)
             {
                 characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyIdle;
                 characterAnimator.currentUpperBodyState = characterAnimator.upperBodyIdle;
