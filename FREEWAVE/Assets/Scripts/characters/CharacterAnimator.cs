@@ -5,6 +5,7 @@ public class CharacterAnimator : MonoBehaviour
 {
     [SerializeField] LimbManager frontArm,backArm,frontLeg,backLeg;
     [SerializeField] GameObject spine1,spine2,head;
+
     float spine1angle,spine2angle,headAngle;
     float currentStateTimer;
     public class bodyState
@@ -68,6 +69,8 @@ public class CharacterAnimator : MonoBehaviour
     public upperBodyState upperBodyHurt;
 
     float idleStateDuration = 150f,runStateDuration = 30f;
+
+    float attackStateDuration = 70f;
     void Start()
     {
         #region //idle
@@ -131,14 +134,18 @@ public class CharacterAnimator : MonoBehaviour
         #region //attack
 
         List<Vector2> _lowerAttackPoints = new List<Vector2>(); 
-        _lowerAttackPoints.Add(new Vector2(0.1f,0.2f));
-        LimbManager.limbState _lowerAttack = new LimbManager.limbState(_lowerAttackPoints,0.1f,false);
-        lowerBodyAttack = new lowerBodyState(_lowerAttack,_lowerAttack,this,1);
+        _lowerAttackPoints.Add(Vector2.zero);
+        LimbManager.limbState _lowerAttack = new LimbManager.limbState(_lowerAttackPoints,attackStateDuration,false);
+        lowerBodyAttack = new lowerBodyState(_lowerAttack,_lowerAttack,this,attackStateDuration);
 
         List<Vector2> _upperAttackPoints = new List<Vector2>();
-        _upperAttackPoints.Add(new Vector2(0.3f,0.7f)); 
-        LimbManager.limbState _upperAttack = new LimbManager.limbState(_upperAttackPoints,0.1f,false);
-        upperBodyAttack = new upperBodyState(_upperAttack,_upperAttack,this,Vector2.zero,Vector2.zero,Vector2.zero,1,false);
+        _upperAttackPoints.Add(new Vector2(0.5f,1f));
+        _upperAttackPoints.Add(new Vector2(0.7f,0.5f));
+        _upperAttackPoints.Add(new Vector2(0.3f,0.3f));
+
+        Vector2 upperBodySpine2AttackRotation = new Vector2(-30,30);
+        LimbManager.limbState _upperAttack = new LimbManager.limbState(_upperAttackPoints,attackStateDuration,false);
+        upperBodyAttack = new upperBodyState(_upperAttack,_upperAttack,this,Vector2.zero,upperBodySpine2AttackRotation,Vector2.zero,attackStateDuration,false);
 
         #endregion
 
@@ -196,10 +203,10 @@ public class CharacterAnimator : MonoBehaviour
         spine2angle = Mathf.Lerp(spine2.transform.eulerAngles.z,spine2targetAngle,lerpSpeed);
         headAngle = Mathf.Lerp(head.transform.eulerAngles.z,headTargetAngle,lerpSpeed);
 
-        int xDir = (int)Mathf.Sign(transform.localScale.x);
-        spine1.transform.eulerAngles = new Vector3(0, 0, spine1angle * xDir+ 90 * xDir);
-        spine2.transform.eulerAngles = new Vector3(0, 0, spine1angle* xDir + spine2angle * xDir+ 90 * xDir);
-        head.transform.eulerAngles = new Vector3(0, 0, spine1angle* xDir + spine2angle * xDir+ headAngle * xDir+ 90 * xDir);
+        int xDir = (int) Mathf.Sign(transform.localScale.x);
+        spine1.transform.eulerAngles = new Vector3(0, 0, spine1angle * xDir + 90 * xDir);
+        spine2.transform.eulerAngles = new Vector3(0, 0, spine1angle* xDir + spine2angle * xDir + 90 * xDir);
+        head.transform.eulerAngles = new Vector3(0, 0, spine1angle* xDir + spine2angle * xDir+ headAngle * xDir + 90 * xDir);
     }
     void FixedUpdate()
     {
