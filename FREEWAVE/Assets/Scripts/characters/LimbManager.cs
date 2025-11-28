@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LimbManager : MonoBehaviour
 {
-    [SerializeField] GameObject orgin;
+    [SerializeField] public GameObject orgin;
     [SerializeField] Character character;
     Vector2 initOffsetFromOrgin;
     int currentPoint = 0;
@@ -17,9 +17,20 @@ public class LimbManager : MonoBehaviour
         public List<Vector2> points = new List<Vector2>();
         public float duration;
         public bool loop;
-        public limbState(List<Vector2> _points,float _duration,bool _loop) 
-        { 
-            points = _points; 
+        
+        public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager) 
+        {
+            if(pointsObject.transform.childCount == 0)
+                points.Add(Vector2.zero);
+            else
+            {
+                for(int i = 0; i < pointsObject.transform.childCount; i++)
+                {
+                    Vector2 point = limbManager.orgin.transform.position - pointsObject.transform.GetChild(0).transform.position;
+                    points.Add(point);
+                }
+            }
+
             duration = _duration;
             loop = _loop;
         }

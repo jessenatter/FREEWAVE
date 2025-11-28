@@ -5,7 +5,6 @@ public class CharacterAnimator : MonoBehaviour
 {
     [SerializeField] LimbManager frontArm,backArm,frontLeg,backLeg;
     [SerializeField] GameObject spine1,spine2,head;
-
     float spine1angle,spine2angle,headAngle;
     float currentStateTimer;
     public class bodyState
@@ -57,8 +56,9 @@ public class CharacterAnimator : MonoBehaviour
     }
     public lowerBodyState currentLowerBodyState;
     public upperBodyState currentUpperBodyState;
-    
     upperBodyState prevUpperBodyState;
+    [SerializeField] GameObject IdleObject,RunObject,JumpObject,AttackObject,DashAttackObject,DropAttackObject;
+
     public lowerBodyState lowerBodyRun,lowerBodyJump,lowerBodyIdle;
     public upperBodyState upperBodyRun,upperBodyJump,upperBodyIdle;
 
@@ -73,109 +73,37 @@ public class CharacterAnimator : MonoBehaviour
     float attackStateDuration = 70f;
     void Start()
     {
-        #region //idle
-        List<Vector2> _lowerIdlePoints = new List<Vector2>();
-        _lowerIdlePoints.Add(Vector2.zero); 
-        _lowerIdlePoints.Add(Vector2.zero);
-        LimbManager.limbState _lowerIdle = new LimbManager.limbState(_lowerIdlePoints,idleStateDuration,true);
+        //idle
+        LimbManager.limbState _lowerIdle = new LimbManager.limbState(IdleObject.transform.GetChild(0).gameObject,idleStateDuration,true,frontLeg);
         lowerBodyIdle = new lowerBodyState(_lowerIdle,_lowerIdle,this,idleStateDuration);
 
-        List<Vector2> _upperIdlePoints = new List<Vector2>();
-        _upperIdlePoints.Add(Vector2.zero); 
-        _upperIdlePoints.Add(new Vector2(0,0.01f));
-        LimbManager.limbState _upperIdle = new LimbManager.limbState(_upperIdlePoints,idleStateDuration,true);
+        LimbManager.limbState _upperIdle = new LimbManager.limbState(IdleObject.transform.GetChild(1).gameObject,idleStateDuration,true,frontArm);
         Vector2 idleRotationSpine2 = new Vector2(3,-3);
         Vector2 idleRotationHead = new Vector2(3,-3);
         upperBodyIdle = new upperBodyState(_upperIdle,_upperIdle,this,Vector2.zero,idleRotationSpine2,idleRotationHead,idleStateDuration,true);
 
-        #endregion 
-        
-        #region //run
-        List<Vector2> _lowerRunPoints = new List<Vector2>();
-        _lowerRunPoints.Add(new Vector2(-0.5f,0.2f));
-        _lowerRunPoints.Add(new Vector2(-0.2f,0.3f));
-        _lowerRunPoints.Add(new Vector2(0.1f,0.1f)); 
-        _lowerRunPoints.Add(Vector2.zero);
-        LimbManager.limbState _lowerRun = new LimbManager.limbState(_lowerRunPoints,runStateDuration,true);
+        //run
+        LimbManager.limbState _lowerRun = new LimbManager.limbState(RunObject.transform.GetChild(0).gameObject,runStateDuration,true,frontLeg);
         lowerBodyRun = new lowerBodyState(_lowerRun,_lowerRun,this,runStateDuration);
 
-        List<Vector2> _upperRunPoints = new List<Vector2>();
-
-        _upperRunPoints.Add(new Vector2(0,0.1f));
-        _upperRunPoints.Add(new Vector2(0.4f,0.2f));
-        _upperRunPoints.Add(new Vector2(-0.2f,0.25f));
-        _upperRunPoints.Add(new Vector2(-0.6f,0.3f)); 
-        
-        LimbManager.limbState _upperRun = new LimbManager.limbState(_upperRunPoints,runStateDuration,true);
+        LimbManager.limbState _upperRun = new LimbManager.limbState(RunObject.transform.GetChild(1).gameObject,runStateDuration,true,frontArm);
         Vector2 spine2runRotation = new Vector2(350,345);
         upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,spine2runRotation,Vector2.zero,Vector2.zero,runStateDuration,true);
-        #endregion
 
-        #region //jump
-        List<Vector2> _lowerJumpPoints = new List<Vector2>(); 
-        _lowerJumpPoints.Add(new Vector2(0.1f,0.2f));
-        LimbManager.limbState _lowerJump = new LimbManager.limbState(_lowerJumpPoints,0.1f,false);
+        //jump
+        LimbManager.limbState _lowerJump = new LimbManager.limbState(JumpObject.transform.GetChild(0).gameObject,0.1f,false,frontLeg);
         lowerBodyJump = new lowerBodyState(_lowerJump,_lowerJump,this,1);
 
-        List<Vector2> _upperJumpPoints = new List<Vector2>();
-        _upperJumpPoints.Add(new Vector2(0.3f,0.7f)); 
-        LimbManager.limbState _upperJump = new LimbManager.limbState(_upperJumpPoints,0.1f,false);
+        LimbManager.limbState _upperJump = new LimbManager.limbState(JumpObject.transform.GetChild(1).gameObject,0.1f,false,frontArm);
         upperBodyJump = new upperBodyState(_upperJump,_upperJump,this,Vector2.zero,Vector2.zero,Vector2.zero,1,false);
 
-        currentLowerBodyState = lowerBodyIdle;
-        currentUpperBodyState = upperBodyIdle;
-
-        currentLowerBodyState.EnterState();
-        currentUpperBodyState.EnterState();
-
-        prevUpperBodyState = currentUpperBodyState;
-        #endregion
-
-        #region //attack
-
-        List<Vector2> _lowerAttackPoints = new List<Vector2>(); 
-        _lowerAttackPoints.Add(Vector2.zero);
-        LimbManager.limbState _lowerAttack = new LimbManager.limbState(_lowerAttackPoints,attackStateDuration,false);
+        //attack
+        LimbManager.limbState _lowerAttack = new LimbManager.limbState(AttackObject.transform.GetChild(0).gameObject,attackStateDuration,false,frontLeg);
         lowerBodyAttack = new lowerBodyState(_lowerAttack,_lowerAttack,this,attackStateDuration);
 
-        List<Vector2> _upperAttackPoints = new List<Vector2>();
-        _upperAttackPoints.Add(new Vector2(0.5f,1f));
-        _upperAttackPoints.Add(new Vector2(0.7f,0.5f));
-        _upperAttackPoints.Add(new Vector2(0.3f,0.3f));
-
         Vector2 upperBodySpine2AttackRotation = new Vector2(-30,30);
-        LimbManager.limbState _upperAttack = new LimbManager.limbState(_upperAttackPoints,attackStateDuration,false);
+        LimbManager.limbState _upperAttack = new LimbManager.limbState(AttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm);
         upperBodyAttack = new upperBodyState(_upperAttack,_upperAttack,this,Vector2.zero,upperBodySpine2AttackRotation,Vector2.zero,attackStateDuration,false);
-
-        #endregion
-
-        #region //dash attack
-        
-        List<Vector2> _lowerDashAttackPoints = new List<Vector2>(); 
-        _lowerDashAttackPoints.Add(new Vector2(0.1f,0.2f));
-        LimbManager.limbState _lowerDashAttack = new LimbManager.limbState(_lowerDashAttackPoints,0.1f,false);
-        lowerBodyDashAttack = new lowerBodyState(_lowerDashAttack,_lowerDashAttack,this,1);
-
-        List<Vector2> _upperDashAttackPoints = new List<Vector2>();
-        _upperDashAttackPoints.Add(new Vector2(0.3f,0.7f)); 
-        LimbManager.limbState _upperDashAttack = new LimbManager.limbState(_upperDashAttackPoints,0.1f,false);
-        upperBodyDashAttack = new upperBodyState(_upperDashAttack,_upperDashAttack,this,Vector2.zero,Vector2.zero,Vector2.zero,1,false);
-
-        #endregion
-
-        #region //drop attack
-        
-        List<Vector2> _lowerDropAttackPoints = new List<Vector2>(); 
-        _lowerDropAttackPoints.Add(new Vector2(0.1f,0.2f));
-        LimbManager.limbState _lowerDropAttack = new LimbManager.limbState(_lowerDropAttackPoints,0.1f,false);
-        lowerBodyDropAttack = new lowerBodyState(_lowerDropAttack,_lowerDropAttack,this,1);
-
-        List<Vector2> _upperDropAttackPoints = new List<Vector2>();
-        _upperDropAttackPoints.Add(new Vector2(0.3f,0.7f)); 
-        LimbManager.limbState _upperDropAttack = new LimbManager.limbState(_upperDropAttackPoints,0.1f,false);
-        upperBodyDropAttack = new upperBodyState(_upperDropAttack,_upperDropAttack,this,Vector2.zero,Vector2.zero,Vector2.zero,1,false);
-
-        #endregion
 
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;
