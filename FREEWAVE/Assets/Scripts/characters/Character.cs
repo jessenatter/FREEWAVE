@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
     }
     public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
-    protected float attackTimer = 10,attackTimerCurrent;
+    public float attackTimer = 10,attackTimerCurrent;
     protected float dashAttackTimer = 25,dashAttackTimerCurrent;
     protected float hurtTimer = 30,hurtTimerCurrent;
     public bool characterIsActive,getAttackInput,groundedHit;

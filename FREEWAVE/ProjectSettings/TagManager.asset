@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Manager
   - Ship
+  - usesSeperateLimbs
   layers:
   - Default
   - TransparentFX

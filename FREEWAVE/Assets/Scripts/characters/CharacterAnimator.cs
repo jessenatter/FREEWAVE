@@ -70,7 +70,7 @@ public class CharacterAnimator : MonoBehaviour
 
     float idleStateDuration = 150f,runStateDuration = 30f;
 
-    float attackStateDuration = 70f;
+    float attackStateDuration = 50f;
     void Start()
     {
         //idle

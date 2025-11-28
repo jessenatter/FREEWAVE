@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
 
 public class LimbManager : MonoBehaviour
@@ -15,19 +16,50 @@ public class LimbManager : MonoBehaviour
     public class limbState
     {
         public List<Vector2> points = new List<Vector2>();
+        public List<Vector2> backLimbPoints = new List<Vector2>();
         public float duration;
         public bool loop;
         
         public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager) 
         {
-            if(pointsObject.transform.childCount == 0)
-                points.Add(Vector2.zero);
+            if(pointsObject.gameObject.tag != "usesSeperateLimbs")
+            {
+                if(pointsObject.transform.childCount == 0)
+                    points.Add(Vector2.zero);
+                else
+                {
+                    for(int i = 0; i < pointsObject.transform.childCount; i++)
+                    {
+                        Vector2 point = ((Vector2)pointsObject.transform.GetChild(i).transform.position - (Vector2)limbManager.orgin.transform.position) - limbManager.initOffsetFromOrgin ;
+                        points.Add(point);
+                    }
+                }
+            }
             else
             {
-                for(int i = 0; i < pointsObject.transform.childCount; i++)
+                GameObject frontLimb = pointsObject.transform.GetChild(0).gameObject;
+                GameObject backLimb = pointsObject.transform.GetChild(1).gameObject;
+
+                if(frontLimb.transform.childCount == 0)
+                    points.Add(Vector2.zero);
+                else
                 {
-                    Vector2 point = ((Vector2)pointsObject.transform.GetChild(i).transform.position - (Vector2)limbManager.orgin.transform.position) - limbManager.initOffsetFromOrgin ;
-                    points.Add(point);
+                    for(int i = 0; i < frontLimb.transform.childCount; i++)
+                    {
+                        Vector2 point = ((Vector2)frontLimb.transform.GetChild(i).transform.position - (Vector2)limbManager.orgin.transform.position) - limbManager.initOffsetFromOrgin ;
+                        points.Add(point);
+                    }
+                }
+
+                if(backLimb.transform.childCount == 0)
+                    backLimbPoints.Add(Vector2.zero);
+                else
+                {
+                    for(int i = 0; i < backLimb.transform.childCount; i++)
+                    {
+                        Vector2 point = ((Vector2)backLimb.transform.GetChild(i).transform.position - (Vector2)limbManager.orgin.transform.position) - limbManager.initOffsetFromOrgin ;
+                        backLimbPoints.Add(point);
+                    }
                 }
             }
 
@@ -51,24 +83,31 @@ public class LimbManager : MonoBehaviour
     }
     void UpdatePoints()
     {
-        float durationPerPoint = currentLimbState.duration / currentLimbState.points.Count;
+        List<Vector2> pointsToUse = currentLimbState.points;
+
+        if(isBackLimb && currentLimbState.backLimbPoints.Count != 0)
+            pointsToUse = currentLimbState.backLimbPoints;
+
+        print(pointsToUse.Count);
+
+        float durationPerPoint = currentLimbState.duration / pointsToUse.Count;
 
         float t = currentTime / durationPerPoint;
 
-        currentPoint = Mathf.FloorToInt(t) % currentLimbState.points.Count;
+        currentPoint = Mathf.FloorToInt(t) % pointsToUse.Count;
 
         float lerpAmmount = t - Mathf.Floor(t);
 
-        int nextIndex = (currentPoint + 1) % currentLimbState.points.Count;
+        int nextIndex = (currentPoint + 1) % pointsToUse.Count;
         
         if(isBackLimb)
         {
-            currentPoint = (int)Mathf.Repeat(currentPoint + 2,currentLimbState.points.Count);
-            nextIndex = (int)Mathf.Repeat(nextIndex + 2,currentLimbState.points.Count);
+            currentPoint = (int)Mathf.Repeat(currentPoint + 2,pointsToUse.Count);
+            nextIndex = (int)Mathf.Repeat(nextIndex + 2,pointsToUse.Count);
         }
 
-        Vector2 thisPoint = currentLimbState.points[currentPoint];
-        Vector2 nextPoint = currentLimbState.points[nextIndex];
+        Vector2 thisPoint = pointsToUse[currentPoint];
+        Vector2 nextPoint = pointsToUse[nextIndex];
 
         Vector2 characterDirectionVec = new Vector2(Mathf.Sign(character.transform.localScale.x),1);
         Vector2 initRestPos = (Vector2)orgin.transform.position + (initOffsetFromOrgin * characterDirectionVec);

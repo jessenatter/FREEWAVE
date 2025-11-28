@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class Player : Character
 {
+    [SerializeField] GameObject knife,grapple;
     bool isGrappling,grappleIsShooting;
     [SerializeField] LayerMask grappleLayer;
     Ship ship;
@@ -26,6 +27,8 @@ public class Player : Character
         lineRenderer.endWidth = width;
         characterIsActive = true;
         cam = manager.cam;
+
+        attackTimer = 50f;
     }
     override protected void Update() //reading input, visuals
     {
@@ -72,7 +75,7 @@ public class Player : Character
         {
             if(interactKeyReleased)
                 Interact();
-                
+
             interactKeyReleased = false;
         }
         else
