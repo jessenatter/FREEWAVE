@@ -118,17 +118,23 @@ public class Character : MonoBehaviour
     protected virtual void Attack()
     {
         currentCharacterState = characterState.attacking;
+        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
+        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
         attackCollider.SetActive(true);
     }
     protected virtual void DashAttack()
     {
         currentCharacterState = characterState.dashAttacking;
+        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDashAttack;
+        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDashAttack;
         attackCollider.SetActive(true);
         dashXinput = xInput;
     }
     protected virtual void DownAttack()
     {
         currentCharacterState = characterState.attackingDown;
+        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDropAttack;
+        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDropAttack;
         downAttackCollider.SetActive(true);
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 5f;
