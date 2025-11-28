@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
     }
     public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
-    public float attackTimer = 50,attackTimerCurrent;
+    public float attackTimer = 15,attackTimerCurrent;
     protected float dashAttackTimer = 25,dashAttackTimerCurrent;
     protected float hurtTimer = 30,hurtTimerCurrent;
     public bool characterIsActive,getAttackInput,groundedHit;
@@ -63,6 +63,8 @@ public class Character : MonoBehaviour
                 DownAttack();
             else if(!grounded)
                 Attack();
+
+            getAttackInput = false;
         }
     }
     protected virtual void FixedUpdate() //rb stuff
@@ -117,36 +119,49 @@ public class Character : MonoBehaviour
     }
     protected virtual void Attack()
     {
-        currentCharacterState = characterState.attacking;
-        attackCollider.SetActive(true);
+        if(currentCharacterState == characterState.movement)
+        {
+            currentCharacterState = characterState.attacking;
+            print("a");
+            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
+            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
+            attackCollider.SetActive(true);
+        }
     }
     protected virtual void DashAttack()
     {
-        currentCharacterState = characterState.dashAttacking;
-        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDashAttack;
-        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDashAttack;
-        attackCollider.SetActive(true);
-        dashXinput = xInput;
+        if(currentCharacterState == characterState.movement)
+        {
+            currentCharacterState = characterState.dashAttacking;
+            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDashAttack;
+            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDashAttack;
+            attackCollider.SetActive(true);
+            dashXinput = xInput;
+        }
     }
     protected virtual void DownAttack()
     {
-        currentCharacterState = characterState.attackingDown;
-        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDropAttack;
-        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDropAttack;
-        downAttackCollider.SetActive(true);
-        rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = 5f;
+        if(currentCharacterState == characterState.movement)
+        {
+            currentCharacterState = characterState.attackingDown;
+            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDropAttack;
+            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDropAttack;
+            downAttackCollider.SetActive(true);
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 5f;
+        }
     }
     protected virtual void Hurt(Vector2 hurtDir,float damage)
     {
-        if(currentCharacterState == characterState.hurting) return;
-
-        rb.AddForce(hurtDir * knockbackForce,ForceMode2D.Impulse);
-        currentCharacterState = characterState.hurting;
-        health -= damage;
-        health = Mathf.Clamp(health,0,10);
-        if(health == 0)
-            Die();
+        if(currentCharacterState != characterState.hurting)
+        {
+            rb.AddForce(hurtDir * knockbackForce,ForceMode2D.Impulse);
+            currentCharacterState = characterState.hurting;
+            health -= damage;
+            health = Mathf.Clamp(health,0,10);
+            if(health == 0)
+                Die();
+        }
     }
     protected virtual void Die()
     {
@@ -155,14 +170,9 @@ public class Character : MonoBehaviour
 
     void AnimatorUpdate()
     {
-        if(currentCharacterState == characterState.attacking)
+        if(xInput == 0)
         {
-            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
-            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
-        }
-        else if(xInput == 0)
-        {
-            if(!isJumping && currentCharacterState != characterState.attacking && currentCharacterState != characterState.dashAttacking && currentCharacterState != characterState.attackingDown && currentCharacterState != characterState.hurting)
+            if(!isJumping && currentCharacterState == characterState.movement)
             {
                 characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyIdle;
                 characterAnimator.currentUpperBodyState = characterAnimator.upperBodyIdle;

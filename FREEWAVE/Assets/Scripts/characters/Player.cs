@@ -12,7 +12,7 @@ public class Player : Character
     [SerializeField] GameObject grappleBullet,testIK;
     LineRenderer lineRenderer;
     float grappleTimer = 30,grappleTimerCurrent;
-    bool canGrapple,interactKeyReleased;
+    bool canGrapple,interactKeyReleased,attackKeyReleased;
     CameraScript cam;
     override protected void Start()
     {
@@ -27,8 +27,6 @@ public class Player : Character
         lineRenderer.endWidth = width;
         characterIsActive = true;
         cam = manager.cam;
-
-        attackTimer = 50f;
     }
     override protected void Update() //reading input, visuals
     {
@@ -88,13 +86,21 @@ public class Player : Character
         
         if(Mouse.current.leftButton.isPressed)
         {
-            if(aiming)
-                Shoot();
-            else
-                getAttackInput = true;
+            if(attackKeyReleased)
+            {
+                if(aiming)
+                    Shoot();
+                else
+                    getAttackInput = true;
+            }
+
+            attackKeyReleased = false;
         }
         else
+        {
+            attackKeyReleased = true;
             getAttackInput = false;
+        }
     }
     void Interact()
     {
