@@ -26,8 +26,6 @@ public class LimbManager : MonoBehaviour
             {
                 for(int i = 0; i < pointsObject.transform.childCount; i++)
                 {
-                    print(limbManager.initOffsetFromOrgin);
-                    
                     Vector2 point = ((Vector2)pointsObject.transform.GetChild(i).transform.position - (Vector2)limbManager.orgin.transform.position) - limbManager.initOffsetFromOrgin ;
                     points.Add(point);
                 }
