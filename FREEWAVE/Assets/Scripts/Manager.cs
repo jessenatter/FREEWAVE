@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,8 @@ public class Manager : MonoBehaviour
     public Ship ship;
     public CameraScript cam;
     [SerializeField] public GameObject mouseObject;
+
+    public List<PickupAble> pickupAbles = new List<PickupAble>();
     void Awake() //awake runs before start 
     {
         moveAction = InputSystem.actions.FindAction("Move");

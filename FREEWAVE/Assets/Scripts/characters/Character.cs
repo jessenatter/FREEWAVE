@@ -22,6 +22,8 @@ public class Character : MonoBehaviour
     public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
     public float attackTimer = 15,attackTimerCurrent;
+
+    public float attackCD = 15,attackCDcurrent;
     protected float dashAttackTimer = 25,dashAttackTimerCurrent;
     protected float hurtTimer = 30,hurtTimerCurrent;
     public bool characterIsActive,getAttackInput,groundedHit;
@@ -31,8 +33,10 @@ public class Character : MonoBehaviour
     CharacterAnimator.lowerBodyState previousLowerBodyState;
     CharacterAnimator.upperBodyState previousUpperBodyState;
     public float health = 10,damage = 1,damageToRecive;
-
+    bool canAttack = true;
     [SerializeField] bool useAnimatior = true;
+    [SerializeField] GameObject hand;
+    PickupAble heldObject;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -90,6 +94,8 @@ public class Character : MonoBehaviour
 
         if(useAnimatior)
             AnimatorUpdate();
+
+        AttackCDupdate();
     }
     protected virtual void MovementUpdate()
     {
@@ -124,12 +130,13 @@ public class Character : MonoBehaviour
     }
     protected virtual void Attack()
     {
-        if(currentCharacterState == characterState.movement)
+        if(currentCharacterState == characterState.movement && canAttack)
         {
             currentCharacterState = characterState.attacking;
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
             attackCollider.SetActive(true);
+            canAttack = false;
         }
     }
     protected virtual void DashAttack()
@@ -174,6 +181,9 @@ public class Character : MonoBehaviour
 
     void AnimatorUpdate()
     {
+        if(groundedHit == false)
+            isJumping = true;
+
         if(xInput == 0)
         {
             if(!isJumping && currentCharacterState == characterState.movement)
@@ -243,6 +253,19 @@ public class Character : MonoBehaviour
             {
                 hurtTimerCurrent = 0;
                 currentCharacterState = characterState.movement;
+            }
+        }
+    }
+
+    void AttackCDupdate()
+    {
+        if(!canAttack && currentCharacterState != characterState.attacking)
+        {
+            attackCDcurrent++;
+            if(attackCDcurrent == attackCD)
+            {
+                attackCDcurrent = 0;
+                canAttack = true;
             }
         }
     }

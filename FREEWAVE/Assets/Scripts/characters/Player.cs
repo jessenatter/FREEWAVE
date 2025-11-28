@@ -12,11 +12,14 @@ public class Player : Character
     [SerializeField] GameObject grappleBullet,testIK;
     LineRenderer lineRenderer;
     float grappleTimer = 30,grappleTimerCurrent;
-    bool canGrapple,interactKeyReleased,attackKeyReleased;
+    bool canGrapple,interactKeyReleased,attackKeyReleased,nearPickupable;
     CameraScript cam;
+
+    PickupAble nearbyPickupable;
+    
     override protected void Start()
     {
-        attackTimer = 30;
+        attackTimer = 15;
         
         base.Start();
 
@@ -228,5 +231,44 @@ public class Player : Character
     {
         ship.transform.position += new Vector3(0, 1f,0f);
         ship.rb.rotation = 0;
+    }
+
+    void checkForPickupables()
+    {
+        float minPickupDistance = 2f;
+        float lastPickupDistance = 0;
+        PickupAble closestPickupable = null;
+
+        foreach(PickupAble pickupable in manager.pickupAbles)
+        {
+            Vector2 distance = transform.position - pickupable.transform.position;
+
+            if(distance.magnitude < minPickupDistance)
+            {
+                nearPickupable = true;
+                if((closestPickupable == null || distance.magnitude < lastPickupDistance))
+                {
+                    closestPickupable = pickupable;
+                    lastPickupDistance = distance.magnitude;
+
+                    if(nearbyPickupable != null)
+                    {
+                        if(nearbyPickupable != closestPickupable)
+                        {   
+                            nearbyPickupable.pickupPrompt.SetActive(false);
+                            nearbyPickupable = closestPickupable;
+                        }
+                    }
+                }
+            }
+
+            nearbyPickupable.pickupPrompt.SetActive(true);
+        }
+
+        if(closestPickupable == null && nearbyPickupable != null)
+        {
+            nearbyPickupable.pickupPrompt.SetActive(false);
+            nearbyPickupable = null;
+        }
     }
 }

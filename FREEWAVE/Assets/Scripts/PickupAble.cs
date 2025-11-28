@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class PickupAble : MonoBehaviour
 {
+    Manager manager;
+    public GameObject pickupPrompt;    
     void Start()
     {
-        
-    }
-
-    void Update()
-    {
-        
+        manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
+        manager.pickupAbles.Add(this);
+        pickupPrompt = transform.GetChild(0).gameObject;
     }
 }

@@ -13,15 +13,18 @@ public class LimbManager : MonoBehaviour
     bool waitingForExit;
 
     [SerializeField] bool isBackLimb;
+    limbState previousLimbState = null;
     public class limbState
     {
         public List<Vector2> points = new List<Vector2>();
         public List<Vector2> backLimbPoints = new List<Vector2>();
         public float duration;
-        public bool loop;
-        
-        public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager) 
+        public bool loop,startAtPos1;
+
+        public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager,bool _startAtPos1) 
         {
+            startAtPos1 = _startAtPos1;
+
             if(pointsObject.gameObject.tag != "usesSeperateLimbs")
             {
                 if(pointsObject.transform.childCount == 0)
@@ -83,6 +86,7 @@ public class LimbManager : MonoBehaviour
     }
     void UpdatePoints()
     {
+
         List<Vector2> pointsToUse = currentLimbState.points;
 
         if(isBackLimb && currentLimbState.backLimbPoints.Count != 0)
@@ -110,14 +114,17 @@ public class LimbManager : MonoBehaviour
         Vector2 characterDirectionVec = new Vector2(Mathf.Sign(character.transform.localScale.x),1);
         Vector2 initRestPos = (Vector2)orgin.transform.position + (initOffsetFromOrgin * characterDirectionVec);
 
+        if(previousLimbState == null || previousLimbState != currentLimbState)
+        {
+            previousLimbState = currentLimbState;
+            if(currentLimbState.startAtPos1)
+                transform.position = initRestPos + pointsToUse[0] * characterDirectionVec;
+
+            currentTime = 0;
+        }
+
         Vector2 exactTarget = initRestPos + (Vector2.Lerp(thisPoint, nextPoint, lerpAmmount) * characterDirectionVec);
 
-        float _speed = 7f;
-        transform.position = Vector2.Lerp(transform.position, exactTarget, Time.deltaTime * _speed);
+        transform.position = Vector2.Lerp(transform.position, exactTarget, Time.deltaTime * 6f);
     }   
-
-    public void ExitState()
-    {
-        currentTime = 0;
-    }
 }
