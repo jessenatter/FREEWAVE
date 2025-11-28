@@ -42,7 +42,12 @@ public class Character : MonoBehaviour
         downAttackCollider = transform.GetChild(1).gameObject;
 
         if(useAnimatior)
+        {
             characterAnimator = GetComponent<CharacterAnimator>();
+            characterAnimator.attackStateDuration = attackTimer;
+            characterAnimator.dashAttackStateDuration = dashAttackTimer;
+            characterAnimator.hurtStateDuration = hurtTimer;
+        }
     }
     protected virtual void Update()
     {
@@ -122,7 +127,6 @@ public class Character : MonoBehaviour
         if(currentCharacterState == characterState.movement)
         {
             currentCharacterState = characterState.attacking;
-            print("a");
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
             attackCollider.SetActive(true);
@@ -178,13 +182,13 @@ public class Character : MonoBehaviour
                 characterAnimator.currentUpperBodyState = characterAnimator.upperBodyIdle;
             }
         }
-        else if(!isJumping)
+        else if(!isJumping && currentCharacterState == characterState.movement)
         {
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyRun;
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyRun;
         }
         
-        if(isJumping)
+        if(isJumping && currentCharacterState == characterState.movement)
         {
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyJump;
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyJump;

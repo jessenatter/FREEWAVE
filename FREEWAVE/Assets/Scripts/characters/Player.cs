@@ -16,6 +16,8 @@ public class Player : Character
     CameraScript cam;
     override protected void Start()
     {
+        attackTimer = 30;
+        
         base.Start();
 
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
