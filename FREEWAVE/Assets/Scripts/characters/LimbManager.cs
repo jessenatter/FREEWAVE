@@ -75,6 +75,7 @@ public class LimbManager : MonoBehaviour
     void Update()
     {
         UpdatePoints();
+        //print(currentLimbState.points.Count);
     }
 
     void FixedUpdate()
