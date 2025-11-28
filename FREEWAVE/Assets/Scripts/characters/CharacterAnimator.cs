@@ -103,7 +103,7 @@ public class CharacterAnimator : MonoBehaviour
 
         Vector2 upperBodySpine2AttackRotation = new Vector2(30,-30);
         LimbManager.limbState _upperAttack = new LimbManager.limbState(AttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm);
-        upperBodyAttack = new upperBodyState(_upperAttack,_upperAttack,this,Vector2.zero,upperBodySpine2AttackRotation,Vector2.zero,attackStateDuration,false);
+        upperBodyAttack = new upperBodyState(_upperAttack,_upperAttack,this,Vector2.zero,Vector2.zero,Vector2.zero,attackStateDuration,false);
 
         currentLowerBodyState = lowerBodyIdle;
         currentUpperBodyState = upperBodyIdle;

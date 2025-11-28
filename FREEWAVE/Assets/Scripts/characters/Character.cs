@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
     }
     public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
-    public float attackTimer = 10,attackTimerCurrent;
+    public float attackTimer = 50,attackTimerCurrent;
     protected float dashAttackTimer = 25,dashAttackTimerCurrent;
     protected float hurtTimer = 30,hurtTimerCurrent;
     public bool characterIsActive,getAttackInput,groundedHit;
@@ -80,6 +80,9 @@ public class Character : MonoBehaviour
             else if(currentCharacterState == characterState.hurting)
                 HurtUpdate();
         }
+
+        if(useAnimatior)
+            AnimatorUpdate();
     }
     protected virtual void MovementUpdate()
     {
@@ -103,9 +106,6 @@ public class Character : MonoBehaviour
         }
 
         rb.linearVelocityX = xInput * moveSpeed;
-
-        if(useAnimatior)
-            AnimatorUpdate();
     }
     protected virtual void Jump()
     {
@@ -118,8 +118,6 @@ public class Character : MonoBehaviour
     protected virtual void Attack()
     {
         currentCharacterState = characterState.attacking;
-        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
-        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
         attackCollider.SetActive(true);
     }
     protected virtual void DashAttack()
@@ -157,7 +155,12 @@ public class Character : MonoBehaviour
 
     void AnimatorUpdate()
     {
-        if(xInput == 0)
+        if(currentCharacterState == characterState.attacking)
+        {
+            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
+            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
+        }
+        else if(xInput == 0)
         {
             if(!isJumping && currentCharacterState != characterState.attacking && currentCharacterState != characterState.dashAttacking && currentCharacterState != characterState.attackingDown && currentCharacterState != characterState.hurting)
             {
