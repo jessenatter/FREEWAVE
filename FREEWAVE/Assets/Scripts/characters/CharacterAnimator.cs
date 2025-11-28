@@ -100,9 +100,10 @@ public class CharacterAnimator : MonoBehaviour
         LimbManager.limbState _lowerAttack = new LimbManager.limbState(AttackObject.transform.GetChild(0).gameObject,attackStateDuration,false,frontLeg);
         lowerBodyAttack = new lowerBodyState(_lowerAttack,_lowerAttack,this,attackStateDuration);
 
-        Vector2 upperBodySpine2AttackRotation = new Vector2(30,-30);
+        Vector2 upperBodySpine1AttackRotation = new Vector2(10,-20);
+        Vector2 upperBodySpine2AttackRotation = new Vector2(10,-20);
         LimbManager.limbState _upperAttack = new LimbManager.limbState(AttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm);
-        upperBodyAttack = new upperBodyState(_upperAttack,_upperAttack,this,Vector2.zero,upperBodySpine2AttackRotation,Vector2.zero,attackStateDuration,false);
+        upperBodyAttack = new upperBodyState(_upperAttack,_upperAttack,this,upperBodySpine1AttackRotation,upperBodySpine2AttackRotation,Vector2.zero,attackStateDuration,false);
 
         //dash attack
         LimbManager.limbState _dashAttack = new LimbManager.limbState(DashAttackObject.transform.GetChild(0).gameObject,dashAttackStateDuration,false,frontLeg);
