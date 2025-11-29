@@ -282,6 +282,8 @@ public class Character : MonoBehaviour
 
         foreach(PickupAble pickupable in manager.pickupAbles)
         {
+            if(pickupable.held) return;
+
             Vector2 distance = transform.position - pickupable.transform.position;
 
             if(distance.magnitude < minPickupDistance)
@@ -319,10 +321,11 @@ public class Character : MonoBehaviour
     {
         if(nearbyObject == null) return;
 
+        nearbyObject.pickupPrompt.SetActive(false);
         nearbyObject.transform.position = hand.transform.position;
         nearbyObject.transform.rotation = hand.transform.rotation;
         nearbyObject.transform.SetParent(hand.transform);
-        nearbyObject.pickupPrompt.SetActive(false);
+        nearbyObject.held = true;
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
