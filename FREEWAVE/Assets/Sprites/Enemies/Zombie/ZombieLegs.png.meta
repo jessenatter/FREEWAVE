@@ -173,8 +173,8 @@ TextureImporter:
         y: 928
         width: 241
         height: 422
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5587686, y: 0.84680843}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,8 +195,8 @@ TextureImporter:
         y: 929
         width: 152
         height: 412
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.37576133, y: 0.866685}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -217,8 +217,8 @@ TextureImporter:
         y: 957
         width: 181
         height: 373
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.52608323, y: 0.87338233}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -239,8 +239,8 @@ TextureImporter:
         y: 964
         width: 227
         height: 355
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5935897, y: 0.83246964}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -261,8 +261,8 @@ TextureImporter:
         y: 962
         width: 159
         height: 345
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.47030696, y: 0.79421175}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -283,8 +283,8 @@ TextureImporter:
         y: 445
         width: 238
         height: 386
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.30163568, y: 0.842461}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -305,8 +305,8 @@ TextureImporter:
         y: 441
         width: 248
         height: 376
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.300116, y: 0.864125}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -327,8 +327,8 @@ TextureImporter:
         y: 411
         width: 216
         height: 382
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.390716, y: 0.8893027}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -345,12 +345,12 @@ TextureImporter:
       name: ZombieLegs_8
       rect:
         serializedVersion: 2
-        x: 1362
+        x: 1360
         y: 446
         width: 177
         height: 353
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4466546, y: 0.8410406}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -371,8 +371,8 @@ TextureImporter:
         y: 456
         width: 235
         height: 331
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.24887903, y: 0.8423132}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -389,7 +389,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2b761639e9f334e1bb3e768388efdf14
     internalID: 0
     vertices: []
     indices: 

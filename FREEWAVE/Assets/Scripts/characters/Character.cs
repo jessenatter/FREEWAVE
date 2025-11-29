@@ -36,7 +36,6 @@ public class Character : MonoBehaviour
     CharacterAnimator.upperBodyState previousUpperBodyState;
     public float health = 10,damage = 1,damageToRecive;
     bool canAttack = true;
-    [SerializeField] bool useAnimatior = true;
     [SerializeField] GameObject hand;
     protected PickupAble heldObject,nearbyObject;
 
@@ -49,13 +48,10 @@ public class Character : MonoBehaviour
         attackCollider = transform.GetChild(0).gameObject;
         downAttackCollider = transform.GetChild(1).gameObject;
 
-        if(useAnimatior)
-        {
-            characterAnimator = GetComponent<CharacterAnimator>();
-            characterAnimator.attackStateDuration = attackTimer;
-            characterAnimator.dashAttackStateDuration = dashAttackTimer;
-            characterAnimator.hurtStateDuration = hurtTimer;
-        }
+        characterAnimator = GetComponent<CharacterAnimator>();
+        characterAnimator.attackStateDuration = attackTimer;
+        characterAnimator.dashAttackStateDuration = dashAttackTimer;
+        characterAnimator.hurtStateDuration = hurtTimer;
     }
     protected virtual void Update()
     {
@@ -96,9 +92,7 @@ public class Character : MonoBehaviour
                 HurtUpdate();
         }
 
-        if(useAnimatior)
-            AnimatorUpdate();
-
+        AnimatorUpdate();
         AttackCDupdate();
         checkForPickupables();
     }
