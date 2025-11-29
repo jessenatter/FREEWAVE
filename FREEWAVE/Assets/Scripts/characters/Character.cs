@@ -297,6 +297,7 @@ public class Character : MonoBehaviour
                     nearbyObject = closestPickupable;
                 }
             }
+            
 
             if(isPlayer && nearbyObject != null)
                 nearbyObject.pickupPrompt.SetActive(true);
@@ -308,6 +309,7 @@ public class Character : MonoBehaviour
                 nearbyObject.pickupPrompt.SetActive(false);
                 
             nearbyObject = null;
+            nearPickupable = false;
         }
     }
 
