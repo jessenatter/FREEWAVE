@@ -3720,6 +3720,8 @@ MonoBehaviour:
   damage: 1
   damageToRecive: 0
   useAnimatior: 1
+  hand: {fileID: 7835318144805767935}
+  isPlayer: 1
   knife: {fileID: 0}
   grapple: {fileID: 0}
   grappleLayer:

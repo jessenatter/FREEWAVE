@@ -11,6 +11,8 @@ public class Character : MonoBehaviour
     protected Rigidbody2D rb;
     protected BoxCollider2D bc;
     protected Manager manager;
+
+    protected bool nearPickupable;
     public enum characterState
     {
         movement,
@@ -36,7 +38,9 @@ public class Character : MonoBehaviour
     bool canAttack = true;
     [SerializeField] bool useAnimatior = true;
     [SerializeField] GameObject hand;
-    PickupAble heldObject;
+    protected PickupAble heldObject,nearbyObject;
+
+    [SerializeField] bool isPlayer;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -96,6 +100,7 @@ public class Character : MonoBehaviour
             AnimatorUpdate();
 
         AttackCDupdate();
+        checkForPickupables();
     }
     protected virtual void MovementUpdate()
     {
@@ -178,7 +183,6 @@ public class Character : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
     void AnimatorUpdate()
     {
         if(groundedHit == false)
@@ -269,6 +273,58 @@ public class Character : MonoBehaviour
             }
         }
     }
+
+    void checkForPickupables()
+    {
+        float minPickupDistance = 1.5f;
+        float lastPickupDistance = 0;
+        PickupAble closestPickupable = null;
+
+        foreach(PickupAble pickupable in manager.pickupAbles)
+        {
+            Vector2 distance = transform.position - pickupable.transform.position;
+
+            if(distance.magnitude < minPickupDistance)
+            {
+                nearPickupable = true;
+                if(closestPickupable == null || distance.magnitude < lastPickupDistance)
+                {
+                    closestPickupable = pickupable;
+                    lastPickupDistance = distance.magnitude;
+
+                    if(nearbyObject != null)
+                    {
+                        if(nearbyObject != closestPickupable && isPlayer)
+                            nearbyObject.pickupPrompt.SetActive(false);
+                    }
+
+                    nearbyObject = closestPickupable;
+                }
+            }
+
+            if(isPlayer && nearbyObject != null)
+                nearbyObject.pickupPrompt.SetActive(true);
+        }
+
+        if(closestPickupable == null && nearbyObject != null)
+        {
+            if(isPlayer)
+                nearbyObject.pickupPrompt.SetActive(false);
+                
+            nearbyObject = null;
+        }
+    }
+
+    protected void PickupObject()
+    {
+        if(nearbyObject == null) return;
+
+        nearbyObject.transform.position = hand.transform.position;
+        nearbyObject.transform.rotation = hand.transform.rotation;
+        nearbyObject.transform.SetParent(hand.transform);
+        nearbyObject.pickupPrompt.SetActive(false);
+    }
+
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer == hurtLayer)

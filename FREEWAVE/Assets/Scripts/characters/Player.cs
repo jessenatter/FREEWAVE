@@ -12,11 +12,9 @@ public class Player : Character
     [SerializeField] GameObject grappleBullet,testIK;
     LineRenderer lineRenderer;
     float grappleTimer = 30,grappleTimerCurrent;
-    bool canGrapple,interactKeyReleased,attackKeyReleased,nearPickupable;
+    bool canGrapple,interactKeyReleased,attackKeyReleased;
     CameraScript cam;
 
-    PickupAble nearbyPickupable;
-    
     override protected void Start()
     {
         attackTimer = 15;
@@ -38,7 +36,9 @@ public class Player : Character
         base.Update();
 
         if(characterIsActive)
+        {
             GetInputs();
+        }
     }
     override protected void FixedUpdate() //rb stuff
     {
@@ -116,7 +116,11 @@ public class Player : Character
         else
             canEnterShip = false;
 
-        if(canEnterShip)
+        if(nearPickupable)
+        {
+            PickupObject();
+        }
+        else if(canEnterShip)
         {
             if (ship.rb.rotation >= 0 && ship.rb.rotation <= 45 || ship.rb.rotation <= 360 && ship.rb.rotation >= 315)
                 EnterShip();
@@ -233,42 +237,5 @@ public class Player : Character
         ship.rb.rotation = 0;
     }
 
-    void checkForPickupables()
-    {
-        float minPickupDistance = 2f;
-        float lastPickupDistance = 0;
-        PickupAble closestPickupable = null;
-
-        foreach(PickupAble pickupable in manager.pickupAbles)
-        {
-            Vector2 distance = transform.position - pickupable.transform.position;
-
-            if(distance.magnitude < minPickupDistance)
-            {
-                nearPickupable = true;
-                if((closestPickupable == null || distance.magnitude < lastPickupDistance))
-                {
-                    closestPickupable = pickupable;
-                    lastPickupDistance = distance.magnitude;
-
-                    if(nearbyPickupable != null)
-                    {
-                        if(nearbyPickupable != closestPickupable)
-                        {   
-                            nearbyPickupable.pickupPrompt.SetActive(false);
-                            nearbyPickupable = closestPickupable;
-                        }
-                    }
-                }
-            }
-
-            nearbyPickupable.pickupPrompt.SetActive(true);
-        }
-
-        if(closestPickupable == null && nearbyPickupable != null)
-        {
-            nearbyPickupable.pickupPrompt.SetActive(false);
-            nearbyPickupable = null;
-        }
-    }
+    
 }
