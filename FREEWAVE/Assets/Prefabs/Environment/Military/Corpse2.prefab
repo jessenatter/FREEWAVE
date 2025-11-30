@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8985112566082845755}
   - component: {fileID: 2855558656912151580}
+  - component: {fileID: -5337165125318521361}
   m_Layer: 0
   m_Name: Corpse2
   m_TagString: Untagged
@@ -90,3 +91,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-5337165125318521361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044793617721106978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51e12c12be9e74b429e4e8cda9192441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Corpse
+  health: 100

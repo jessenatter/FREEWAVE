@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 public class Player : Character
 {
     [SerializeField] GameObject knife,grapple;
@@ -14,6 +15,8 @@ public class Player : Character
     float grappleTimer = 30,grappleTimerCurrent;
     bool canGrapple,interactKeyReleased,attackKeyReleased;
     CameraScript cam;
+
+    float maxGrappleSpeed = 15f;
 
     override protected void Start()
     {
@@ -171,8 +174,11 @@ public class Player : Character
         Vector2 dir = grapplePoint - (Vector2)transform.position;
         float grappleSpeed = 15f;
 
-        rb.AddForce(dir.normalized * grappleSpeed);
+        Vector2 fakeGravity = Vector2.down * 6.5f;
 
+        rb.AddForce(dir.normalized * grappleSpeed + fakeGravity);
+        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity,maxGrappleSpeed);
+        
         if(dir.magnitude < 1.5f)
             GrappleCancel();
     }
