@@ -3729,7 +3729,7 @@ MonoBehaviour:
   canEnterShip: 0
   aiming: 0
   grappleBullet: {fileID: 0}
-  testIK: {fileID: 0}
+  frontArmIK: {fileID: 4653107694658168733}
 --- !u!61 &349077460423240389
 BoxCollider2D:
   m_ObjectHideFlags: 0

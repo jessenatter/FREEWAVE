@@ -71,7 +71,7 @@ public class CharacterAnimator : MonoBehaviour
     public float idleStateDuration = 150f,runStateDuration = 30f,hurtStateDuration = 0f;
     public float attackStateDuration = 30f,dashAttackStateDuration = 40f,dropAttackStateDuration = 30f;
 
-    void Start()
+    protected virtual void Start()
     {
         //idle
         LimbManager.limbState _lowerIdle = new LimbManager.limbState(IdleObject.transform.GetChild(0).gameObject,idleStateDuration,true,frontLeg,false);

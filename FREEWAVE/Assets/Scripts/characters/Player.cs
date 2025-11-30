@@ -9,7 +9,7 @@ public class Player : Character
     float maxDistanceFromShip = 1f;
     public bool canEnterShip,aiming;
     Vector2 mouseWorld,grapplePoint;
-    [SerializeField] GameObject grappleBullet,testIK;
+    [SerializeField] GameObject grappleBullet,frontArmIK;
     LineRenderer lineRenderer;
     float grappleTimer = 30,grappleTimerCurrent;
     bool canGrapple,interactKeyReleased,attackKeyReleased;
@@ -133,7 +133,7 @@ public class Player : Character
         Vector2 mousePos = manager.pointAction.ReadValue<Vector2>();
         mouseWorld = manager.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, manager.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
         manager.mouseObject.transform.position = Vector2.Lerp(transform.position,mouseWorld,.5f);
-        testIK.transform.position = mouseWorld;
+        frontArmIK.transform.position = mouseWorld;
     }
     void Shoot()
     {
