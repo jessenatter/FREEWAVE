@@ -271,7 +271,7 @@ public class Character : MonoBehaviour
     void checkForPickupables()
     {
         float minPickupDistance = 1.5f;
-        float lastPickupDistance = 0;
+        float lastPickupDistance = Mathf.Infinity;
         PickupAble closestPickupable = null;
 
         foreach(PickupAble pickupable in manager.pickupAbles)
@@ -297,7 +297,6 @@ public class Character : MonoBehaviour
                     nearbyObject = closestPickupable;
                 }
             }
-            
 
             if(isPlayer && nearbyObject != null)
                 nearbyObject.pickupPrompt.SetActive(true);

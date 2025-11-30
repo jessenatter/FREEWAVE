@@ -13,6 +13,8 @@ public class Manager : MonoBehaviour
     [SerializeField] public GameObject mouseObject;
 
     public List<PickupAble> pickupAbles = new List<PickupAble>();
+
+    public List<GameObject> corpses = new List<GameObject>();
     void Awake() //awake runs before start 
     {
         moveAction = InputSystem.actions.FindAction("Move");

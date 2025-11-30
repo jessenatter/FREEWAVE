@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Enemy : Character
 {
+    public GameObject target;
     Player player;
 
     float awarenessDistance = 5f;
@@ -10,7 +11,7 @@ public class Enemy : Character
 
     float attackChargeTimer = 50f,attackChargeTimerCurrent;
 
-    bool chargingAttack;
+    public bool hasPlayer,chargingAttack;
 
     float awarenessTimer = 1000,awarenessTimerCurrent;
 
@@ -22,6 +23,11 @@ public class Enemy : Character
         moveSpeed = 1.5f;
         jumpForce = 1.5f;
     }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
     protected override void Update()
     {
         base.Update();
@@ -30,7 +36,7 @@ public class Enemy : Character
     
         if(playerEnemyVector.magnitude < awarenessDistance)
         {
-            characterIsActive = true;
+            hasPlayer = true;
             awarenessTimerCurrent = 0;
         }
         else if(playerEnemyVector.magnitude > awarenessDistance * 3f)
@@ -39,14 +45,27 @@ public class Enemy : Character
             if(awarenessTimerCurrent == awarenessTimer)
             {
                 awarenessTimerCurrent = 0;
-                characterIsActive = false;
+                hasPlayer = false;
             }
         }
 
         if(playerEnemyVector.magnitude < attackDistance)
             startChargingAttack();
 
-        xInput = Mathf.Sign(playerEnemyVector.x);
+        if(hasPlayer)
+            target = player.gameObject;
+        else
+            target = null;
+
+        Vector2 targetEnemyVector = Vector2.zero;
+
+        if(target != null)
+            targetEnemyVector = target.transform.position - transform.position;
+
+        if(target != null)
+            xInput = Mathf.Sign(targetEnemyVector.x);
+        else
+            xInput = 0;
 
         if(chargingAttack)
         {
