@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 5289672961791487220}
   - component: {fileID: 2388652507777005733}
   - component: {fileID: 7575442389864748067}
+  - component: {fileID: 4993507470754677045}
   m_Layer: 0
-  m_Name: Brick
+  m_Name: RedBrickChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,3 +182,21 @@ MonoBehaviour:
   startLayer: 8
   endLayer: 10
   destroyOnSecondTimer: 1
+--- !u!114 &4993507470754677045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7236414151164614611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05eba4171881a4753bb7a7668d123d27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteRandomizer
+  sprites:
+  - {fileID: 1275625909621640723, guid: dd5d83895cf5848198fbc345d5263777, type: 3}
+  - {fileID: 918697833185770434, guid: dd5d83895cf5848198fbc345d5263777, type: 3}
+  - {fileID: 6341618454449772864, guid: dd5d83895cf5848198fbc345d5263777, type: 3}
+  - {fileID: 6423453935869301348, guid: dd5d83895cf5848198fbc345d5263777, type: 3}
+  - {fileID: -3787359974411500114, guid: dd5d83895cf5848198fbc345d5263777, type: 3}
