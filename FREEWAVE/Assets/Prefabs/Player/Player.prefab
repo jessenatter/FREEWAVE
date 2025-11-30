@@ -223,7 +223,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 966635803
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: -2023923573111878767, guid: 292d3cef36efa450e9fc107b8a9492e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1525,7 +1525,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 966635803
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 7e09860a6c75d435aaa5fb75c63d2d7c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1715,7 +1715,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 966635803
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: -1205440766039775075, guid: 292d3cef36efa450e9fc107b8a9492e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2009,7 +2009,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 966635803
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: -3861952770410913445, guid: 292d3cef36efa450e9fc107b8a9492e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2897,7 +2897,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 966635803
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 5602337906906987636, guid: 292d3cef36efa450e9fc107b8a9492e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3679,7 +3679,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 966635803
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3ffc4587720f444d2b64587db5aaa990, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.35686275}
@@ -3719,7 +3719,6 @@ MonoBehaviour:
   health: 10
   damage: 1
   damageToRecive: 0
-  useAnimatior: 1
   hand: {fileID: 7835318144805767935}
   isPlayer: 1
   knife: {fileID: 0}
@@ -4258,7 +4257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4690269979136584912, guid: be8b9b80870ed46d5a7c69e84a78f204, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9982296
+      value: 0.9999822
       objectReference: {fileID: 0}
     - target: {fileID: 4690269979136584912, guid: be8b9b80870ed46d5a7c69e84a78f204, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4270,7 +4269,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4690269979136584912, guid: be8b9b80870ed46d5a7c69e84a78f204, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.059478316
+      value: -0.0059794006
       objectReference: {fileID: 0}
     - target: {fileID: 4690269979136584912, guid: be8b9b80870ed46d5a7c69e84a78f204, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4282,7 +4281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4690269979136584912, guid: be8b9b80870ed46d5a7c69e84a78f204, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -57.94
+      value: -0.685
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

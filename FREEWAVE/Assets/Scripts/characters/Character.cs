@@ -6,7 +6,7 @@ public class Character : MonoBehaviour
 {
     protected float moveSpeed = 3.5f, jumpForce = 2f,dashAttackSpeed = 10f,knockbackForce = 5f;
     protected float xInput,yInput,dashXinput;
-    bool grounded,isJumping;
+    bool grounded,isJumping,recentlyIdle;
     [SerializeField] protected LayerMask groundLayer;
     protected Rigidbody2D rb;
     protected BoxCollider2D bc;
@@ -40,6 +40,7 @@ public class Character : MonoBehaviour
     protected PickupAble heldObject,nearbyObject;
 
     [SerializeField] bool isPlayer;
+    float recentlyIdleTimer = 15,idleTimerCurrent = 0;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -62,11 +63,25 @@ public class Character : MonoBehaviour
         else
             groundedHit = false;
 
+        if(xInput == 0)
+        {
+            recentlyIdle = true;
+        }
+        else if(recentlyIdle)
+        {
+            idleTimerCurrent++;
+            if(idleTimerCurrent == recentlyIdleTimer)
+            {
+                recentlyIdle = false;
+                idleTimerCurrent = 0;
+            }
+        }
+
         if(getAttackInput)
         {
             if(xInput == 0 && (Mathf.Sign(yInput) != -1 || grounded))
                 Attack();
-            else if(grounded)
+            else if(grounded && recentlyIdle)
                 DashAttack();
             else if(Mathf.Sign(yInput) == -1)
                 DownAttack();
