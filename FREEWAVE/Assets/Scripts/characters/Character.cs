@@ -327,7 +327,7 @@ public class Character : MonoBehaviour
     {
         if(collision.gameObject.layer == hurtLayer)
         {
-            float _x = Mathf.Sign(transform.position.x - collision.gameObject.transform.position.x);
+            float _x = Mathf.Sign(transform.position.x - collision.gameObject.transform.parent.transform.position.x);
             Vector2 hurtVec = new Vector2(_x,1);
             Hurt(hurtVec,damageToRecive);
         }
