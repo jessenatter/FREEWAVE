@@ -16,6 +16,11 @@ public class CameraScript : MonoBehaviour
     public Camera cameraComponent;
     
     Player playerScript;
+
+    bool screenShaking;
+    Vector2 shakeVector,initCameraPos;
+    float screenShakeTimer = 20f, screenShakeTimerCurrent;
+    float screenShakeStrength;
     void Start()
     {
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
@@ -67,11 +72,13 @@ public class CameraScript : MonoBehaviour
 
         cameraComponent.fieldOfView = FOV;
         transform.position = new Vector3(_x, _y, _z);
+
+        UpdateScreenShake();
     }
 
     void FixedUpdate()
     {
-
+        UpdateScreenShakeTimer();
     }
 
     public void EnterShip()
@@ -82,5 +89,47 @@ public class CameraScript : MonoBehaviour
     public void ExitShip()
     {
         target = player;
+    }
+
+    public void StartScreenShake(float duration,float strength)
+    {
+        if (!screenShaking)
+        {
+            screenShaking = true;
+            screenShakeTimer = duration;
+            screenShakeStrength = strength; //.1 is a good base
+        }
+    }
+
+    void UpdateScreenShakeTimer()
+    {
+        if (screenShaking)
+        {
+            screenShakeTimerCurrent++;
+            if (screenShakeTimerCurrent >= screenShakeTimer)
+            {
+                screenShakeTimerCurrent = 0;
+                screenShaking = false;
+            }
+        }
+    }
+    void UpdateScreenShake()
+    {
+        float lerpSpeed = 0.1f;
+        float amplitude = 10f;
+
+        if (screenShaking)
+        {
+            float t = screenShakeTimerCurrent / screenShakeTimer;
+            shakeVector.x = Mathf.Sin(t * amplitude) * screenShakeStrength;
+            shakeVector.y = Mathf.Cos(t * amplitude) * screenShakeStrength;
+        }
+        else
+            shakeVector = Vector2.zero;
+
+        float _x = Mathf.Lerp(gameObject.transform.position.x, initCameraPos.x + shakeVector.x, lerpSpeed);
+        float _y = Mathf.Lerp(gameObject.transform.position.y, initCameraPos.y + shakeVector.y, lerpSpeed);
+        
+        gameObject.transform.position += (Vector3)shakeVector;
     }
 }

@@ -13,9 +13,8 @@ public class Player : Character
     [SerializeField] GameObject grappleBullet,frontArmIK;
     LineRenderer lineRenderer;
     float grappleTimer = 30,grappleTimerCurrent;
-    bool canGrapple,interactKeyReleased,attackKeyReleased;
+    bool canGrapple,interactKeyReleased,attackKeyReleased,dead;
     CameraScript cam;
-
     float maxGrappleSpeed = 15f;
 
     override protected void Start()
@@ -38,7 +37,7 @@ public class Player : Character
     {
         base.Update();
 
-        if(characterIsActive)
+        if(characterIsActive && !dead)
         {
             GetInputs();
         }
@@ -243,5 +242,16 @@ public class Player : Character
         ship.rb.rotation = 0;
     }
 
-    
+    protected override void Die()
+    {
+        base.Die();
+        manager.PlayerDie();
+        dead = true;
+    }
+
+    protected override void Hurt(Vector2 hurtDir, float damage)
+    {
+        base.Hurt(hurtDir, damage);
+        cam.StartScreenShake(15,0.01f);
+    }
 }

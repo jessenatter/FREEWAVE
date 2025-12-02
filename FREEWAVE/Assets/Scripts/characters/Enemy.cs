@@ -93,4 +93,10 @@ public class Enemy : Character
             chargingAttack = true;
         }
     }
+
+    protected override void Die()
+    {
+        base.Die();
+        Destroy(gameObject);
+    }
 }

@@ -52,7 +52,7 @@ public class Character : MonoBehaviour
         characterAnimator = GetComponent<CharacterAnimator>();
         characterAnimator.attackStateDuration = attackTimer;
         characterAnimator.dashAttackStateDuration = dashAttackTimer;
-        characterAnimator.hurtStateDuration = hurtTimer;
+        //characterAnimator.hurtStateDuration = hurtTimer;
     }
     protected virtual void Update()
     {
@@ -184,6 +184,8 @@ public class Character : MonoBehaviour
             currentCharacterState = characterState.hurting;
             health -= damage;
             health = Mathf.Clamp(health,0,10);
+            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyHurt;
+            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyHurt;
             if(health == 0)
                 Die();
         }
