@@ -90,6 +90,8 @@ public class Character : MonoBehaviour
 
             getAttackInput = false;
         }
+
+        characterAnimator.CharacterAnimatorUpdate();
     }
     protected virtual void FixedUpdate() //rb stuff
     {
@@ -110,6 +112,7 @@ public class Character : MonoBehaviour
         AnimatorUpdate();
         AttackCDupdate();
         checkForPickupables();
+        characterAnimator.CharacterAnimatorFixedUpdate();
     }
     protected virtual void MovementUpdate()
     {

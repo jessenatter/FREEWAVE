@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
@@ -41,16 +42,18 @@ public class Player : Character
         {
             GetInputs();
         }
-    }
-    override protected void FixedUpdate() //rb stuff
-    {
-        base.FixedUpdate();
 
         if(aiming)
         {
             UpdateMouseObject();
         }
     }
+    override protected void FixedUpdate() //rb stuff
+    {
+        base.FixedUpdate();
+    }
+
+    
     protected override void MovementUpdate()
     {
         if(!isGrappling)
@@ -70,8 +73,12 @@ public class Player : Character
     }
     void GetInputs()
     {
-        xInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x);
-        yInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().y);
+        if(manager.moveAction.ReadValue<Vector2>().x != 0)
+            xInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x);
+        else 
+            xInput = 0;
+        
+        yInput = manager.moveAction.ReadValue<Vector2>().y;
 
         if (manager.jumpAction.IsPressed())
             Jump();
@@ -86,7 +93,7 @@ public class Player : Character
         else
             interactKeyReleased = true;
         
-        if(Mouse.current.rightButton.isPressed)
+        if(Mouse.current.rightButton.isPressed || manager.lookAction.ReadValue<Vector2>().magnitude != 0)
             aiming = true;
         else
             aiming = false;
@@ -132,8 +139,18 @@ public class Player : Character
     }
     void UpdateMouseObject()
     {
-        Vector2 mousePos = manager.pointAction.ReadValue<Vector2>();
-        mouseWorld = manager.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, manager.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
+        if(manager.lookAction.ReadValue<Vector2>().magnitude == 0)
+        {
+            Vector2 mousePos = manager.pointAction.ReadValue<Vector2>();
+            mouseWorld = manager.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, manager.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
+        }
+        else
+        {
+            Vector2 aimDir = manager.lookAction.ReadValue<Vector2>();
+            float distance = 6.5f;
+            mouseWorld = (Vector2)transform.position + aimDir * distance;
+        }
+
         manager.mouseObject.transform.position = Vector2.Lerp(transform.position,mouseWorld,.5f);
         frontArmIK.transform.position = mouseWorld;
     }

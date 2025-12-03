@@ -140,7 +140,7 @@ public class CharacterAnimator : MonoBehaviour
 
         prevUpperBodyState = currentUpperBodyState;
     }
-    void Update()
+    public void CharacterAnimatorUpdate()
     {
         RotationUpdate();
     }
@@ -163,7 +163,7 @@ public class CharacterAnimator : MonoBehaviour
         spine2.transform.eulerAngles = new Vector3(0, 0, spine1angle* xDir + spine2angle * xDir + 90 * xDir);
         head.transform.eulerAngles = new Vector3(0, 0, spine1angle* xDir + spine2angle * xDir+ headAngle * xDir + 90 * xDir);
     }
-    void FixedUpdate()
+    public void CharacterAnimatorFixedUpdate()
     {
         if(currentUpperBodyState != prevUpperBodyState)
         {
