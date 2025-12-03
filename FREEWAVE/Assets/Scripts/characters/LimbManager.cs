@@ -6,11 +6,11 @@ public class LimbManager : MonoBehaviour
 {
     [SerializeField] public GameObject orgin;
     [SerializeField] Character character;
-    Vector2 initOffsetFromOrgin;
+    Vector2 initOffsetFromOrgin,recordedPoint;
     int currentPoint = 0;
     public limbState currentLimbState;
-    float currentTime;
-    bool waitingForExit;
+    float currentTime,currentTransitionTime;
+    bool waitingForExit,transitionedToNextState = true;
 
     [SerializeField] bool isBackLimb;
     limbState previousLimbState = null;
@@ -18,12 +18,12 @@ public class LimbManager : MonoBehaviour
     {
         public List<Vector2> points = new List<Vector2>();
         public List<Vector2> backLimbPoints = new List<Vector2>();
-        public float duration;
+        public float duration,transitionDuration;
         public bool loop,startAtPos1;
 
-        public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager,bool _startAtPos1) 
+        public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager,float _transitionDuration) 
         {
-            startAtPos1 = _startAtPos1;
+            transitionDuration = _transitionDuration;
 
             if(pointsObject.gameObject.tag != "usesSeperateLimbs")
             {
@@ -74,6 +74,7 @@ public class LimbManager : MonoBehaviour
     void Start()
     {
         initOffsetFromOrgin = transform.position - orgin.transform.position;
+        recordedPoint = transform.position;
     }
     void Update()
     {
@@ -86,7 +87,6 @@ public class LimbManager : MonoBehaviour
     }
     void UpdatePoints()
     {
-
         List<Vector2> pointsToUse = currentLimbState.points;
 
         if(isBackLimb && currentLimbState.backLimbPoints.Count != 0)
@@ -114,6 +114,8 @@ public class LimbManager : MonoBehaviour
         Vector2 characterDirectionVec = new Vector2(Mathf.Sign(character.transform.localScale.x),1);
         Vector2 initRestPos = (Vector2)orgin.transform.position + (initOffsetFromOrgin * characterDirectionVec);
 
+        Vector2 exactTarget = initRestPos + (Vector2.Lerp(thisPoint, nextPoint, lerpAmmount) * characterDirectionVec);
+
         if(previousLimbState == null || previousLimbState != currentLimbState)
         {
             previousLimbState = currentLimbState;
@@ -121,10 +123,24 @@ public class LimbManager : MonoBehaviour
                 transform.position = initRestPos + pointsToUse[0] * characterDirectionVec;
 
             currentTime = 0;
+            currentTransitionTime = 0;
+
+            recordedPoint = exactTarget;
+            transitionedToNextState = false;
         }
 
-        Vector2 exactTarget = initRestPos + (Vector2.Lerp(thisPoint, nextPoint, lerpAmmount) * characterDirectionVec);
+        if(transitionedToNextState == false)
+        {
+            currentTransitionTime++;
+            if(currentTransitionTime == currentLimbState.transitionDuration)
+            {
+                transitionedToNextState = true;
+            }
+        }
 
-        transform.position = Vector2.Lerp(transform.position, exactTarget, Time.deltaTime * 6f);
+        float t2 = currentTransitionTime/currentLimbState.transitionDuration;
+        print(t2);
+    
+        transform.position = Vector2.Lerp(transform.position, exactTarget, t2);
     }   
 }
