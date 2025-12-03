@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class PlayerAnimator : CharacterAnimator
 {
-    protected override void Start()
+    public override void CharacterAnimatorStart()
     {
-        base.Start();
-        upperBodyAttack.spine1rotation = new Vector2(20,-30);
-        upperBodyAttack.spine2rotation = new Vector2(20,-30);
+        base.CharacterAnimatorStart();
 
-        upperBodyRun.spine1rotation = new Vector2(20,-30);
-        upperBodyRun.spine2rotation = new Vector2(20,-30);
-        upperBodyRun.headRotation = new Vector2(20,-30);
+        upperBodyAttack.spine1rotation = new Vector2(10,-20);
+        upperBodyAttack.spine2rotation = new Vector2(10,-10);
 
+        upperBodyRun.spine1rotation = new Vector2(-5,-10);
+        upperBodyRun.spine2rotation = new Vector2(-5,-10);
+        upperBodyRun.headRotation = new Vector2(5,-5);
+
+        upperBodyRun.rotationDuration = 20f;
         upperBodyRun.duration = 50f;
     }
 }

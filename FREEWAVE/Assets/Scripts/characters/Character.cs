@@ -47,6 +47,8 @@ public class Character : MonoBehaviour
         downAttackCollider = transform.GetChild(1).gameObject;
 
         characterAnimator = GetComponent<CharacterAnimator>();
+        characterAnimator.attackStateDuration = attackTimer;
+        characterAnimator.CharacterAnimatorStart();
     }
     protected virtual void Update()
     {
