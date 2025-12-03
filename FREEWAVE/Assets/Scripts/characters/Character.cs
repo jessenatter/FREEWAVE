@@ -192,7 +192,7 @@ public class Character : MonoBehaviour
     }
     protected virtual void Die()
     {
-        Destroy(gameObject);
+        
     }
     void AnimatorUpdate()
     {

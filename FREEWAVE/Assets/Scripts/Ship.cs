@@ -69,9 +69,9 @@ public class Ship : MonoBehaviour
     void ReadInputs()
     {
         xInput = -Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(manager.moveAction.ReadValue<Vector2>().x);
-        
+
         if(xInput != 0)
-            lastXinput = xInput;
+            lastXinput = Mathf.Sign(xInput);
 
         mainEngine = manager.jumpAction.IsPressed();
         reverseEngine = manager.dashAction.IsPressed();
@@ -115,6 +115,7 @@ public class Ship : MonoBehaviour
     {
         if(xInput != 0 && Mathf.Sign(xInput) == lastXinput) 
         {
+            print("a");
             rb.angularVelocity = 0;
             turnTimerCurrent++;
             turnTimerCurrent = Mathf.Clamp(turnTimerCurrent,0,turnTimer);

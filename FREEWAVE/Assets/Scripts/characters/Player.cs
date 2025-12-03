@@ -70,8 +70,8 @@ public class Player : Character
     }
     void GetInputs()
     {
-        xInput = manager.moveAction.ReadValue<Vector2>().x;
-        yInput = manager.moveAction.ReadValue<Vector2>().y;
+        xInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x);
+        yInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().y);
 
         if (manager.jumpAction.IsPressed())
             Jump();
@@ -91,7 +91,7 @@ public class Player : Character
         else
             aiming = false;
         
-        if(Mouse.current.leftButton.isPressed)
+        if(manager.attackAction.IsPressed())
         {
             if(attackKeyReleased)
             {
@@ -252,6 +252,6 @@ public class Player : Character
     protected override void Hurt(Vector2 hurtDir, float damage)
     {
         base.Hurt(hurtDir, damage);
-        cam.StartScreenShake(15,0.01f);
+        cam.StartScreenShake(10,0.01f);
     }
 }
