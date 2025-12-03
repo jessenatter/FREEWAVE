@@ -115,7 +115,6 @@ public class Ship : MonoBehaviour
     {
         if(xInput != 0 && Mathf.Sign(xInput) == lastXinput) 
         {
-            print("a");
             rb.angularVelocity = 0;
             turnTimerCurrent++;
             turnTimerCurrent = Mathf.Clamp(turnTimerCurrent,0,turnTimer);

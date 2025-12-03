@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
 {
-    [SerializeField] LimbManager frontArm,backArm,frontLeg,backLeg;
+    [SerializeField] public LimbManager frontArm,backArm,frontLeg,backLeg;
     [SerializeField] GameObject spine1,spine2,head;
     float spine1angle,spine2angle,headAngle;
     float currentStateTimer;

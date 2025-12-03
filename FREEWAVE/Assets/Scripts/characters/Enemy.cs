@@ -9,7 +9,7 @@ public class Enemy : Character
 
     float attackDistance = 1f;
 
-    float attackChargeTimer = 50f,attackChargeTimerCurrent;
+    public float attackChargeTimer = 50f,attackChargeTimerCurrent;
 
     public bool hasPlayer,chargingAttack;
 
@@ -22,8 +22,6 @@ public class Enemy : Character
         base.Start();
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        moveSpeed = 1.5f;
-        jumpForce = 1.5f;
     }
 
     protected override void FixedUpdate()

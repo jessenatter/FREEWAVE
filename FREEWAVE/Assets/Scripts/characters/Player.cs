@@ -21,6 +21,7 @@ public class Player : Character
     override protected void Start()
     {
         attackTimer = 15;
+        attackCD = 5;
         
         base.Start();
 

@@ -11,7 +11,6 @@ public class Character : MonoBehaviour
     protected Rigidbody2D rb;
     protected BoxCollider2D bc;
     protected Manager manager;
-
     protected bool nearPickupable;
     public enum characterState
     {
@@ -24,7 +23,6 @@ public class Character : MonoBehaviour
     public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
     public float attackTimer = 15,attackTimerCurrent;
-
     public float attackCD = 15,attackCDcurrent;
     protected float dashAttackTimer = 25,dashAttackTimerCurrent;
     protected float hurtTimer = 30,hurtTimerCurrent;
@@ -38,9 +36,8 @@ public class Character : MonoBehaviour
     bool canAttack = true;
     [SerializeField] GameObject hand;
     protected PickupAble heldObject,nearbyObject;
-
     [SerializeField] bool isPlayer;
-    float recentlyIdleTimer = 15,idleTimerCurrent = 0;
+    float recentlyIdleTimer = 30,idleTimerCurrent = 0;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -52,7 +49,6 @@ public class Character : MonoBehaviour
         characterAnimator = GetComponent<CharacterAnimator>();
         characterAnimator.attackStateDuration = attackTimer;
         characterAnimator.dashAttackStateDuration = dashAttackTimer;
-        //characterAnimator.hurtStateDuration = hurtTimer;
     }
     protected virtual void Update()
     {
@@ -191,6 +187,9 @@ public class Character : MonoBehaviour
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyHurt;
             if(health == 0)
                 Die();
+            
+            attackCollider.SetActive(false);
+            downAttackCollider.SetActive(false);
         }
     }
     protected virtual void Die()
@@ -274,7 +273,6 @@ public class Character : MonoBehaviour
             }
         }
     }
-
     void AttackCDupdate()
     {
         if(!canAttack && currentCharacterState != characterState.attacking)
@@ -287,7 +285,6 @@ public class Character : MonoBehaviour
             }
         }
     }
-
     void checkForPickupables()
     {
         float minPickupDistance = 1.5f;
@@ -331,7 +328,6 @@ public class Character : MonoBehaviour
             nearPickupable = false;
         }
     }
-
     protected void PickupObject()
     {
         if(nearbyObject == null) return;
@@ -342,7 +338,6 @@ public class Character : MonoBehaviour
         nearbyObject.transform.SetParent(hand.transform);
         nearbyObject.held = true;
     }
-
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer == hurtLayer)
