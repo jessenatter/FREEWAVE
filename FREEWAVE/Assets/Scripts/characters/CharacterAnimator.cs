@@ -4,7 +4,9 @@ using UnityEngine;
 public class CharacterAnimator : MonoBehaviour
 {
     [SerializeField] public LimbManager frontArm,backArm,frontLeg,backLeg;
-    [SerializeField] GameObject spine1,spine2,head;
+    [SerializeField] GameObject spine1;
+
+    GameObject spine2,head;
     float spine1angle,spine2angle,headAngle;
     float currentStateTimer;
     public class bodyState
@@ -46,18 +48,13 @@ public class CharacterAnimator : MonoBehaviour
             characterAnimator.backArm.currentLimbState = back;
             characterAnimator.frontArm.currentLimbState = front;
         }
-
-        public void loopRotations()
-        {
-            spine1rotation = new Vector2(spine1rotation.y,spine1rotation.x);
-            spine2rotation = new Vector2(spine2rotation.y,spine2rotation.x);
-            headRotation = new Vector2(headRotation.y,headRotation.x);
-        }
     }
     public lowerBodyState currentLowerBodyState;
     public upperBodyState currentUpperBodyState;
     upperBodyState prevUpperBodyState;
-    [SerializeField] GameObject IdleObject,RunObject,JumpObject,AttackObject,DashAttackObject,DropAttackObject,HurtObject;
+    
+    [SerializeField] GameObject animationObjectHolder;
+    GameObject IdleObject,RunObject,JumpObject,AttackObject,DashAttackObject,DropAttackObject,HurtObject;
 
     public lowerBodyState lowerBodyRun,lowerBodyJump,lowerBodyIdle;
     public upperBodyState upperBodyRun,upperBodyJump,upperBodyIdle;
@@ -68,12 +65,23 @@ public class CharacterAnimator : MonoBehaviour
     public lowerBodyState lowerBodyHurt;
     public upperBodyState upperBodyHurt;
 
-    public float idleStateDuration = 150f,runStateDuration = 30f,hurtStateDuration = 0.1f;
-    public float attackStateDuration = 30f,dashAttackStateDuration = 40f,dropAttackStateDuration = 30f;
+    [HideInInspector]public float idleStateDuration = 150f,runStateDuration = 30f,hurtStateDuration = 0.1f;
+    [HideInInspector]public float attackStateDuration = 30f,dashAttackStateDuration = 40f,dropAttackStateDuration = 30f;
 
     float standardTransitionTime = 300f,quickTransitionTime = 200f;
     protected virtual void Start()
     {
+        spine2 = spine1.transform.GetChild(0).gameObject;
+        head = spine2.transform.GetChild(0).gameObject;
+
+        IdleObject = animationObjectHolder.transform.GetChild(0).gameObject;
+        RunObject = animationObjectHolder.transform.GetChild(1).gameObject;
+        JumpObject = animationObjectHolder.transform.GetChild(2).gameObject;
+        AttackObject = animationObjectHolder.transform.GetChild(3).gameObject;
+        DashAttackObject = animationObjectHolder.transform.GetChild(4).gameObject;
+        DropAttackObject = animationObjectHolder.transform.GetChild(5).gameObject;
+        HurtObject = animationObjectHolder.transform.GetChild(6).gameObject;
+
         //idle
         LimbManager.limbState _lowerIdle = new LimbManager.limbState(IdleObject.transform.GetChild(0).gameObject,idleStateDuration,true,frontLeg,standardTransitionTime);
         lowerBodyIdle = new lowerBodyState(_lowerIdle,_lowerIdle,this,idleStateDuration);
@@ -150,6 +158,8 @@ public class CharacterAnimator : MonoBehaviour
         float t = currentStateTimer / currentUpperBodyState.duration;
         float lerpSpeed = 5f;
 
+       t = 1f - Mathf.Abs((t % 2f) - 1f);
+
         float spine1targetAngle = Mathf.Lerp(currentUpperBodyState.spine1rotation.x,currentUpperBodyState.spine1rotation.y,t);
         float spine2targetAngle = Mathf.Lerp(currentUpperBodyState.spine2rotation.x,currentUpperBodyState.spine2rotation.y,t);
         float headTargetAngle = Mathf.Lerp(currentUpperBodyState.headRotation.x,currentUpperBodyState.headRotation.y,t);
@@ -172,11 +182,10 @@ public class CharacterAnimator : MonoBehaviour
         }
 
         currentStateTimer++;
-        if(currentStateTimer == currentUpperBodyState.duration)
+        if(currentUpperBodyState.loop == false)
         {
-            currentStateTimer = 0;
-            if(currentUpperBodyState.loop)
-                currentUpperBodyState.loopRotations();
+            if(currentStateTimer >= currentUpperBodyState.duration)
+                currentStateTimer = currentUpperBodyState.duration;
         }
     }
 }

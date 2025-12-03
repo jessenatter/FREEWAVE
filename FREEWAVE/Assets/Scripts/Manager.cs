@@ -7,15 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    public InputAction moveAction, jumpAction,interactAction,dashAction,pointAction,attackAction,lookAction;
-    public Player player;
-    public Ship ship;
-    public CameraScript cam;
+    [HideInInspector]public InputAction moveAction, jumpAction,interactAction,dashAction,pointAction,attackAction,lookAction;
+    [HideInInspector]public Player player;
+    [HideInInspector]public Ship ship;
+    [HideInInspector]public CameraScript cam;
     [SerializeField] public GameObject mouseObject;
 
-    public List<PickupAble> pickupAbles = new List<PickupAble>();
+    [HideInInspector]public List<PickupAble> pickupAbles = new List<PickupAble>();
 
-    public List<GameObject> corpses = new List<GameObject>();
+    [HideInInspector]public List<GameObject> corpses = new List<GameObject>();
     Volume healthVolume;
 
     float playerRespawnTimer = 50,playerRespawnCurrent;

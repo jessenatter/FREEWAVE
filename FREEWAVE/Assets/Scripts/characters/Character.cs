@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
     protected BoxCollider2D bc;
     protected Manager manager;
     protected bool nearPickupable;
-    public enum characterState
+    [HideInInspector]public enum characterState
     {
         movement,
         attacking,
@@ -20,19 +20,19 @@ public class Character : MonoBehaviour
         dashAttacking,
         hurting,
     }
-    public characterState currentCharacterState = characterState.movement;
+    [HideInInspector]public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
-    public float attackTimer = 15,attackTimerCurrent;
-    public float attackCD = 15,attackCDcurrent;
+    [HideInInspector]public float attackTimer = 15,attackTimerCurrent;
+    [HideInInspector]public float attackCD = 15,attackCDcurrent;
     protected float dashAttackTimer = 25,dashAttackTimerCurrent;
     protected float hurtTimer = 30,hurtTimerCurrent;
-    public bool characterIsActive,getAttackInput,groundedHit;
+    [HideInInspector]public bool characterIsActive,getAttackInput,groundedHit;
     GameObject attackCollider,downAttackCollider;
     [SerializeField] int hurtLayer;
     CharacterAnimator characterAnimator;
     CharacterAnimator.lowerBodyState previousLowerBodyState;
     CharacterAnimator.upperBodyState previousUpperBodyState;
-    public float health = 10,damage = 1,damageToRecive;
+    [HideInInspector]public float health = 10,damage = 1,damageToRecive;
     bool canAttack = true;
     [SerializeField] GameObject hand;
     protected PickupAble heldObject,nearbyObject;
@@ -47,8 +47,6 @@ public class Character : MonoBehaviour
         downAttackCollider = transform.GetChild(1).gameObject;
 
         characterAnimator = GetComponent<CharacterAnimator>();
-        characterAnimator.attackStateDuration = attackTimer;
-        characterAnimator.dashAttackStateDuration = dashAttackTimer;
     }
     protected virtual void Update()
     {

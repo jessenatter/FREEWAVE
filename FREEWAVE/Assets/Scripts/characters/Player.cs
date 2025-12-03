@@ -22,6 +22,10 @@ public class Player : Character
     {
         attackTimer = 15;
         attackCD = 5;
+        knockbackForce = 5f;
+        dashAttackSpeed = 10f;
+        dashAttackTimer = 25f;
+        hurtTimer = 30f;
         
         base.Start();
 

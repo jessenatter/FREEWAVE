@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class LimbManager : MonoBehaviour
 {
-    [SerializeField] public GameObject orgin;
+    [SerializeField] [HideInInspector]public GameObject orgin;
     [SerializeField] Character character;
     Vector2 initOffsetFromOrgin,recordedPoint;
     int currentPoint = 0;
-    public limbState currentLimbState;
+    [HideInInspector]public limbState currentLimbState;
     float currentTime,currentTransitionTime;
     bool waitingForExit,transitionedToNextState = true;
 
