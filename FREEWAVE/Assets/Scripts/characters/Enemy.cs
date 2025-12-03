@@ -15,6 +15,8 @@ public class Enemy : Character
 
     float awarenessTimer = 1000,awarenessTimerCurrent;
 
+    [SerializeField] GameObject blood;
+
     protected override void Start()
     {
         base.Start();
@@ -94,6 +96,14 @@ public class Enemy : Character
         }
     }
 
+    protected override void Hurt(Vector2 hurtDir, float damage)
+    {
+        base.Hurt(hurtDir, damage);
+        GameObject _blood = Instantiate(blood);
+        _blood.transform.position = transform.position;
+        _blood.transform.position += new Vector3(0,0.4f,0);
+        _blood.transform.SetParent(transform);
+    }
     protected override void Die()
     {
         base.Die();

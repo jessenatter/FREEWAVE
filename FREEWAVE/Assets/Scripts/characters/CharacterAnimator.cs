@@ -71,7 +71,7 @@ public class CharacterAnimator : MonoBehaviour
     public float idleStateDuration = 150f,runStateDuration = 30f,hurtStateDuration = 0.1f;
     public float attackStateDuration = 30f,dashAttackStateDuration = 40f,dropAttackStateDuration = 30f;
 
-    float standardTransitionTime = 150f,quickTransitionTime = 100f;
+    float standardTransitionTime = 300f,quickTransitionTime = 200f;
     protected virtual void Start()
     {
         //idle
