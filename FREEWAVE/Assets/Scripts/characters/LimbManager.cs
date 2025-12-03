@@ -139,8 +139,6 @@ public class LimbManager : MonoBehaviour
         }
 
         float t2 = currentTransitionTime/currentLimbState.transitionDuration;
-        print(t2);
-    
         transform.position = Vector2.Lerp(transform.position, exactTarget, t2);
     }   
 }

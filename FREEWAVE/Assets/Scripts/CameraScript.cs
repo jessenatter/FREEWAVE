@@ -116,7 +116,7 @@ public class CameraScript : MonoBehaviour
     void UpdateScreenShake()
     {
         float lerpSpeed = 0.1f;
-        float amplitude = 10f;
+        float amplitude = 20f;
 
         if (screenShaking)
         {

@@ -213,7 +213,7 @@ public class Ship : MonoBehaviour
         if(toBreakable.magnitude < 1.2f)
         {
             breakable.Break();
-            manager.cam.StartScreenShake(15,0.07f);
+            manager.cam.StartScreenShake(15,0.05f);
 
             float breakBoostForce = 15f;
             rb.AddForce(toBreakable.normalized * breakBoostForce,ForceMode2D.Impulse);
