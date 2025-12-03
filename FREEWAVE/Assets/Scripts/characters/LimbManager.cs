@@ -104,8 +104,9 @@ public class LimbManager : MonoBehaviour
         
         if(isBackLimb)
         {
-            currentPoint = (int)Mathf.Repeat(currentPoint + 2,pointsToUse.Count);
-            nextIndex = (int)Mathf.Repeat(nextIndex + 2,pointsToUse.Count);
+            float offset = pointsToUse.Count/2f;
+            currentPoint = (int)Mathf.Repeat(currentPoint + offset,pointsToUse.Count);
+            nextIndex = (int)Mathf.Repeat(nextIndex + offset,pointsToUse.Count);
         }
 
         Vector2 thisPoint = pointsToUse[currentPoint];
