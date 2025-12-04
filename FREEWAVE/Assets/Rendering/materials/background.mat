@@ -29,8 +29,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ZMax: 9.6
+    - _BlurSize: 1024
+    - _BlurStrength: -2.57
+    - _MaxMip: 10
+    - _ZMax: 10
     - _ZMin: 0
+    - _blurSize: 5
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -1,9 +1,10 @@
-Shader "Custom/DarkenByDepth2D"
+Shader "Custom/DarkenAndBlurByDepth2D_Mip"
 {
     Properties {
         _MainTex("Sprite", 2D) = "white" {}
         _ZMin("Brightest Z", Float) = 0
         _ZMax("Darkest Z", Float) = -10
+        _MaxMip("Max Blur Mip Level", Float) = 5
     }
 
     SubShader {
@@ -16,7 +17,6 @@ Shader "Custom/DarkenByDepth2D"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct Attributes {
@@ -35,26 +35,32 @@ Shader "Custom/DarkenByDepth2D"
 
             float _ZMin;
             float _ZMax;
+            float _MaxMip;
 
             Varyings vert(Attributes v)
             {
                 Varyings o;
                 o.pos = TransformObjectToHClip(v.vertex);
+                o.uv = v.uv;
 
                 float3 worldPos = TransformObjectToWorld(v.vertex).xyz;
                 o.worldZ = worldPos.z;
 
-                o.uv = v.uv;
                 return o;
             }
 
             float4 frag(Varyings i) : SV_Target
             {
-                float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                float t = saturate((i.worldZ - _ZMin)/(_ZMax - _ZMin));
 
-                float t = saturate( (i.worldZ - _ZMin) / (_ZMax - _ZMin) );
+                // Determine mip level based on depth
+                float mipLevel = t * _MaxMip;
 
-                col.rgb *= (1.0 - t); // darker in background
+                // Sample texture using calculated mip
+                float4 col = SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv, mipLevel);
+
+                // Apply darkness last
+                col.rgb *= (1.0 - t);
 
                 return col;
             }
