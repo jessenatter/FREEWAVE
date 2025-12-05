@@ -37,7 +37,7 @@ public class Character : MonoBehaviour
     [SerializeField] GameObject hand;
     protected PickupAble heldObject,nearbyObject;
     [SerializeField] bool isPlayer;
-    float recentlyIdleTimer = 30,idleTimerCurrent = 0;
+    float recentlyIdleTimer = 15,idleTimerCurrent = 0;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -77,7 +77,7 @@ public class Character : MonoBehaviour
         {
             if(xInput == 0 && (Mathf.Sign(yInput) != -1 || grounded))
                 Attack();
-            else if(grounded && recentlyIdle)
+            else if(grounded && (recentlyIdle || xInput != 0))
                 DashAttack();
             else if(Mathf.Sign(yInput) == -1)
                 DownAttack();
@@ -161,6 +161,8 @@ public class Character : MonoBehaviour
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDashAttack;
             attackCollider.SetActive(true);
             dashXinput = xInput;
+            if(xInput != 0)
+                transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * Mathf.Sign(xInput),transform.localScale.y);
         }
     }
     protected virtual void DownAttack()
