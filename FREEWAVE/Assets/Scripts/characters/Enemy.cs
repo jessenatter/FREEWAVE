@@ -45,7 +45,7 @@ public class Enemy : Character
             }
         }
 
-        if(playerEnemyVector.magnitude < attackDistance)
+        if(playerEnemyVector.magnitude < attackDistance && currentCharacterState == characterState.movement)
             startChargingAttack();
 
         if(hasPlayer)
@@ -71,6 +71,7 @@ public class Enemy : Character
             {
                 attackChargeTimerCurrent = 0;
                 chargingAttack = false;
+                currentCharacterState = characterState.movement;
                 Attack();
             }
         }
@@ -86,6 +87,8 @@ public class Enemy : Character
     {
         if(currentCharacterState == characterState.attacking || currentCharacterState == characterState.hurting || chargingAttack) return;
 
+        currentCharacterState = characterState.idle;
+        rb.linearVelocity = Vector2.zero;
         chargingAttack = true;
     }
 
@@ -96,7 +99,11 @@ public class Enemy : Character
         _blood.transform.position = transform.position;
         _blood.transform.position += new Vector3(0,0.4f,0);
         _blood.transform.SetParent(transform);
+
+        attackChargeTimerCurrent = 0;
+        chargingAttack = false;
     }
+
     protected override void Die()
     {
         base.Die();

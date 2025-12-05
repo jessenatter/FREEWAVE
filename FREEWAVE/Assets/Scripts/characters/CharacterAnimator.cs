@@ -77,7 +77,7 @@ public class CharacterAnimator : MonoBehaviour
     [HideInInspector]public float idleStateDuration = 150f,runStateDuration = 30f,hurtStateDuration = 0.1f;
     [HideInInspector]public float attackStateDuration = 30f,dashAttackStateDuration = 40f,dropAttackStateDuration = 30f;
 
-    float standardTransitionTime = 300f,quickTransitionTime = 150f;
+    protected float standardTransitionTime = 300f,quickTransitionTime = 150f;
     public virtual void CharacterAnimatorStart()
     {
         spine2 = spine1.transform.GetChild(0).gameObject;

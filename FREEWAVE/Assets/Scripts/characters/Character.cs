@@ -19,6 +19,7 @@ public class Character : MonoBehaviour
         attackingDown,
         dashAttacking,
         hurting,
+        idle,
     }
     [HideInInspector]public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
@@ -342,7 +343,7 @@ public class Character : MonoBehaviour
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.layer == hurtLayer)
+        if(collision.gameObject.layer == hurtLayer && currentCharacterState != characterState.hurting)
         {
             float _x = Mathf.Sign(transform.position.x - collision.gameObject.transform.parent.transform.position.x);
             Vector2 hurtVec = new Vector2(_x,1);

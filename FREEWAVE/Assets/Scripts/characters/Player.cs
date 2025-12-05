@@ -234,11 +234,13 @@ public class Player : Character
         base.DownAttack();
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    override protected void OnTriggerEnter2D(Collider2D collision)
     {
-        //set up to check for enemy & damage
-        //Enemy enemy = null;
-        //damageToRecive = enemy.damage;
+        print("a");
+        if (currentCharacterState == characterState.hurting) return;
+
+        Enemy enemy = collision.gameObject.transform.parent.GetComponent<Enemy>();
+        damageToRecive = enemy.damage;
         base.OnTriggerEnter2D(collision);
     }
 
