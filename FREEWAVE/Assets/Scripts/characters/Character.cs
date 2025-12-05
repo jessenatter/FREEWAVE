@@ -151,6 +151,7 @@ public class Character : MonoBehaviour
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
             attackCollider.SetActive(true);
             canAttack = false;
+            transform.position += Vector3.one * 0.0001f;
         }
     }
     protected virtual void DashAttack()

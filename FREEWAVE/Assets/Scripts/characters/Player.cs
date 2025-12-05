@@ -236,7 +236,6 @@ public class Player : Character
 
     override protected void OnTriggerEnter2D(Collider2D collision)
     {
-        print("a");
         if (currentCharacterState == characterState.hurting) return;
 
         Enemy enemy = collision.gameObject.transform.parent.GetComponent<Enemy>();
