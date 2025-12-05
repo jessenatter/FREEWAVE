@@ -17,7 +17,10 @@ public class Zombie : Enemy
     }
     zombieState currentZombieState = zombieState.lookingForMeat;
     protected override void Start()
-    {
+    {    
+        zombieAnimator = GetComponent<ZombieAnimator>();
+        zombieAnimator.chargeAttackTime = attackChargeTimer;
+
         base.Start();
         lookingForMeatTimer += Random.Range(-200,200);
         restTimer += Random.Range(-200,200);
@@ -31,10 +34,6 @@ public class Zombie : Enemy
         knockbackForce = 5f;
         hurtTimer = 30f;
         attackChargeTimer = 50f;
-        
-        zombieAnimator = GetComponent<ZombieAnimator>();
-
-        zombieAnimator.chargeAttackTime = attackChargeTimer;
     }
 
     protected override void FixedUpdate()
@@ -99,11 +98,8 @@ public class Zombie : Enemy
     {
         base.startChargingAttack();
 
-        if(currentCharacterState != characterState.attacking && currentCharacterState != characterState.hurting)
-        {
-            zombieAnimator.currentUpperBodyState = zombieAnimator.chargeAttackUpper;
-            zombieAnimator.currentLowerBodyState = zombieAnimator.chargeAttackLower;
-        }
+        zombieAnimator.currentUpperBodyState = zombieAnimator.chargeAttackUpper;
+        zombieAnimator.currentLowerBodyState = zombieAnimator.chargeAttackLower;
     }
 }
 

@@ -19,9 +19,9 @@ public class LimbManager : MonoBehaviour
         public List<Vector2> points = new List<Vector2>();
         public List<Vector2> backLimbPoints = new List<Vector2>();
         public float duration,transitionDuration;
-        public bool loop,startAtPos1;
+        public bool loop,startAtPos1,useBackLimbOffset;
 
-        public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager,float _transitionDuration) 
+        public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager,float _transitionDuration,bool _useBackLimbOffset) 
         {
             transitionDuration = _transitionDuration;
 
@@ -68,6 +68,7 @@ public class LimbManager : MonoBehaviour
 
             duration = _duration;
             loop = _loop;
+            useBackLimbOffset = _useBackLimbOffset;
         }
     }
 
@@ -102,7 +103,7 @@ public class LimbManager : MonoBehaviour
 
         int nextIndex = (currentPoint + 1) % pointsToUse.Count;
         
-        if(isBackLimb)
+        if(isBackLimb && currentLimbState.useBackLimbOffset)
         {
             float offset = pointsToUse.Count/2f;
             currentPoint = (int)Mathf.Repeat(currentPoint + offset,pointsToUse.Count);

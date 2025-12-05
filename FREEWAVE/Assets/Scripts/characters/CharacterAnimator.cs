@@ -92,60 +92,60 @@ public class CharacterAnimator : MonoBehaviour
         HurtObject = animationObjectHolder.transform.GetChild(6).gameObject;
 
         //idle
-        LimbManager.limbState _lowerIdle = new LimbManager.limbState(IdleObject.transform.GetChild(0).gameObject,idleStateDuration,true,frontLeg,standardTransitionTime);
+        LimbManager.limbState _lowerIdle = new LimbManager.limbState(IdleObject.transform.GetChild(0).gameObject,idleStateDuration,true,frontLeg,standardTransitionTime,false);
         lowerBodyIdle = new lowerBodyState(_lowerIdle,_lowerIdle,this,idleStateDuration);
 
-        LimbManager.limbState _upperIdle = new LimbManager.limbState(IdleObject.transform.GetChild(1).gameObject,idleStateDuration,true,frontArm,standardTransitionTime);
+        LimbManager.limbState _upperIdle = new LimbManager.limbState(IdleObject.transform.GetChild(1).gameObject,idleStateDuration,true,frontArm,standardTransitionTime,false);
         Vector2 idleRotationSpine2 = new Vector2(3,-3);
         Vector2 idleRotationHead = new Vector2(3,-3);
         upperBodyIdle = new upperBodyState(_upperIdle,_upperIdle,this,Vector2.zero,idleRotationSpine2,idleRotationHead,idleStateDuration,true,idleStateDuration);
 
         //run
-        LimbManager.limbState _lowerRun = new LimbManager.limbState(RunObject.transform.GetChild(0).gameObject,runStateDuration,true,frontLeg,standardTransitionTime);
+        LimbManager.limbState _lowerRun = new LimbManager.limbState(RunObject.transform.GetChild(0).gameObject,runStateDuration,true,frontLeg,standardTransitionTime,true);
         lowerBodyRun = new lowerBodyState(_lowerRun,_lowerRun,this,runStateDuration);
 
-        LimbManager.limbState _upperRun = new LimbManager.limbState(RunObject.transform.GetChild(1).gameObject,runStateDuration,true,frontArm,standardTransitionTime);
+        LimbManager.limbState _upperRun = new LimbManager.limbState(RunObject.transform.GetChild(1).gameObject,runStateDuration,true,frontArm,standardTransitionTime,true);
         Vector2 spine2runRotation = new Vector2(350,345);
         upperBodyRun = new upperBodyState(_upperRun,_upperRun,this,spine2runRotation,Vector2.zero,Vector2.zero,runStateDuration,true,runStateDuration);
 
         //jump
-        LimbManager.limbState _lowerJump = new LimbManager.limbState(JumpObject.transform.GetChild(0).gameObject,0.1f,false,frontLeg,standardTransitionTime);
+        LimbManager.limbState _lowerJump = new LimbManager.limbState(JumpObject.transform.GetChild(0).gameObject,0.1f,false,frontLeg,standardTransitionTime,false);
         lowerBodyJump = new lowerBodyState(_lowerJump,_lowerJump,this,1);
 
-        LimbManager.limbState _upperJump = new LimbManager.limbState(JumpObject.transform.GetChild(1).gameObject,0.1f,false,frontArm,standardTransitionTime);
+        LimbManager.limbState _upperJump = new LimbManager.limbState(JumpObject.transform.GetChild(1).gameObject,0.1f,false,frontArm,standardTransitionTime,false);
         upperBodyJump = new upperBodyState(_upperJump,_upperJump,this,Vector2.zero,Vector2.zero,Vector2.zero,1,false,0);
 
         //attack
-        LimbManager.limbState _lowerAttack = new LimbManager.limbState(AttackObject.transform.GetChild(0).gameObject,attackStateDuration,false,frontLeg,quickTransitionTime);
+        LimbManager.limbState _lowerAttack = new LimbManager.limbState(AttackObject.transform.GetChild(0).gameObject,attackStateDuration,false,frontLeg,quickTransitionTime,false);
         lowerBodyAttack = new lowerBodyState(_lowerAttack,_lowerAttack,this,attackStateDuration);
 
         Vector2 upperBodySpine1AttackRotation = new Vector2(5,-10);
         Vector2 upperBodySpine2AttackRotation = new Vector2(5,-10);
-        LimbManager.limbState _upperAttack = new LimbManager.limbState(AttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm,quickTransitionTime);
+        LimbManager.limbState _upperAttack = new LimbManager.limbState(AttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm,quickTransitionTime,false);
         upperBodyAttack = new upperBodyState(_upperAttack,_upperAttack,this,upperBodySpine1AttackRotation,upperBodySpine2AttackRotation,Vector2.zero,attackStateDuration,false,attackStateDuration);
 
         //dash attack
-        LimbManager.limbState _dashAttack = new LimbManager.limbState(DashAttackObject.transform.GetChild(0).gameObject,dashAttackStateDuration,false,frontLeg,quickTransitionTime);
+        LimbManager.limbState _dashAttack = new LimbManager.limbState(DashAttackObject.transform.GetChild(0).gameObject,dashAttackStateDuration,false,frontLeg,quickTransitionTime,false);
         lowerBodyDashAttack = new lowerBodyState(_dashAttack,_dashAttack,this,attackStateDuration);
 
         Vector2 upperBodySpine1DashAttackRotation = new Vector2(10,-20);
         Vector2 upperBodySpine2DashAttackRotation = new Vector2(5,-10);
-        LimbManager.limbState _upperDashAttack = new LimbManager.limbState(DashAttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm,quickTransitionTime);
+        LimbManager.limbState _upperDashAttack = new LimbManager.limbState(DashAttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm,quickTransitionTime,false);
         upperBodyDashAttack = new upperBodyState(_upperDashAttack,_upperDashAttack,this,upperBodySpine1DashAttackRotation,upperBodySpine2DashAttackRotation,Vector2.zero,dashAttackStateDuration,false,dashAttackStateDuration);
 
         //drop attack
-        LimbManager.limbState _dropAttack = new LimbManager.limbState(DropAttackObject.transform.GetChild(0).gameObject,dropAttackStateDuration,false,frontLeg,quickTransitionTime);
+        LimbManager.limbState _dropAttack = new LimbManager.limbState(DropAttackObject.transform.GetChild(0).gameObject,dropAttackStateDuration,false,frontLeg,quickTransitionTime,false);
         lowerBodyDropAttack = new lowerBodyState(_dropAttack,_dropAttack,this,dropAttackStateDuration);
 
-        LimbManager.limbState _upperDropAttack = new LimbManager.limbState(DropAttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm,quickTransitionTime);
+        LimbManager.limbState _upperDropAttack = new LimbManager.limbState(DropAttackObject.transform.GetChild(1).gameObject,attackStateDuration,false,frontArm,quickTransitionTime,false);
         upperBodyDropAttack = new upperBodyState(_upperDropAttack,_upperDropAttack,this,Vector2.zero,Vector2.zero,Vector2.zero,dropAttackStateDuration,false,0);
 
         //hurt
-        LimbManager.limbState _hurt = new LimbManager.limbState(HurtObject.transform.GetChild(0).gameObject,0.1f,false,frontLeg,quickTransitionTime);
+        LimbManager.limbState _hurt = new LimbManager.limbState(HurtObject.transform.GetChild(0).gameObject,0.1f,false,frontLeg,quickTransitionTime,false);
         lowerBodyHurt = new lowerBodyState(_hurt,_hurt,this,1);
 
         Vector2 upperBodySpine2HurtRotation = new Vector2(30,30);
-        LimbManager.limbState _upperHurt = new LimbManager.limbState(HurtObject.transform.GetChild(1).gameObject,0.1f,false,frontArm,quickTransitionTime);
+        LimbManager.limbState _upperHurt = new LimbManager.limbState(HurtObject.transform.GetChild(1).gameObject,0.1f,false,frontArm,quickTransitionTime,false);
         upperBodyHurt = new upperBodyState(_upperHurt,_upperHurt,this,Vector2.zero,upperBodySpine2HurtRotation,Vector2.zero,1,false,hurtStateDuration);
 
 

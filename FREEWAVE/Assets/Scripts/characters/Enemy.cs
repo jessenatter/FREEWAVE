@@ -27,10 +27,6 @@ public class Enemy : Character
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-    }
-    protected override void Update()
-    {
-        base.Update();
 
         Vector2 playerEnemyVector = player.transform.position - transform.position;
     
@@ -88,10 +84,9 @@ public class Enemy : Character
 
     protected virtual void startChargingAttack()
     {
-        if(currentCharacterState != characterState.attacking && currentCharacterState != characterState.hurting)
-        {
-            chargingAttack = true;
-        }
+        if(currentCharacterState == characterState.attacking || currentCharacterState == characterState.hurting || chargingAttack) return;
+
+        chargingAttack = true;
     }
 
     protected override void Hurt(Vector2 hurtDir, float damage)
