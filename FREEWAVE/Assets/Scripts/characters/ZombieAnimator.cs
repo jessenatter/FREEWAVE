@@ -24,11 +24,11 @@ public class ZombieAnimator : CharacterAnimator
 
         chargeAttack = animationObjectHolder.transform.GetChild(7).gameObject;
         //charge attack
-        LimbManager.limbState _hurt = new LimbManager.limbState(chargeAttack.transform.GetChild(0).gameObject,0.1f,false,frontLeg,chargeAttackTime);
-        chargeAttackLower = new lowerBodyState(_hurt,_hurt,this,1);
+        LimbManager.limbState _chargeAttackLower = new LimbManager.limbState(chargeAttack.transform.GetChild(0).gameObject,chargeAttackTime,false,frontLeg,chargeAttackTime);
+        chargeAttackLower = new lowerBodyState(_chargeAttackLower,_chargeAttackLower,this,chargeAttackTime);
 
-        Vector2 upperBodySpine2HurtRotation = new Vector2(30,30);
-        LimbManager.limbState _upperHurt = new LimbManager.limbState(chargeAttack.transform.GetChild(1).gameObject,0.1f,false,frontArm,chargeAttackTime);
-        chargeAttackUpper = new upperBodyState(_upperHurt,_upperHurt,this,Vector2.zero,upperBodySpine2HurtRotation,Vector2.zero,1,false,hurtStateDuration);
+        Vector2 upperBodySpine2HurtRotation = new Vector2(-10,10);
+        LimbManager.limbState _chargeAttackUpper = new LimbManager.limbState(chargeAttack.transform.GetChild(1).gameObject,chargeAttackTime,false,frontArm,chargeAttackTime);
+        chargeAttackUpper = new upperBodyState( _chargeAttackUpper, _chargeAttackUpper,this,Vector2.zero,upperBodySpine2HurtRotation,Vector2.zero,chargeAttackTime,false,chargeAttackTime);
     }
 }

@@ -99,7 +99,7 @@ public class Zombie : Enemy
     {
         base.startChargingAttack();
 
-        if(chargingAttack)
+        if(currentCharacterState != characterState.attacking && currentCharacterState != characterState.hurting)
         {
             zombieAnimator.currentUpperBodyState = zombieAnimator.chargeAttackUpper;
             zombieAnimator.currentLowerBodyState = zombieAnimator.chargeAttackLower;
