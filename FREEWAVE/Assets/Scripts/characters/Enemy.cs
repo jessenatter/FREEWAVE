@@ -86,7 +86,7 @@ public class Enemy : Character
         base.OnTriggerEnter2D(collision);
     }
 
-    void startChargingAttack()
+    protected virtual void startChargingAttack()
     {
         if(currentCharacterState != characterState.attacking && currentCharacterState != characterState.hurting)
         {

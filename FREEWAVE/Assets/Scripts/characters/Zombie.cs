@@ -7,6 +7,7 @@ public class Zombie : Enemy
     float hasPlayerMoveSpeed = 1.5f, lookingForMeatMoveSpeed = .7f;
     Corpse currentCorpse;
     float eatingCorpseDistance = 0.75f;
+    ZombieAnimator zombieAnimator;
     enum zombieState
     {
         lookingForMeat,
@@ -30,6 +31,10 @@ public class Zombie : Enemy
         knockbackForce = 5f;
         hurtTimer = 30f;
         attackChargeTimer = 50f;
+        
+        zombieAnimator = GetComponent<ZombieAnimator>();
+
+        zombieAnimator.chargeAttackTime = attackChargeTimer;
     }
 
     protected override void FixedUpdate()
@@ -88,6 +93,17 @@ public class Zombie : Enemy
     protected override void Update()
     {
         base.Update();
+    }
+
+    protected override void startChargingAttack()
+    {
+        base.startChargingAttack();
+
+        if(chargingAttack)
+        {
+            zombieAnimator.currentUpperBodyState = zombieAnimator.chargeAttackUpper;
+            zombieAnimator.currentLowerBodyState = zombieAnimator.chargeAttackLower;
+        }
     }
 }
 

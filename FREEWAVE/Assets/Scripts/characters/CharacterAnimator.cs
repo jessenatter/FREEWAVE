@@ -62,7 +62,7 @@ public class CharacterAnimator : MonoBehaviour
     public upperBodyState currentUpperBodyState;
     upperBodyState prevUpperBodyState;
     
-    [SerializeField] GameObject animationObjectHolder;
+    [SerializeField] protected GameObject animationObjectHolder;
     GameObject IdleObject,RunObject,JumpObject,AttackObject,DashAttackObject,DropAttackObject,HurtObject;
 
     public lowerBodyState lowerBodyRun,lowerBodyJump,lowerBodyIdle;
