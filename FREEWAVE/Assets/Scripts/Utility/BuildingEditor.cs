@@ -22,6 +22,9 @@ public class BuildingMaker : MonoBehaviour
     [SerializeField] bool gameStarted = false;
     [SerializeField] bool reset;
 
+    [SerializeField] int targetSpriteLayer;
+    int lastSpriteLayer;
+
     int prevApartmentIndex;
 
     // Start is called before the first frame update
@@ -50,6 +53,11 @@ public class BuildingMaker : MonoBehaviour
                 Run();
                 prevApartmentType = ApartmentType;
             }
+            else if(lastSpriteLayer != targetSpriteLayer)
+            {
+                Run();
+                lastSpriteLayer = targetSpriteLayer;
+            }
         }
     }
 
@@ -74,6 +82,7 @@ public class BuildingMaker : MonoBehaviour
             building.transform.position = spawnPosition;
             building.transform.rotation = transform.rotation;
             building.transform.SetParent(transform);
+            building.GetComponent<SpriteRenderer>().sortingLayerID = targetSpriteLayer;
         }
 
         transform.rotation = Quaternion.Euler(0, 0, rotationInit);
