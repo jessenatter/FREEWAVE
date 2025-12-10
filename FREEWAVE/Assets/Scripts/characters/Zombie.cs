@@ -19,9 +19,7 @@ public class Zombie : Enemy
     protected override void Start()
     {    
         zombieAnimator = GetComponent<ZombieAnimator>();
-        zombieAnimator.chargeAttackTime = attackChargeTimer;
 
-        base.Start();
         lookingForMeatTimer += Random.Range(-200,200);
         restTimer += Random.Range(-200,200);
         damage = 1;
@@ -33,7 +31,9 @@ public class Zombie : Enemy
         attackCD = 5;
         knockbackForce = 5f;
         hurtTimer = 30f;
-        attackChargeTimer = 50f;
+        attackChargeTimer = 25f;
+
+        base.Start();
     }
 
     protected override void FixedUpdate()

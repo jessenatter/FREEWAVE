@@ -16,6 +16,7 @@ public class Building : MonoBehaviour
     [SerializeField] List<GameObject> lamps = new List<GameObject>();
     void Start()
     {
+        print("a");
         sr = transform.GetChild(0).GetComponent<SpriteRenderer>();
         spawnPos1 = transform.GetChild(5).gameObject;
         spawnPos2 = transform.GetChild(6).gameObject;
