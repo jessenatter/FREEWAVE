@@ -10,7 +10,7 @@ public class PlayerAnimator : CharacterAnimator
         upperBodyIdle.spine2rotation = new Vector2(3,-3);
         upperBodyIdle.headRotation = new Vector2(3,-3);
 
-        upperBodyRun.spine1rotation = new Vector2(-10,-15);
+        upperBodyRun.spine1rotation = new Vector2(-15,-20);
 
         upperBodyAttack.spine2rotation = new Vector2(5,-10);
         upperBodyAttack.spine1rotation = new Vector2(5,-10);
@@ -21,8 +21,9 @@ public class PlayerAnimator : CharacterAnimator
         upperBodyHurt.spine2rotation = new Vector2(20,20);
         upperBodyHurt.spine1rotation = new Vector2(10,10);
 
-        //set rotation durations
+        //set rotation durations (attack is preset)
         upperBodyIdle.rotationDuration = 100f;
         upperBodyRun.rotationDuration = 20f;
+        upperBodyHurt.rotationDuration = 20f;
     }
 }
