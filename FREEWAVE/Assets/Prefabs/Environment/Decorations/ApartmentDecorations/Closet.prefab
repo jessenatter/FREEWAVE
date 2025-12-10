@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4194516318993151696}
   - component: {fileID: 2265961269500567967}
   - component: {fileID: 5345076976337876051}
-  m_Layer: 10
+  - component: {fileID: -7095087893410942568}
+  m_Layer: 7
   m_Name: Closet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,3 +166,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.882005, y: 1.3049757}
   m_EdgeRadius: 0
+--- !u!114 &-7095087893410942568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008914945137356984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1f9cebf80ac4e91982790e6617b810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
+  startLayer: 7
+  endLayer: 10
+  changeLayerTimer: 150
+  destroyTimer: 1000
+  destroyOnSecondTimer: 0
+  waitForCollision: 1
+  _layer: 7

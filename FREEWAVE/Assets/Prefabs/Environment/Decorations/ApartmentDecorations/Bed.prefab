@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 3314171750296885246}
   - component: {fileID: 4092829473791554969}
   - component: {fileID: 698223610391956265}
-  m_Layer: 10
+  - component: {fileID: 643372378350074750}
+  m_Layer: 7
   m_Name: Bed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,3 +183,22 @@ MonoBehaviour:
   - {fileID: -2759113476042491826, guid: 8cd7338d4d3df45eba8bfaa4736e03fb, type: 3}
   - {fileID: 1868027585746212482, guid: 8cd7338d4d3df45eba8bfaa4736e03fb, type: 3}
   - {fileID: 2992699574073769297, guid: 8cd7338d4d3df45eba8bfaa4736e03fb, type: 3}
+--- !u!114 &643372378350074750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526180631554771925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1f9cebf80ac4e91982790e6617b810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
+  startLayer: 7
+  endLayer: 10
+  changeLayerTimer: 150
+  destroyTimer: 1000
+  destroyOnSecondTimer: 0
+  waitForCollision: 1
+  _layer: 7

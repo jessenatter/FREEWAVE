@@ -13,6 +13,8 @@ public class Manager : MonoBehaviour
     [HideInInspector]public CameraScript cam;
     [SerializeField] public GameObject mouseObject;
 
+    [HideInInspector]public List<Zombie> zombies = new List<Zombie>();
+
     [HideInInspector]public List<PickupAble> pickupAbles = new List<PickupAble>();
 
     [HideInInspector]public List<GameObject> corpses = new List<GameObject>();

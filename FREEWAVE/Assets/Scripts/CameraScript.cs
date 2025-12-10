@@ -7,12 +7,12 @@ public class CameraScript : MonoBehaviour
 
     GameObject target,player,ship,cursor;
 
-    float lerpSpeedxy = 10f, lerpSpeedz = 10f;
+    float lerpSpeedxy = 10f, lerpSpeedz = 3f;
     float initZ,initFOV;
 
-    float shipFOV = 80,playerFOV = 60,aimFOV = 70;
+    float shipFOV = 80,playerFOV = 60,aimFOV = 70,combatFOV = 50;
 
-    float shipZ = -10,playerZ = -8,aimZ = -9;
+    float shipZ = -10,playerZ = -8,aimZ = -9,combatZ = -7.5f;
     public Camera cameraComponent;
     
     Player playerScript;
@@ -50,13 +50,19 @@ public class CameraScript : MonoBehaviour
         {
             targetZ = playerZ;
             targetFOV = playerFOV;
-            lookAhead = new Vector2(0,1);
+            lookAhead = new Vector2(0,0.8f);
 
             if(playerScript.aiming)
             {
                 targetZ = aimZ;
                 targetFOV = aimFOV;
                 targetVector = Vector2.Lerp(player.transform.position,cursor.transform.position,.7f);
+            }
+            else if(playerScript.inCombat)
+            {
+                targetZ = combatZ;
+                targetFOV = combatFOV;
+                lookAhead = new Vector2(0,0.5f);
             }
         }
         else

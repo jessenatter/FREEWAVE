@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3509198790100441606}
   - component: {fileID: 5843341426018960347}
   - component: {fileID: 7410691939511962937}
-  m_Layer: 10
+  - component: {fileID: -6624436336200966785}
+  m_Layer: 7
   m_Name: Desk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,3 +166,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.62597656, y: 0.4170843}
   m_EdgeRadius: 0
+--- !u!114 &-6624436336200966785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905170917063701103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1f9cebf80ac4e91982790e6617b810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
+  startLayer: 7
+  endLayer: 10
+  changeLayerTimer: 150
+  destroyTimer: 1000
+  destroyOnSecondTimer: 0
+  waitForCollision: 1
+  _layer: 7

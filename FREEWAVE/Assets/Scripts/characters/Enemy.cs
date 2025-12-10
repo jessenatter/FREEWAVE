@@ -15,13 +15,16 @@ public class Enemy : Character
 
     float awarenessTimer = 1000,awarenessTimerCurrent;
 
-    [SerializeField] GameObject blood;
+    [SerializeField] GameObject blood,attackWarning;
+
+    Vector2 attackWarningScale;
 
     protected override void Start()
     {
         base.Start();
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        attackWarningScale = attackWarning.transform.localScale;
     }
 
     protected override void FixedUpdate()
@@ -65,6 +68,10 @@ public class Enemy : Character
 
         if(chargingAttack)
         {
+            float t = attackChargeTimerCurrent/attackChargeTimer;
+
+            attackWarning.transform.localScale = attackWarningScale * (1 - t);
+
             xInput = 0;
             attackChargeTimerCurrent++;
             if(attackChargeTimerCurrent == attackChargeTimer)
@@ -72,6 +79,7 @@ public class Enemy : Character
                 attackChargeTimerCurrent = 0;
                 chargingAttack = false;
                 currentCharacterState = characterState.movement;
+                attackWarning.SetActive(false);
                 Attack();
             }
         }
@@ -90,6 +98,7 @@ public class Enemy : Character
         currentCharacterState = characterState.idle;
         rb.linearVelocity = Vector2.zero;
         chargingAttack = true;
+        attackWarning.SetActive(true);
     }
 
     protected override void Hurt(Vector2 hurtDir, float damage)
@@ -102,6 +111,7 @@ public class Enemy : Character
 
         attackChargeTimerCurrent = 0;
         chargingAttack = false;
+        attackWarning.SetActive(false);
     }
 
     protected override void Die()

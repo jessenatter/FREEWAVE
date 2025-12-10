@@ -188,6 +188,7 @@ public class Character : MonoBehaviour
     {
         if(currentCharacterState != characterState.hurting)
         {
+            rb.linearVelocity = Vector2.zero;
             rb.AddForce(hurtDir * knockbackForce,ForceMode2D.Impulse);
             currentCharacterState = characterState.hurting;
             health -= damage;

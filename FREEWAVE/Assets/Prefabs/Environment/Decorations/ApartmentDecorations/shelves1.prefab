@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 6263037265514809725}
   - component: {fileID: 6340650970204655477}
   - component: {fileID: 1412829932442321657}
-  m_Layer: 10
+  - component: {fileID: 5586480372792363708}
+  m_Layer: 7
   m_Name: shelves1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,3 +166,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.46875, y: 1.3538147}
   m_EdgeRadius: 0
+--- !u!114 &5586480372792363708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7856285620551467508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1f9cebf80ac4e91982790e6617b810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
+  startLayer: 7
+  endLayer: 10
+  changeLayerTimer: 150
+  destroyTimer: 1000
+  destroyOnSecondTimer: 0
+  waitForCollision: 1
+  _layer: 7

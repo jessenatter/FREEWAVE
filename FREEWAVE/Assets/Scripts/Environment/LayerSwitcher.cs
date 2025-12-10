@@ -4,11 +4,14 @@ public class LayerSwitcher : MonoBehaviour
 {
     [SerializeField] int startLayer,endLayer;
 
-    float changeLayerTimer = 100;
+    [SerializeField]float changeLayerTimer = 100;
 
-    float destroyTimer = 1000;
+    [SerializeField]float destroyTimer = 1000;
 
-    [SerializeField] bool destroyOnSecondTimer;
+    [SerializeField] bool destroyOnSecondTimer,waitForCollision;
+    bool hasCollision;
+
+    [SerializeField] int _layer;
 
     void Start()
     {
@@ -22,19 +25,28 @@ public class LayerSwitcher : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(gameObject.layer == startLayer)
+        if(!waitForCollision || waitForCollision && hasCollision)
         {
-            changeLayerTimer--;
-            if(changeLayerTimer == 0)
+            if(gameObject.layer == startLayer)
             {
-                gameObject.layer = endLayer;
+                changeLayerTimer--;
+                if(changeLayerTimer == 0)
+                {
+                    gameObject.layer = endLayer;
+                }
+            }
+            else if(destroyOnSecondTimer)
+            {
+                destroyTimer--;
+                if(destroyTimer == 0)
+                    Destroy(gameObject);
             }
         }
-        else if(destroyOnSecondTimer)
-        {
-            destroyTimer--;
-            if(destroyTimer == 0)
-                Destroy(gameObject);
-        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer == _layer )
+            hasCollision = true; 
     }
 }

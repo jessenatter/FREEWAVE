@@ -27,13 +27,14 @@ public class Zombie : Enemy
         moveSpeed = 1.5f;
         jumpForce = 1.5f;
 
-        attackTimer = 15;
-        attackCD = 5;
-        knockbackForce = 5f;
+        attackTimer = 30;
+        attackCD = 15;
+        knockbackForce = 3f;
         hurtTimer = 30f;
-        attackChargeTimer = 25f;
+        attackChargeTimer = 20f;
 
         base.Start();
+        manager.zombies.Add(this);
     }
 
     protected override void FixedUpdate()
@@ -100,6 +101,12 @@ public class Zombie : Enemy
 
         zombieAnimator.currentUpperBodyState = zombieAnimator.chargeAttackUpper;
         zombieAnimator.currentLowerBodyState = zombieAnimator.chargeAttackLower;
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        manager.zombies.Remove(this);
     }
 }
 

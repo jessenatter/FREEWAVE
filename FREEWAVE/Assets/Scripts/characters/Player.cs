@@ -18,13 +18,18 @@ public class Player : Character
     CameraScript cam;
     float maxGrappleSpeed = 15f;
 
+    [HideInInspector] public bool inCombat;
+    
+    float combatCheckTimer = 70,combatCheckCurrent;
+    float inCombatTimer = 70,inCombatTimerCurrent;
+
     override protected void Start()
     {
         attackTimer = 15;
         attackCD = 5;
         knockbackForce = 5f;
-        dashAttackSpeed = 10f;
-        dashAttackTimer = 25f;
+        dashAttackSpeed = 7f;
+        dashAttackTimer = 20f;
         hurtTimer = 30f;
         
         base.Start();
@@ -56,6 +61,7 @@ public class Player : Character
     override protected void FixedUpdate() //rb stuff
     {
         base.FixedUpdate();
+        CheckCombat();
     }
 
     
@@ -265,6 +271,41 @@ public class Player : Character
     {
         ship.transform.position += new Vector3(0, 1f,0f);
         ship.rb.rotation = 0;
+    }
+
+    void CheckCombat()
+    {
+        float minDistance = 4f;
+        bool hasEnemy = false;
+
+        foreach(Zombie zombie in manager.zombies)
+        {
+            Vector2 _dist = zombie.transform.position - transform.position;
+            if(_dist.magnitude < minDistance)
+            {
+                hasEnemy = true;
+                inCombatTimerCurrent = 0;
+            }    
+        }
+
+        if(hasEnemy)
+            combatCheckCurrent++;
+        else
+        {
+            combatCheckCurrent = 0;
+            inCombatTimerCurrent++;
+            if(inCombatTimerCurrent == inCombatTimer)
+            {
+                inCombatTimerCurrent = 0;
+                inCombat = false;
+            }
+        }
+
+        if(combatCheckCurrent == combatCheckTimer)
+        {
+            combatCheckCurrent = 0;
+            inCombat = true;
+        }
     }
 
     protected override void Die()
