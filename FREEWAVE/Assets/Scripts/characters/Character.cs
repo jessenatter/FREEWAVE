@@ -24,8 +24,8 @@ public class Character : MonoBehaviour
     [HideInInspector]public characterState currentCharacterState = characterState.movement;
     float cayoteTimer = 10, cayoteTimerCurrent = 0;
     [HideInInspector]public float attackTimer = 15,attackTimerCurrent;
-    [HideInInspector]public float attackCD = 15,attackCDcurrent;
-    protected float dashAttackTimer = 25,dashAttackTimerCurrent;
+    [HideInInspector]public float attackCD = 10,attackCDcurrent; //use same cooldown for all attacks
+    [HideInInspector]public float dashAttackTimer = 25,dashAttackTimerCurrent;
     protected float hurtTimer = 30,hurtTimerCurrent;
     [HideInInspector]public bool characterIsActive,getAttackInput,groundedHit;
     GameObject attackCollider,downAttackCollider;
@@ -48,7 +48,10 @@ public class Character : MonoBehaviour
         downAttackCollider = transform.GetChild(1).gameObject;
 
         characterAnimator = GetComponent<CharacterAnimator>();
-        characterAnimator.attackStateDuration = attackTimer;
+        //set chr animator values
+        characterAnimator.runStateDuration = 30f;
+        characterAnimator.idleStateDuration = 150f;
+        
         characterAnimator.CharacterAnimatorStart();
     }
     protected virtual void Update()
@@ -156,8 +159,9 @@ public class Character : MonoBehaviour
     }
     protected virtual void DashAttack()
     {
-        if(currentCharacterState == characterState.movement)
+        if(currentCharacterState == characterState.movement && canAttack)
         {
+            canAttack = false;
             currentCharacterState = characterState.dashAttacking;
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDashAttack;
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDashAttack;
@@ -169,7 +173,7 @@ public class Character : MonoBehaviour
     }
     protected virtual void DownAttack()
     {
-        if(currentCharacterState == characterState.movement)
+        if(currentCharacterState == characterState.movement && canAttack)
         {
             currentCharacterState = characterState.attackingDown;
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDropAttack;
@@ -177,6 +181,7 @@ public class Character : MonoBehaviour
             downAttackCollider.SetActive(true);
             rb.linearVelocity = Vector2.zero;
             rb.gravityScale = 5f;
+            canAttack = false;
         }
     }
     protected virtual void Hurt(Vector2 hurtDir,float damage)

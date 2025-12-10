@@ -237,9 +237,11 @@ public class Player : Character
     override protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (currentCharacterState == characterState.hurting) return;
-
-        Enemy enemy = collision.gameObject.transform.parent.GetComponent<Enemy>();
-        damageToRecive = enemy.damage;
+        
+        //set up a real way to do this
+        //Enemy enemy = collision.gameObject.transform.parent.GetComponent<Enemy>();
+        //damageToRecive = enemy.damage;
+        damageToRecive = 1f;
         base.OnTriggerEnter2D(collision);
     }
 
