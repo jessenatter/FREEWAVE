@@ -2,9 +2,10 @@ Shader "Custom/DarkenAndBlurByDepth2D_Mip"
 {
     Properties {
         _MainTex("Sprite", 2D) = "white" {}
-        _ZMin("Brightest Z", Float) = 0
-        _ZMax("Darkest Z", Float) = -10
-        _MaxMip("Max Blur Mip Level", Float) = 5
+        _NormalMap("Normal Map", 2D) = "bump"{}
+        _NormalStrength("Normal Strength", Float) = 0.05
+        _Speed("Speed", Float) = 0.5
+        _Scale("Scale",Float) = 0.5
     }
 
     SubShader {
@@ -27,15 +28,17 @@ Shader "Custom/DarkenAndBlurByDepth2D_Mip"
             struct Varyings {
                 float4 pos : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                float worldZ : TEXCOORD1;
             };
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
 
-            float _ZMin;
-            float _ZMax;
-            float _MaxMip;
+            TEXTURE2D(_NormalMap);
+            SAMPLER(sampler_NormalMap);
+
+            float _NormalStrength;  
+            float _Speed;
+            float _Scale;
 
             Varyings vert(Attributes v)
             {
@@ -43,21 +46,28 @@ Shader "Custom/DarkenAndBlurByDepth2D_Mip"
                 o.pos = TransformObjectToHClip(v.vertex);
                 o.uv = v.uv;
 
-                float3 worldPos = TransformObjectToWorld(v.vertex).xyz;
-                o.worldZ = worldPos.z;
-
                 return o;
             }
 
             float4 frag(Varyings i) : SV_Target
             {
-                float t = saturate((i.worldZ - _ZMin)/(_ZMax - _ZMin));
+                float time = _Time.y * (.1 + (.5 * _Speed));
+                float2 uv = i.uv;
+                float2 normalUV = uv;
+                normalUV.y += _Time.y * 0.03;
+                float3 _normal = SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, normalUV * (1 + _Scale)).rgb;
+                _normal = _normal * 2.0 - 1.0;
 
-                float mipLevel = t * _MaxMip;
+                float2 warp = float2(_normal.r, _normal.g) * _NormalStrength;
 
-                float4 col = SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv, mipLevel);
+                float wave = (sin(time) + 1.0) * 0.5;
+                float _base = 0.4;
+                float intensity = _base + wave * (1-_base); 
+                warp *= intensity;
 
-                col.rgb *= (1.0 - t);
+                float2 warpedUV = uv + warp;
+
+                float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, warpedUV);
 
                 return col;
             }
