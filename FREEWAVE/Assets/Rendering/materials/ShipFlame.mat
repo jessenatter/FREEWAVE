@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FireParticle
+  m_Name: ShipFlame
   m_Shader: {fileID: -6465566751694194690, guid: 37a9cba6804d24c818e4bb6f349b48b3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -109,7 +109,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 5.9921575, g: 5.9921575, b: 5.9921575, a: 1}
+    - _Color: {r: 5.069822, g: 3.1690998, b: 2.4631684, a: 1}
     - _EmissionColor: {r: 2, g: 2, b: 2, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
