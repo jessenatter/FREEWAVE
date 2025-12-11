@@ -23,7 +23,7 @@ TagManager:
   - EnemyAttackCollider
   - Player
   - Enemy
-  - 
+  - Foreground
   - 
   - 
   - 
@@ -70,6 +70,15 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 966635803
+    locked: 0
+  - name: Foreground1
+    uniqueID: 798950809
+    locked: 0
+  - name: Foreground2
+    uniqueID: 2237380939
+    locked: 0
+  - name: Foreground3
+    uniqueID: 2805498937
     locked: 0
   m_RenderingLayers:
   - Default
