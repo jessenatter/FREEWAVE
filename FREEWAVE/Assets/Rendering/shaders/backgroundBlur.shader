@@ -57,6 +57,13 @@ Shader "Custom/DarkenAndBlurByDepth2D_Mip"
 
                 float4 col = SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv, mipLevel);
 
+                float2 offset = 1.0 / float2(2048, 2048);
+                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv + float2(offset.x, 0), mipLevel);
+                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv - float2(offset.x, 0), mipLevel);
+                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv + float2(0, offset.y), mipLevel);
+                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv - float2(0, offset.y), mipLevel);
+                col /= 5.0;
+
                 col.rgb *= (1.0 - t);
 
                 return col;
