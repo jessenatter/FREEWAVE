@@ -17,6 +17,7 @@ public class Building : MonoBehaviour
     void Start()
     {
         sr = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
         spawnPos1 = transform.GetChild(5).gameObject;
         spawnPos2 = transform.GetChild(6).gameObject;
         lampSpawnPos = transform.GetChild(7).gameObject;

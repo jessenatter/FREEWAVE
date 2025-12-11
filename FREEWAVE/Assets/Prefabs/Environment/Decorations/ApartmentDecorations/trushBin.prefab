@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7506606090537920711}
   - component: {fileID: 6146409327806255730}
   - component: {fileID: -911536922339050129}
-  m_Layer: 7
+  m_Layer: 16
   m_Name: trushBin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

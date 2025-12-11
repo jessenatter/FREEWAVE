@@ -22,6 +22,7 @@ public class Manager : MonoBehaviour
 
     float playerRespawnTimer = 50,playerRespawnCurrent;
     bool playerDead = false;
+
     void Awake() //awake runs before start 
     {
         moveAction = InputSystem.actions.FindAction("Move");
@@ -71,4 +72,5 @@ public class Manager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+    
 }

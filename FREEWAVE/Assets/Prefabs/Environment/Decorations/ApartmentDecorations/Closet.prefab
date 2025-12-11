@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2265961269500567967}
   - component: {fileID: 5345076976337876051}
   - component: {fileID: -7095087893410942568}
-  m_Layer: 7
+  m_Layer: 16
   m_Name: Closet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
