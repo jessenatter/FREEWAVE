@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 34951}
   - component: {fileID: 34952}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2299,7 +2299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 22962901}
   - component: {fileID: 22962902}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8536,7 +8536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 121643868}
   - component: {fileID: 121643869}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8626,7 +8626,7 @@ GameObject:
   m_Component:
   - component: {fileID: 121877660}
   - component: {fileID: 121877661}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8716,7 +8716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 123284074}
   - component: {fileID: 123284075}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9610,7 +9610,7 @@ GameObject:
   m_Component:
   - component: {fileID: 138714437}
   - component: {fileID: 138714438}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13180,7 +13180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 192256415}
   - component: {fileID: 192256416}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14101,6 +14101,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 76.155396
@@ -14984,7 +14988,7 @@ GameObject:
   m_Component:
   - component: {fileID: 220576474}
   - component: {fileID: 220576475}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15195,7 +15199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224974898}
   - component: {fileID: 224974899}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18452,7 +18456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 280083686}
   - component: {fileID: 280083687}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18542,7 +18546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 280281944}
   - component: {fileID: 280281945}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19186,7 +19190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 286706368}
   - component: {fileID: 286706369}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20565,7 +20569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 314120124}
   - component: {fileID: 314120125}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22245,7 +22249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 338650856}
   - component: {fileID: 338650857}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22325,6 +22329,108 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &341660984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 341660985}
+  - component: {fileID: 341660988}
+  - component: {fileID: 341660987}
+  - component: {fileID: 341660986}
+  m_Layer: 15
+  m_Name: SkyCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &341660985
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341660984}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -46.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1315426642}
+  m_Father: {fileID: 616033325}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1027, y: 538}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &341660986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341660984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &341660987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341660984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &341660988
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341660984}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: -1489468359
+  m_SortingOrder: -1000
+  m_TargetDisplay: 0
 --- !u!1 &343485911
 GameObject:
   m_ObjectHideFlags: 0
@@ -24558,6 +24664,10 @@ PrefabInstance:
     - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_Name
       value: WholeBuilding (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -27484,7 +27594,7 @@ GameObject:
   m_Component:
   - component: {fileID: 479353842}
   - component: {fileID: 479353843}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28063,7 +28173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 490792887}
   - component: {fileID: 490792888}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28263,6 +28373,10 @@ PrefabInstance:
     - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_Name
       value: WholeBuilding (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -32779,6 +32893,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 57.30539
@@ -33772,7 +33890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &581403978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34763,7 +34881,7 @@ GameObject:
   m_Component:
   - component: {fileID: 593882403}
   - component: {fileID: 593882404}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35851,7 +35969,7 @@ GameObject:
   m_Component:
   - component: {fileID: 614557473}
   - component: {fileID: 614557474}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35931,6 +36049,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &616033325 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3471360793377909710, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+  m_PrefabInstance: {fileID: 1917210416}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &624055177
 GameObject:
   m_ObjectHideFlags: 0
@@ -38017,6 +38140,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.8553915
@@ -38215,7 +38342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 677933186}
   - component: {fileID: 677933187}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39231,7 +39358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 707115827}
   - component: {fileID: 707115828}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39610,7 +39737,7 @@ GameObject:
   m_Component:
   - component: {fileID: 720772505}
   - component: {fileID: 720772506}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40532,7 +40659,7 @@ GameObject:
   m_Component:
   - component: {fileID: 729717295}
   - component: {fileID: 729717296}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40622,7 +40749,7 @@ GameObject:
   m_Component:
   - component: {fileID: 733179670}
   - component: {fileID: 733179671}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42572,7 +42699,7 @@ GameObject:
   m_Component:
   - component: {fileID: 779563447}
   - component: {fileID: 779563448}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44242,7 +44369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806286145}
   - component: {fileID: 806286146}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45019,7 +45146,7 @@ GameObject:
   m_Component:
   - component: {fileID: 823764385}
   - component: {fileID: 823764386}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45952,7 +46079,7 @@ GameObject:
   m_Component:
   - component: {fileID: 833007693}
   - component: {fileID: 833007694}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46042,7 +46169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 834577705}
   - component: {fileID: 834577706}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46132,7 +46259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 840748772}
   - component: {fileID: 840748773}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46947,7 +47074,7 @@ GameObject:
   m_Component:
   - component: {fileID: 856001919}
   - component: {fileID: 856001920}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48005,7 +48132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 880599492}
   - component: {fileID: 880599493}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48704,7 +48831,7 @@ GameObject:
   m_Component:
   - component: {fileID: 894881736}
   - component: {fileID: 894881737}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49965,7 +50092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 924931828}
   - component: {fileID: 924931829}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50906,7 +51033,7 @@ GameObject:
   m_Component:
   - component: {fileID: 936419533}
   - component: {fileID: 936419534}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53973,7 +54100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 984330779}
   - component: {fileID: 984330780}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54172,7 +54299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 988394068}
   - component: {fileID: 988394069}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54415,7 +54542,7 @@ GameObject:
   m_Component:
   - component: {fileID: 991257453}
   - component: {fileID: 991257454}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55380,7 +55507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 999638680}
   - component: {fileID: 999638681}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55471,6 +55598,10 @@ PrefabInstance:
     - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_Name
       value: WholeBuilding (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -56247,7 +56378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1028179885}
   - component: {fileID: 1028179886}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56476,6 +56607,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.64
@@ -56574,7 +56709,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1030902337}
   - component: {fileID: 1030902338}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57708,6 +57843,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -16.41539
@@ -58840,7 +58979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1064736092}
   - component: {fileID: 1064736093}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58930,7 +59069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1065225442}
   - component: {fileID: 1065225443}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59020,7 +59159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1070108368}
   - component: {fileID: 1070108369}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60368,7 +60507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1097202009}
   - component: {fileID: 1097202010}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60820,6 +60959,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -16.41539
@@ -61093,7 +61236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1101728899}
   - component: {fileID: 1101728900}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62009,7 +62152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1112856716}
   - component: {fileID: 1112856717}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63164,7 +63307,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1124796051}
   - component: {fileID: 1124796052}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64699,7 +64842,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1148246278}
   - component: {fileID: 1148246279}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66013,7 +66156,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1172373057}
   - component: {fileID: 1172373058}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67903,7 +68046,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1207594322}
   - component: {fileID: 1207594323}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68472,7 +68615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1221079553}
   - component: {fileID: 1221079554}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69102,6 +69245,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 34.6
@@ -69340,7 +69487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1233342638}
   - component: {fileID: 1233342639}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69944,6 +70091,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 53.09
@@ -70129,7 +70280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1249754943}
   - component: {fileID: 1249754944}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72065,7 +72216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1277352659}
   - component: {fileID: 1277352660}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72651,7 +72802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1280454337}
   - component: {fileID: 1280454338}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74186,6 +74337,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 71.94
@@ -74271,6 +74426,78 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
   m_PrefabInstance: {fileID: 1311135819}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1315426641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1315426642}
+  - component: {fileID: 1315426644}
+  - component: {fileID: 1315426643}
+  m_Layer: 15
+  m_Name: Sky
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1315426642
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315426641}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 127.733025, y: 127.733025, z: 0.85155356}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 341660985}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 36.9, y: 36.9}
+  m_SizeDelta: {x: 5, y: 2.5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1315426643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315426641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 1873b59a950564b759983ebb54393231, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 9abd621faa27143c8b60a08c8da6851a, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &1315426644
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315426641}
+  m_CullTransparentMesh: 1
 --- !u!1 &1320657938
 GameObject:
   m_ObjectHideFlags: 0
@@ -75389,7 +75616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1341778043}
   - component: {fileID: 1341778044}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76716,7 +76943,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1373930313}
   - component: {fileID: 1373930314}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77126,7 +77353,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1381691359}
   - component: {fileID: 1381691360}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78072,7 +78299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1399624042}
   - component: {fileID: 1399624043}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78638,7 +78865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1409029074}
   - component: {fileID: 1409029075}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78729,6 +78956,10 @@ PrefabInstance:
     - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_Name
       value: WholeBuilding (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -79314,7 +79545,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1424113482}
   - component: {fileID: 1424113483}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81016,7 +81247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1466202835}
   - component: {fileID: 1466202836}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84379,7 +84610,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1526703720}
   - component: {fileID: 1526703721}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84469,7 +84700,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1528258317}
   - component: {fileID: 1528258318}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86297,6 +86528,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WholeBuilding (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 38.81539
@@ -86825,7 +87060,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1575119382}
   - component: {fileID: 1575119383}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87024,7 +87259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1582957643}
   - component: {fileID: 1582957644}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87986,7 +88221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1589697667}
   - component: {fileID: 1589697668}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88539,7 +88774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1600398582}
   - component: {fileID: 1600398583}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89214,7 +89449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1611351216}
   - component: {fileID: 1611351217}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89976,7 +90211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1626476922}
   - component: {fileID: 1626476923}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90066,7 +90301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1628201866}
   - component: {fileID: 1628201867}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93680,7 +93915,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1702300593}
   - component: {fileID: 1702300594}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98738,7 +98973,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1803056728}
   - component: {fileID: 1803056729}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98829,6 +99064,10 @@ PrefabInstance:
     - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_Name
       value: WholeBuilding (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -100749,7 +100988,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1837291372}
   - component: {fileID: 1837291373}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101376,6 +101615,10 @@ PrefabInstance:
     - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_Name
       value: WholeBuilding (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -104294,7 +104537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1906240935}
   - component: {fileID: 1906240936}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104851,6 +105094,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 247488142356301021, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 313016550372745821, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -104862,6 +105109,10 @@ PrefabInstance:
     - target: {fileID: 334895211852631665, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.9981003
+      objectReference: {fileID: 0}
+    - target: {fileID: 474352582995616897, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 819554203298140469, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -108983,6 +109234,10 @@ PrefabInstance:
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[53].Array.data[3].Y
       value: -225151216
       objectReference: {fileID: 0}
+    - target: {fileID: 1282643821375750252, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1671986345067145910, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -109002,6 +109257,10 @@ PrefabInstance:
     - target: {fileID: 1972973967806076947, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.2750745
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462083054166338335, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2690480379673079753, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -109051,6 +109310,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.26446667
       objectReference: {fileID: 0}
+    - target: {fileID: 3515789986459554626, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633757805240184948, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3716652861796798207, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_ShadowMesh.m_Mesh
       value: 
@@ -109058,6 +109325,14 @@ PrefabInstance:
     - target: {fileID: 3857372335590130095, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_Name
       value: Level
+      objectReference: {fileID: 0}
+    - target: {fileID: 3878844678838970553, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3928565429045714986, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4071307552865926689, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_SortingLayer
@@ -109087,9 +109362,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 36.9
       objectReference: {fileID: 0}
+    - target: {fileID: 4153246046053326078, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4761135812783341198, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4816099650684306514, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4823921602399065450, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: reset
@@ -109131,6 +109414,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.053705674
       objectReference: {fileID: 0}
+    - target: {fileID: 6052003926532194165, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6486205964334867510, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_SortingLayer
       value: 5
@@ -109147,6 +109434,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 798950809
       objectReference: {fileID: 0}
+    - target: {fileID: 6970807775631025680, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7197756635166187161, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_ShadowMesh.m_Mesh
       value: 
@@ -109158,6 +109449,10 @@ PrefabInstance:
     - target: {fileID: 7410331539482769234, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.8180357
+      objectReference: {fileID: 0}
+    - target: {fileID: 7659453694113006358, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7731657022657771143, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -113719,6 +114014,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[12].second.m_TileSpriteIndex
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 8244573593659366977, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8815291856487934386, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       propertyPath: m_ShadowMesh.m_Mesh
       value: 
@@ -113760,6 +114059,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7413012704151060763, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 556027769}
+    - targetCorrespondingSourceObject: {fileID: 3471360793377909710, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 341660985}
     - targetCorrespondingSourceObject: {fileID: 6206192915956850677, guid: b6741cdbf8bd94e5ab83614f6e0992a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1098451352}
@@ -116206,7 +116508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1967671178}
   - component: {fileID: 1967671179}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117196,6 +117498,10 @@ PrefabInstance:
     - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_Name
       value: WholeBuilding
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -118228,7 +118534,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2019968247}
   - component: {fileID: 2019968248}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119271,7 +119577,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2038865390}
   - component: {fileID: 2038865391}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120616,6 +120922,10 @@ PrefabInstance:
     - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_Name
       value: WholeBuilding (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036523909305928218, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6626975486286176695, guid: 2e900a24d6e204d0185c7aa822d403e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -122968,7 +123278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2099668546}
   - component: {fileID: 2099668547}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124045,7 +124355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2132750125}
   - component: {fileID: 2132750126}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BackgroundBuilding Variant 1(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
