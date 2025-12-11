@@ -82,7 +82,7 @@ public class BuildingMaker : MonoBehaviour
             building.transform.position = spawnPosition;
             building.transform.rotation = transform.rotation;
             building.transform.SetParent(transform);
-            building.GetComponent<SpriteRenderer>().sortingLayerID = targetSpriteLayer;
+            building.GetComponent<SpriteRenderer>().sortingLayerName = SortingLayer.layers[targetSpriteLayer].name;
         }
 
         transform.rotation = Quaternion.Euler(0, 0, rotationInit);
