@@ -8,15 +8,19 @@ public class Character : PrimaryClass
     public GameObject gameObject,spine1,spine2, head;
     public Limb frontArm, backArm, frontLeg, backLeg;
     public float armMaxRadius, legMaxRadius;
+
     protected List<Limb> limbs = new List<Limb>();
     protected List<Limb> arms = new List<Limb>();
     protected List<Limb> legs = new List<Limb>();
+
     public int xDir;
     public Rigidbody2D rb;
     public BoxCollider2D bc;
     public SpriteRenderer sr;
     public Vector2 spawnPoint,climbPoint;
-    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.5f,tiltRotation = 15,runAnimationDuration = 75;
+    public bool grounded, canJump = true,canAttack;
+    public float moveSpeed = 1f,jumpForce = 5f, rotationLerp = 0.5f,tiltRotation = 15,runAnimationDuration = 75,groundedCD = 10, groundedTimer;
+
     public UpperBodyState currentUpperBodyState;
     public LowerBodyState currentLowerBodyState;
 
@@ -24,14 +28,13 @@ public class Character : PrimaryClass
     public LowerBodyRun lowerBodyRun = new LowerBodyRun();
     public LowerBodyJump lowerBodyJump = new LowerBodyJump();
     public LowerBodyClimb lowerBodyClimb = new LowerBodyClimb();
+    public LowerBodyAttack lowerBodyAttack = new LowerBodyAttack();
 
     public UpperBodyIdle upperBodyIdle = new UpperBodyIdle();
     public UpperBodyRun upperBodyRun = new UpperBodyRun();
     public UpperBodyJump upperBodyJump = new UpperBodyJump();
     public UpperBodyClimb upperBodyClimb = new UpperBodyClimb();
-
-    public bool grounded,canJump = true;
-    protected float groundedCD = 10, groundedTimer;
+    public UpperBodyAttack upperBodyAttack = new UpperBodyAttack();
 
     override public void Start(Manager _manager)
     {
@@ -65,7 +68,7 @@ public class Character : PrimaryClass
         legMaxRadius = frontLeg.lengthCmax;
 
         List<BodyState> _bodyStates = new List<BodyState>();
-        _bodyStates.AddRange(new BodyState[] { lowerBodyIdle,lowerBodyJump,lowerBodyRun,upperBodyIdle,upperBodyJump,upperBodyRun,lowerBodyClimb,upperBodyClimb });
+        _bodyStates.AddRange(new BodyState[] { lowerBodyIdle,lowerBodyJump,lowerBodyRun,upperBodyIdle,upperBodyJump,upperBodyRun,lowerBodyClimb,upperBodyClimb,lowerBodyAttack,upperBodyAttack });
 
         foreach (BodyState bodyState in _bodyStates)
             bodyState.Start(this);
@@ -155,6 +158,15 @@ public class Character : PrimaryClass
         }
     }
 
+    protected void Attack()
+    {
+        if (canAttack)
+        {
+            currentLowerBodyState.StateExit(lowerBodyAttack);
+            currentUpperBodyState.StateExit(upperBodyAttack);
+        }
+    }
+
     protected void UpdateRotations()
     {
         float tilt = Mathf.LerpAngle(0, currentLowerBodyState.rotation, rotationLerp);
@@ -189,6 +201,9 @@ public class Player : Character
 
         if (manager.jumpAction.IsPressed())
             Jump();
+
+        if (manager.attackAction.IsPressed())
+            Attack();
 
         base.Update();
     }
