@@ -1,0 +1,141 @@
+using System;
+using UnityEngine;
+
+public class CameraScript : MonoBehaviour
+{
+    Manager manager;
+
+    GameObject target,player,ship,cursor;
+
+    float lerpSpeedxy = 10f, lerpSpeedz = 3f;
+    float initZ,initFOV;
+
+    float shipFOV = 80,playerFOV = 60,aimFOV = 70,combatFOV = 50;
+
+    float shipZ = -10,playerZ = -8,aimZ = -9,combatZ = -7.5f;
+    public Camera cameraComponent;
+    
+    Player playerScript;
+
+    bool screenShaking;
+    Vector2 shakeVector,initCameraPos;
+    float screenShakeTimer = 20f, screenShakeTimerCurrent;
+    float screenShakeStrength;
+    void Start()
+    {
+        manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        ship = GameObject.FindGameObjectWithTag("Ship");
+
+        cameraComponent = GetComponent<Camera>();
+
+        initZ = transform.position.z;
+        initFOV = cameraComponent.fieldOfView;
+
+        playerScript = player.GetComponent<Player>();
+
+        target = player;
+        cursor = manager.mouseObject;
+    }
+
+    void Update()
+    {
+        Vector2 targetVector = target.transform.position;
+
+        float targetZ = initZ;
+        float targetFOV = initFOV;
+        Vector2 lookAhead = Vector2.zero;
+
+        if((playerScript.characterIsActive))
+        {
+            targetZ = playerZ;
+            targetFOV = playerFOV;
+            lookAhead = new Vector2(0,0.8f);
+
+            if(playerScript.aiming)
+            {
+                targetZ = aimZ;
+                targetFOV = aimFOV;
+                targetVector = Vector2.Lerp(player.transform.position,cursor.transform.position,.7f);
+            }
+            else if(playerScript.inCombat)
+            {
+                targetZ = combatZ;
+                targetFOV = combatFOV;
+                lookAhead = new Vector2(0,0.5f);
+            }
+        }
+        else
+        {
+            targetZ = shipZ;
+            targetFOV = shipFOV;
+        }
+
+        float _x = Mathf.Lerp(transform.position.x, targetVector.x + lookAhead.x, lerpSpeedxy * Time.deltaTime);
+        float _y = Mathf.Lerp(transform.position.y, targetVector.y + lookAhead.y, lerpSpeedxy * Time.deltaTime);
+        float _z = Mathf.Lerp(transform.position.z, targetZ, lerpSpeedz * Time.deltaTime);
+        float FOV = Mathf.Lerp(cameraComponent.fieldOfView,targetFOV,lerpSpeedz * Time.deltaTime);
+
+        cameraComponent.fieldOfView = FOV;
+        transform.position = new Vector3(_x, _y, _z);
+
+        UpdateScreenShake();
+    }
+
+    void FixedUpdate()
+    {
+        UpdateScreenShakeTimer();
+    }
+
+    public void EnterShip()
+    {
+        target = ship;
+    }
+    
+    public void ExitShip()
+    {
+        target = player;
+    }
+
+    public void StartScreenShake(float duration,float strength)
+    {
+        if (!screenShaking)
+        {
+            screenShaking = true;
+            screenShakeTimer = duration;
+            screenShakeStrength = strength; //.1 is a good base
+        }
+    }
+
+    void UpdateScreenShakeTimer()
+    {
+        if (screenShaking)
+        {
+            screenShakeTimerCurrent++;
+            if (screenShakeTimerCurrent >= screenShakeTimer)
+            {
+                screenShakeTimerCurrent = 0;
+                screenShaking = false;
+            }
+        }
+    }
+    void UpdateScreenShake()
+    {
+        float lerpSpeed = 0.1f;
+        float amplitude = 20f;
+
+        if (screenShaking)
+        {
+            float t = screenShakeTimerCurrent / screenShakeTimer;
+            shakeVector.x = Mathf.Sin(t * amplitude) * screenShakeStrength;
+            shakeVector.y = Mathf.Cos(t * amplitude) * screenShakeStrength;
+        }
+        else
+            shakeVector = Vector2.zero;
+
+        float _x = Mathf.Lerp(gameObject.transform.position.x, initCameraPos.x + shakeVector.x, lerpSpeed);
+        float _y = Mathf.Lerp(gameObject.transform.position.y, initCameraPos.y + shakeVector.y, lerpSpeed);
+        
+        gameObject.transform.position += (Vector3)shakeVector;
+    }
+}
