@@ -21,27 +21,27 @@ public class LimbManager : MonoBehaviour
         public float duration,transitionDuration;
         public bool loop,startAtPos1,useBackLimbOffset;
 
-        public limbState(GameObject pointsObject,float _duration,bool _loop,LimbManager limbManager,float _transitionDuration,bool _useBackLimbOffset) 
+        public limbState(GameObject pointsContainer,float _duration,bool _loop,LimbManager limbManager,float _transitionDuration,bool _useBackLimbOffset) 
         {
             transitionDuration = _transitionDuration;
 
-            if(pointsObject.gameObject.tag != "usesSeperateLimbs")
+            if(pointsContainer.gameObject.tag != "usesSeperateLimbs")
             {
-                if(pointsObject.transform.childCount == 0)
+                if(pointsContainer.transform.childCount == 0)
                     points.Add(Vector2.zero);
                 else
                 {
-                    for(int i = 0; i < pointsObject.transform.childCount; i++)
+                    for(int i = 0; i < pointsContainer.transform.childCount; i++)
                     {
-                        Vector2 point = ((Vector2)pointsObject.transform.GetChild(i).transform.position - (Vector2)limbManager.orgin.transform.position) - limbManager.initOffsetFromOrgin ;
+                        Vector2 point = ((Vector2)pointsContainer.transform.GetChild(i).transform.position - (Vector2)limbManager.orgin.transform.position) - limbManager.initOffsetFromOrgin ;
                         points.Add(point);
                     }
                 }
             }
             else
             {
-                GameObject frontLimb = pointsObject.transform.GetChild(0).gameObject;
-                GameObject backLimb = pointsObject.transform.GetChild(1).gameObject;
+                GameObject frontLimb = pointsContainer.transform.GetChild(0).gameObject;
+                GameObject backLimb = pointsContainer.transform.GetChild(1).gameObject;
 
                 if(frontLimb.transform.childCount == 0)
                     points.Add(Vector2.zero);
