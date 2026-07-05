@@ -1,0 +1,754 @@
+fileFormatVersion: 2
+guid: a4d2a536744464457a5802a01e73c89a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1765029362126622779
+    second: Limbs_0
+  - first:
+      213: 9064402280959877471
+    second: Limbs_1
+  - first:
+      213: 559496192776655164
+    second: Limbs_2
+  - first:
+      213: -4574438248607014616
+    second: Limbs_3
+  - first:
+      213: 4463710113486815038
+    second: Limbs_4
+  - first:
+      213: 5554253923427295963
+    second: Limbs_5
+  - first:
+      213: 7539990414017635929
+    second: Limbs_6
+  - first:
+      213: -9093410989509778074
+    second: Limbs_7
+  - first:
+      213: -6351226165303710109
+    second: Limbs_8
+  - first:
+      213: -2331156261428060992
+    second: Limbs_9
+  - first:
+      213: -1898137378473693081
+    second: Limbs_10
+  - first:
+      213: 3465160805993630364
+    second: Limbs_11
+  - first:
+      213: 7259049903301597195
+    second: Limbs_12
+  - first:
+      213: 7982460173393937480
+    second: Limbs_13
+  - first:
+      213: 7775783440726870291
+    second: Limbs_14
+  - first:
+      213: 7027381988887157903
+    second: Limbs_15
+  - first:
+      213: 1983896481444119487
+    second: Limbs_16
+  - first:
+      213: 5730906038360614455
+    second: Limbs_17
+  - first:
+      213: -6202715500582931018
+    second: Limbs_18
+  - first:
+      213: -7481093092028125885
+    second: Limbs_19
+  - first:
+      213: 8311563526038831402
+    second: Limbs_20
+  - first:
+      213: 89881735709958557
+    second: Limbs_21
+  - first:
+      213: -844316497938447556
+    second: Limbs_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 2048
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bicep5
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 1555
+        width: 178
+        height: 439
+      alignment: 9
+      pivot: {x: 0.47347683, y: 0.8548868}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cfee4c852b5187e0800000000000000
+      internalID: -1765029362126622779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bicep4
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1554
+        width: 179
+        height: 424
+      alignment: 9
+      pivot: {x: 0.43406278, y: 0.8674417}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f51aad969d93bcd70800000000000000
+      internalID: 9064402280959877471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Biecp3
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 1528
+        width: 164
+        height: 415
+      alignment: 9
+      pivot: {x: 0.41363898, y: 0.82421815}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c31d2afa2dab3c700800000000000000
+      internalID: 559496192776655164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bicep2
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 1562
+        width: 210
+        height: 458
+      alignment: 9
+      pivot: {x: 0.46627778, y: 0.81954837}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 821a1d836a45480c0800000000000000
+      internalID: -4574438248607014616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bicep1
+      rect:
+        serializedVersion: 2
+        x: 1272
+        y: 1637
+        width: 163
+        height: 411
+      alignment: 9
+      pivot: {x: 0.47103637, y: 0.7871697}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3f33bec2b842fd30800000000000000
+      internalID: 4463710113486815038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arm5
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 974
+        width: 184
+        height: 485
+      alignment: 9
+      pivot: {x: 0.3845389, y: 0.87963235}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd22432048ca41d40800000000000000
+      internalID: 5554253923427295963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arm4
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 976
+        width: 213
+        height: 502
+      alignment: 9
+      pivot: {x: 0.48891738, y: 0.9232034}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9562f5d355d63a860800000000000000
+      internalID: 7539990414017635929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arm3
+      rect:
+        serializedVersion: 2
+        x: 883
+        y: 1138
+        width: 235
+        height: 343
+      alignment: 9
+      pivot: {x: 0.5401791, y: 0.8028091}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 665e2ad42e6bdc180800000000000000
+      internalID: -9093410989509778074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arm2
+      rect:
+        serializedVersion: 2
+        x: 1237
+        y: 996
+        width: 303
+        height: 445
+      alignment: 9
+      pivot: {x: 0.39872313, y: 0.80766547}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36ee7e0f379ebd7a0800000000000000
+      internalID: -6351226165303710109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arm1
+      rect:
+        serializedVersion: 2
+        x: 1655
+        y: 1015
+        width: 214
+        height: 398
+      alignment: 9
+      pivot: {x: 0.6213356, y: 0.8024807}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cc17a13bb116afd0800000000000000
+      internalID: -2331156261428060992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Limbs_10
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 772
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7603f2d6c1678a5e0800000000000000
+      internalID: -1898137378473693081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leg5
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 513
+        width: 222
+        height: 421
+      alignment: 9
+      pivot: {x: 0.5212658, y: 0.8364184}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9a4bd2d469b61030800000000000000
+      internalID: 3465160805993630364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leg4
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 510
+        width: 126
+        height: 367
+      alignment: 9
+      pivot: {x: 0.3313899, y: 0.86019075}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b08102d4d635db460800000000000000
+      internalID: 7259049903301597195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leg3
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 543
+        width: 153
+        height: 352
+      alignment: 9
+      pivot: {x: 0.53085625, y: 0.86883354}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84449dc1c3567ce60800000000000000
+      internalID: 7982460173393937480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leg2
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 577
+        width: 148
+        height: 359
+      alignment: 9
+      pivot: {x: 0.48405004, y: 0.8484912}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 319c3ea67d129eb60800000000000000
+      internalID: 7775783440726870291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Leg1
+      rect:
+        serializedVersion: 2
+        x: 1537
+        y: 567
+        width: 231
+        height: 356
+      alignment: 9
+      pivot: {x: 0.6328437, y: 0.83816665}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8cd89cafa6468160800000000000000
+      internalID: 7027381988887157903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Limbs_16
+      rect:
+        serializedVersion: 2
+        x: 1488
+        y: 550
+        width: 14
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb3cf97b657388b10800000000000000
+      internalID: 1983896481444119487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Foot5
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 0
+        width: 265
+        height: 440
+      alignment: 9
+      pivot: {x: 0.29512286, y: 0.9291882}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73620a1ada4488f40800000000000000
+      internalID: 5730906038360614455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Foot3
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 3
+        width: 184
+        height: 424
+      alignment: 9
+      pivot: {x: 0.56414497, y: 0.93981665}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b5f1f89d178be9a0800000000000000
+      internalID: -6202715500582931018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Foot2
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 117
+        width: 184
+        height: 409
+      alignment: 9
+      pivot: {x: 0.4358547, y: 0.93286085}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34de8062871dd2890800000000000000
+      internalID: -7481093092028125885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Foot4
+      rect:
+        serializedVersion: 2
+        x: 1269
+        y: 73
+        width: 160
+        height: 338
+      alignment: 9
+      pivot: {x: 0.44098663, y: 0.83522403}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2143a98dfa985370800000000000000
+      internalID: 8311563526038831402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Limbs_21
+      rect:
+        serializedVersion: 2
+        x: 1658
+        y: 335
+        width: 13
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d91a9c066f25f3100800000000000000
+      internalID: 89881735709958557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Foot1
+      rect:
+        serializedVersion: 2
+        x: 1666
+        y: 93
+        width: 249
+        height: 367
+      alignment: 9
+      pivot: {x: 0.22507854, y: 0.91807836}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3380665e926844f0800000000000000
+      internalID: -844316497938447556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 336df3b82830b4cae902a6996e47ab6a
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Arm1: -2331156261428060992
+      Arm2: -6351226165303710109
+      Arm3: -9093410989509778074
+      Arm4: 7539990414017635929
+      Arm5: 5554253923427295963
+      Bicep1: 4463710113486815038
+      Bicep2: -4574438248607014616
+      Bicep4: 9064402280959877471
+      Bicep5: -1765029362126622779
+      Biecp3: 559496192776655164
+      Foot1: -844316497938447556
+      Foot2: -7481093092028125885
+      Foot3: -6202715500582931018
+      Foot4: 8311563526038831402
+      Foot5: 5730906038360614455
+      Leg1: 7027381988887157903
+      Leg2: 7775783440726870291
+      Leg3: 7982460173393937480
+      Leg4: 7259049903301597195
+      Leg5: 3465160805993630364
+      Limbs_10: -1898137378473693081
+      Limbs_16: 1983896481444119487
+      Limbs_21: 89881735709958557
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

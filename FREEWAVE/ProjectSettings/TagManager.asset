@@ -3,10 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-  - Manager
-  - Ship
-  - usesSeperateLimbs
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -14,17 +11,17 @@ TagManager:
   - 
   - Water
   - UI
+  - Character
   - Ground
-  - Ship
   - Building
-  - BreakableWall
-  - DecorativeCollidables
-  - PlayerAttackCollider
-  - EnemyAttackCollider
-  - Player
-  - Enemy
-  - Foreground
-  - NotCollidable
+  - Environment
+  - Ship
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -42,43 +39,16 @@ TagManager:
   - 
   m_SortingLayers:
   - name: Sky
-    uniqueID: 4019871735
-    locked: 0
-  - name: Background4
-    uniqueID: 2355065785
-    locked: 0
-  - name: Background3
-    uniqueID: 551159007
-    locked: 0
-  - name: Background2
-    uniqueID: 3786532361
-    locked: 0
-  - name: Background1
-    uniqueID: 3057972703
-    locked: 0
-  - name: Buildings
-    uniqueID: 1169484097
-    locked: 0
-  - name: Ship
-    uniqueID: 3850937401
+    uniqueID: 3053760785
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Enemy
-    uniqueID: 3628199241
+  - name: Ground
+    uniqueID: 2986655537
     locked: 0
-  - name: Player
-    uniqueID: 966635803
-    locked: 0
-  - name: Foreground1
-    uniqueID: 798950809
-    locked: 0
-  - name: Foreground2
-    uniqueID: 2237380939
-    locked: 0
-  - name: Foreground3
-    uniqueID: 2805498937
+  - name: Character
+    uniqueID: 525203333
     locked: 0
   m_RenderingLayers:
   - Default
