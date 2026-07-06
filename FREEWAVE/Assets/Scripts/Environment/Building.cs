@@ -3,15 +3,11 @@ using UnityEngine;
 
 public class BuildingSegment : MonoBehaviour
 {
-    bool playerInBuilding,shipInBuilding;
-
+    bool playerInBuilding, shipInBuilding;
     float alpha = 1;
     SpriteRenderer sr;
-
     float lerpSpeed = 5f;
-    
     GameObject spawnPos1,spawnPos2,lampSpawnPos;
-
     [SerializeField] List<GameObject> spawnObjects = new List<GameObject>();
     [SerializeField] List<GameObject> lamps = new List<GameObject>();
     void Start()

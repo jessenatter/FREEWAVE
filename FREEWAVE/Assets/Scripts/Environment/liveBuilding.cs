@@ -13,7 +13,7 @@ public class liveBuilding : MonoBehaviour
 
     [SerializeField] float lerpSpeed = 5f;
 
-    void Start()
+    void Awake()
     {
         target = GameObject.FindGameObjectWithTag("Player");
 
@@ -35,9 +35,6 @@ public class liveBuilding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target == null || buildingSegments.Count == 0)
-            return;
-
         for (int i = 0; i < buildingSegments.Count; i++)
         {
             Transform segment = buildingSegments[i];
