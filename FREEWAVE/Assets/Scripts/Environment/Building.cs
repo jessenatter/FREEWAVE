@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building : MonoBehaviour
+public class BuildingSegment : MonoBehaviour
 {
     bool playerInBuilding,shipInBuilding;
 
