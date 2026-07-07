@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingSegment : MonoBehaviour
+public class SingleFloor : MonoBehaviour
 {
     bool playerInBuilding, shipInBuilding;
     float alpha = 1;

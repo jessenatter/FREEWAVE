@@ -5,7 +5,6 @@ public class Zombie : Enemy
     float lookingForMeatTimer = 1000,restTimer = 500;
     float lookingForMeatTimerCurrent,restTimerCurrent;
     float hasPlayerMoveSpeed = 1.5f, lookingForMeatMoveSpeed = .7f;
-    Corpse currentCorpse;
     float eatingCorpseDistance = 0.75f;
     ZombieAnimator zombieAnimator;
     enum zombieState
