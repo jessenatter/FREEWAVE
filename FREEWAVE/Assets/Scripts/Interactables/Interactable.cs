@@ -2,20 +2,16 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public GameObject interactPrompt;
+    [HideInInspector] public GameObject interactPrompt;
+
+    [HideInInspector]public bool canInteract = true;
 
     void Start()
     {
         Manager.Instance.interactables.Add(this);
         interactPrompt = transform.GetChild(0).gameObject;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     public virtual void Interact()
     {
         
