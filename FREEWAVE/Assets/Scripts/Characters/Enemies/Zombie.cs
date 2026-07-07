@@ -33,7 +33,7 @@ public class Zombie : Enemy
         attackChargeTimer = 20f;
 
         base.Start();
-        manager.zombies.Add(this);
+        manager.enemies.Add(this);
     }
 
     protected override void FixedUpdate()
@@ -105,7 +105,7 @@ public class Zombie : Enemy
     protected override void Die()
     {
         base.Die();
-        manager.zombies.Remove(this);
+        manager.enemies.Remove(this);
     }
 }
 

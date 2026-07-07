@@ -7,24 +7,29 @@ using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
+    public static Manager Instance;
     [HideInInspector]public InputAction moveAction, jumpAction,interactAction,dashAction,pointAction,attackAction,lookAction;
     [HideInInspector]public Player player;
     [HideInInspector]public Ship ship;
     [HideInInspector]public CameraScript cam;
     [SerializeField] public GameObject mouseObject;
-
-    [HideInInspector]public List<Zombie> zombies = new List<Zombie>();
-
-    [HideInInspector]public List<PickupAble> pickupAbles = new List<PickupAble>();
-
-    [HideInInspector]public List<GameObject> corpses = new List<GameObject>();
+    [HideInInspector]public List<Enemy> enemies = new List<Enemy>();
+    [HideInInspector]public List<Interactable> interactables = new List<Interactable>();
     Volume healthVolume;
 
     float playerRespawnTimer = 50,playerRespawnCurrent;
     bool playerDead = false;
 
-    void Awake() //awake runs before start 
+    void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         interactAction = InputSystem.actions.FindAction("Interact");

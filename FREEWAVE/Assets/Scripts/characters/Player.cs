@@ -42,7 +42,7 @@ public class Player : Character
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;
         characterIsActive = true;
-        cam = manager.cam;
+        cam = Manager.Instance.cam;
     }
     override protected void Update() //reading input, visuals
     {
@@ -84,17 +84,17 @@ public class Player : Character
     }
     void GetInputs()
     {
-        if(manager.moveAction.ReadValue<Vector2>().x != 0)
-            xInput = Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x);
+        if(Manager.Instance.moveAction.ReadValue<Vector2>().x != 0)
+            xInput = Mathf.Sign(Manager.Instance.moveAction.ReadValue<Vector2>().x);
         else 
             xInput = 0;
         
-        yInput = manager.moveAction.ReadValue<Vector2>().y;
+        yInput = Manager.Instance.moveAction.ReadValue<Vector2>().y;
 
-        if (manager.jumpAction.IsPressed())
+        if (Manager.Instance.jumpAction.IsPressed())
             Jump();
 
-        if (manager.interactAction.IsPressed())
+        if (Manager.Instance.interactAction.IsPressed())
         {
             if(interactKeyReleased)
                 Interact();
@@ -104,12 +104,12 @@ public class Player : Character
         else
             interactKeyReleased = true;
         
-        if(Mouse.current.rightButton.isPressed || manager.lookAction.ReadValue<Vector2>().magnitude != 0)
+        if(Mouse.current.rightButton.isPressed || Manager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0)
             aiming = true;
         else
             aiming = false;
         
-        if(manager.attackAction.IsPressed())
+        if(Manager.Instance.attackAction.IsPressed())
         {
             if(attackKeyReleased)
             {
@@ -136,9 +136,9 @@ public class Player : Character
         else
             canEnterShip = false;
 
-        if(nearPickupable)
+        if(nearInteractable)
         {
-            PickupObject();
+            InteractWithObject();
         }
         else if(canEnterShip)
         {
@@ -150,19 +150,19 @@ public class Player : Character
     }
     void UpdateMouseObject()
     {
-        if(manager.lookAction.ReadValue<Vector2>().magnitude == 0)
+        if(Manager.Instance.lookAction.ReadValue<Vector2>().magnitude == 0)
         {
-            Vector2 mousePos = manager.pointAction.ReadValue<Vector2>();
-            mouseWorld = manager.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, manager.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
+            Vector2 mousePos = Manager.Instance.pointAction.ReadValue<Vector2>();
+            mouseWorld = Manager.Instance.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Manager.Instance.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
         }
         else
         {
-            Vector2 aimDir = manager.lookAction.ReadValue<Vector2>();
+            Vector2 aimDir = Manager.Instance.lookAction.ReadValue<Vector2>();
             float distance = 6.5f;
             mouseWorld = (Vector2)transform.position + aimDir * distance;
         }
 
-        manager.mouseObject.transform.position = Vector2.Lerp(transform.position,mouseWorld,.5f);
+        Manager.Instance.mouseObject.transform.position = Vector2.Lerp(transform.position,mouseWorld,.5f);
         frontArmIK.transform.position = mouseWorld;
     }
     void Shoot()
@@ -278,9 +278,9 @@ public class Player : Character
         float minDistance = 4f;
         bool hasEnemy = false;
 
-        foreach(Zombie zombie in manager.zombies)
+        foreach(Enemy enemy in Manager.Instance.enemies)
         {
-            Vector2 _dist = zombie.transform.position - transform.position;
+            Vector2 _dist = enemy.transform.position - transform.position;
             if(_dist.magnitude < minDistance)
             {
                 hasEnemy = true;
@@ -311,7 +311,7 @@ public class Player : Character
     protected override void Die()
     {
         base.Die();
-        manager.PlayerDie();
+        Manager.Instance.PlayerDie();
         dead = true;
     }
 

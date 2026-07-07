@@ -10,8 +10,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected LayerMask groundLayer;
     protected Rigidbody2D rb;
     protected BoxCollider2D bc;
-    protected Manager manager;
-    protected bool nearPickupable;
+    protected bool nearInteractable;
     [HideInInspector]public enum characterState
     {
         movement,
@@ -36,14 +35,14 @@ public class Character : MonoBehaviour
     [HideInInspector]public float health = 10,damage = 1,damageToRecive;
     bool canAttack = true;
     [SerializeField] GameObject hand;
-    protected PickupAble heldObject,nearbyObject;
+    protected PickupAble heldObject;
+    protected Interactable nearbyInteractable;
     [SerializeField] bool isPlayer;
     float recentlyIdleTimer = 15,idleTimerCurrent = 0;
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
-        manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
         attackCollider = transform.GetChild(0).gameObject;
         downAttackCollider = transform.GetChild(1).gameObject;
 
@@ -111,8 +110,8 @@ public class Character : MonoBehaviour
 
         AnimatorUpdate();
         AttackCDupdate();
-        checkForPickupables();
-        characterAnimator.CharacterAnimatorFixedUpdate();
+        checkForInteractables();
+        characterAnimator.CharacterAnimatorFixedUpdate(); //i guess we are calling it from here for order of opperations?
     }
     protected virtual void MovementUpdate()
     {
@@ -295,58 +294,71 @@ public class Character : MonoBehaviour
             }
         }
     }
-    void checkForPickupables()
+    void checkForInteractables()
     {
-        float minPickupDistance = 1.5f;
+        float minInteractDistance = 1.5f;
         float lastPickupDistance = Mathf.Infinity;
-        PickupAble closestPickupable = null;
+        Interactable closestInteractable = null;
 
-        foreach(PickupAble pickupable in manager.pickupAbles)
+        foreach(Interactable interactable in Manager.Instance.interactables)
         {
-            if(pickupable.held) return;
+            bool isPickupable = false;
 
-            Vector2 distance = transform.position - pickupable.transform.position;
-
-            if(distance.magnitude < minPickupDistance)
+            if(interactable is PickupAble pickupAble)
             {
-                nearPickupable = true;
-                if(closestPickupable == null || distance.magnitude < lastPickupDistance)
+                isPickupable = true;
+                if(pickupAble.held) return;
+            }
+
+            Vector2 distance = transform.position - interactable.transform.position;
+
+            if(distance.magnitude < minInteractDistance)
+            {
+                nearInteractable = true;
+                if(closestInteractable == null || distance.magnitude < lastPickupDistance)
                 {
-                    closestPickupable = pickupable;
+                    closestInteractable = interactable;
                     lastPickupDistance = distance.magnitude;
 
-                    if(nearbyObject != null)
+                    if(nearbyInteractable != null)
                     {
-                        if(nearbyObject != closestPickupable && isPlayer)
-                            nearbyObject.pickupPrompt.SetActive(false);
+                        if(nearbyInteractable != closestInteractable && isPlayer)
+                            nearbyInteractable.interactPrompt.SetActive(false);
                     }
 
-                    nearbyObject = closestPickupable;
+                    nearbyInteractable = closestInteractable;
                 }
             }
 
-            if(isPlayer && nearbyObject != null)
-                nearbyObject.pickupPrompt.SetActive(true);
+            if(isPlayer && nearbyInteractable != null)
+                nearbyInteractable.interactPrompt.SetActive(true);
         }
 
-        if(closestPickupable == null && nearbyObject != null)
+        if(closestInteractable == null && nearbyInteractable != null)
         {
             if(isPlayer)
-                nearbyObject.pickupPrompt.SetActive(false);
+                nearbyInteractable.interactPrompt.SetActive(false);
                 
-            nearbyObject = null;
-            nearPickupable = false;
+            nearbyInteractable = null;
+            nearInteractable = false;
         }
     }
-    protected void PickupObject()
+    protected void InteractWithObject()
     {
-        if(nearbyObject == null) return;
+        if(nearbyInteractable == null) return;
 
-        nearbyObject.pickupPrompt.SetActive(false);
-        nearbyObject.transform.position = hand.transform.position;
-        nearbyObject.transform.rotation = hand.transform.rotation;
-        nearbyObject.transform.SetParent(hand.transform);
-        nearbyObject.held = true;
+        if(nearbyInteractable is PickupAble pickupAble)
+        {
+            pickupAble.interactPrompt.SetActive(false);
+            pickupAble.transform.position = hand.transform.position;
+            pickupAble.transform.rotation = hand.transform.rotation;
+            pickupAble.transform.SetParent(hand.transform);
+            pickupAble.held = true;
+        }
+        else
+        {
+            nearbyInteractable.Interact();
+        }
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {

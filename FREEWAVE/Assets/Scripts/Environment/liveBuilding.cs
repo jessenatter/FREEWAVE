@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class liveBuilding : MonoBehaviour
+public class LiveBuilding : MonoBehaviour
 {
     List<Transform> buildingSegments = new List<Transform>();
 

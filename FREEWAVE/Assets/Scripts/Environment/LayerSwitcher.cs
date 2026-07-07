@@ -3,15 +3,11 @@ using UnityEngine;
 public class LayerSwitcher : MonoBehaviour
 {
     [SerializeField] int startLayer,endLayer;
-
     [SerializeField]float changeLayerTimer = 100;
-
     [SerializeField]float destroyTimer = 1000;
-
     [SerializeField] bool destroyOnSecondTimer,waitForCollision;
     bool hasCollision;
-
-    [SerializeField] int _layer;
+    [SerializeField] int collisionLayer;
 
     void Start()
     {
@@ -46,7 +42,7 @@ public class LayerSwitcher : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == _layer )
+        if(collision.gameObject.layer == collisionLayer)
             hasCollision = true; 
     }
 }
