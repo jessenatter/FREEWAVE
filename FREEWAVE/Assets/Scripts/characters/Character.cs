@@ -32,10 +32,10 @@ public class Character : MonoBehaviour
     CharacterAnimator characterAnimator;
     CharacterAnimator.lowerBodyState previousLowerBodyState;
     CharacterAnimator.upperBodyState previousUpperBodyState;
-    [HideInInspector]public float health = 10,damage = 1,damageToRecive;
+    [HideInInspector] public float health = 10,damage = 1,damageToRecive;
     bool canAttack = true;
     [SerializeField] GameObject hand;
-    protected PickupAble heldObject;
+    [HideInInspector] public PickupAble heldObject;
     protected Interactable nearbyInteractable;
     [SerializeField] bool isPlayer;
     float recentlyIdleTimer = 15,idleTimerCurrent = 0;
@@ -302,13 +302,8 @@ public class Character : MonoBehaviour
 
         foreach(Interactable interactable in Manager.Instance.interactables)
         {
-            bool isPickupable = false;
-
             if(interactable is PickupAble pickupAble)
-            {
-                isPickupable = true;
                 if(pickupAble.held) return;
-            }
 
             Vector2 distance = transform.position - interactable.transform.position;
 
@@ -354,10 +349,20 @@ public class Character : MonoBehaviour
             pickupAble.transform.rotation = hand.transform.rotation;
             pickupAble.transform.SetParent(hand.transform);
             pickupAble.held = true;
+            heldObject = pickupAble;
         }
         else
         {
             nearbyInteractable.Interact();
+        }
+    }
+
+    public void RemoveHeldObject()
+    {
+        if(heldObject != null)
+        {
+            heldObject.transform.SetParent(null);
+            heldObject = null;
         }
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision)
