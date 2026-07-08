@@ -1,15 +1,16 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 public class Player : Character
 {
-    [SerializeField] GameObject knife,grapple;
+    GameObject knife,grapple,radar;
     bool isGrappling,grappleIsShooting;
     [SerializeField] LayerMask grappleLayer;
     Ship ship;
     float maxDistanceFromShip = 1f;
-    public bool canEnterShip,aiming;
+    [HideInInspector] public bool canEnterShip,aiming;
     Vector2 mouseWorld,grapplePoint;
     [SerializeField] GameObject grappleBullet,frontArmIK;
     LineRenderer lineRenderer;
@@ -22,6 +23,10 @@ public class Player : Character
     
     float combatCheckTimer = 70,combatCheckCurrent;
     float inCombatTimer = 70,inCombatTimerCurrent;
+
+    List<GameObject> aimedWeapons = new List<GameObject>();
+
+    List<GameObject> meleeWeapons = new List<GameObject>();
 
     override protected void Start()
     {
@@ -43,6 +48,10 @@ public class Player : Character
         lineRenderer.endWidth = width;
         characterIsActive = true;
         cam = Manager.Instance.cam;
+
+        knife = hand.transform.GetChild(0).gameObject;
+        grapple = hand.transform.GetChild(1).gameObject;
+        radar = hand.transform.GetChild(2).gameObject;
     }
     override protected void Update() //reading input, visuals
     {
@@ -112,12 +121,7 @@ public class Player : Character
         if(Manager.Instance.attackAction.IsPressed())
         {
             if(attackKeyReleased)
-            {
-                if(aiming)
-                    Shoot();
-                else
-                    getAttackInput = true;
-            }
+                getAttackInput = true;
 
             attackKeyReleased = false;
         }
@@ -125,6 +129,12 @@ public class Player : Character
         {
             attackKeyReleased = true;
             getAttackInput = false;
+        }
+
+        if(aiming)
+        {
+            if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchDrugAction.IsPressed())
+                Shoot();
         }
     }
     void Interact()

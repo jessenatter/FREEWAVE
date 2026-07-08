@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,8 +15,6 @@ public class Ship : MonoBehaviour
     [SerializeField] GameObject mainFlame, reverseFlame, leftFlame, rightFlame;
     [SerializeField] ParticleSystem mainSmoke, reverseSmoke1,reverseSmoke2, leftSmoke, rightSmoke;
     [SerializeField] LayerMask breakableWallLayer;
-    bool mainEngineReleased = true, waitingForDoubleClick;
-    float doubleClickTimer = 15, doubleClickTimerCurrent;
     float boostCDTimer = 40,boostCDTimerCurrent;
     bool canBoost = true;
     float tryBoostTimer = 50,tryBoostTimerCurrent;
@@ -74,7 +73,7 @@ public class Ship : MonoBehaviour
             lastXinput = Mathf.Sign(xInput);
 
         mainEngine = manager.jumpAction.IsPressed();
-        reverseEngine = manager.dashAction.IsPressed();
+        reverseEngine = manager.dodgeAction.IsPressed();
 
         if(manager.interactAction.IsPressed())
         {
@@ -85,6 +84,12 @@ public class Ship : MonoBehaviour
         }
         else
             interactKeyReleased = true;
+
+        if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchMeleeAction.IsPressed())
+            Boost();
+
+        if(Manager.Instance.attackAction.IsPressed())
+            Shoot();
     }
     void UpdateBoostCDTimer()
     {
@@ -159,35 +164,11 @@ public class Ship : MonoBehaviour
             mainSmoke.Play();
             rb.AddForce(transform.up * moveForce);
             mainFlame.SetActive(true);
-
-            if (waitingForDoubleClick)
-            {
-                if (mainEngineReleased)
-                {
-                    Boost();
-                    waitingForDoubleClick = false;
-                }
-            }
-            else
-                waitingForDoubleClick = true;
-
-            mainEngineReleased = false;
         }
         else
         {
             mainSmoke.Stop();
             mainFlame.SetActive(false);
-            mainEngineReleased = true;
-        }
-
-        if(waitingForDoubleClick)
-        {
-            doubleClickTimerCurrent++;
-            if(doubleClickTimerCurrent == doubleClickTimer)
-            {
-                doubleClickTimerCurrent = 0;
-                waitingForDoubleClick = false;
-            }
         }
 
         if (reverseEngine)
@@ -263,4 +244,9 @@ public class Ship : MonoBehaviour
         player.ExitShip();
         player.gameObject.SetActive(true);
     }    
+
+    void Shoot()
+    {
+        
+    }
 }

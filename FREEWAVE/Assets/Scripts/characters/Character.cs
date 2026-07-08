@@ -34,7 +34,7 @@ public class Character : MonoBehaviour
     CharacterAnimator.upperBodyState previousUpperBodyState;
     [HideInInspector] public float health = 10,damage = 1,damageToRecive;
     bool canAttack = true;
-    [SerializeField] GameObject hand;
+    [SerializeField] protected GameObject hand;
     [HideInInspector] public PickupAble heldPickupable;
     protected Interactable lastClosestInteractable;
     [SerializeField] bool isPlayer;

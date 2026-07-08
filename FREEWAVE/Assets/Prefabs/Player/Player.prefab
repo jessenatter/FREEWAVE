@@ -3402,6 +3402,7 @@ MonoBehaviour:
   damage: 1
   damageToRecive: 0
   hand: {fileID: 7835318144805767935}
+  heldPickupable: {fileID: 0}
   isPlayer: 1
   knife: {fileID: 0}
   grapple: {fileID: 0}
@@ -3412,6 +3413,7 @@ MonoBehaviour:
   aiming: 0
   grappleBullet: {fileID: 0}
   frontArmIK: {fileID: 4653107694658168733}
+  inCombat: 0
 --- !u!61 &349077460423240389
 BoxCollider2D:
   m_ObjectHideFlags: 0
