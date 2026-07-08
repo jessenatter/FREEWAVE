@@ -28,7 +28,7 @@ public class Player : Character
 
     List<GameObject> meleeWeapons = new List<GameObject>();
 
-    GameObject currentMelee,currentAimed;
+    GameObject currentMelee,currentAimed, grappleFunctionPoint;
 
     override protected void Start()
     {
@@ -66,6 +66,8 @@ public class Player : Character
 
         aimedWeapons.Add(grapple);
         aimedWeapons.Add(radar);
+
+        grappleFunctionPoint = grapple.transform.GetChild(3).gameObject;
     }
     override protected void Update() //reading input, visuals
     {
@@ -242,18 +244,18 @@ public class Player : Character
         if(grappleIsShooting)
             GrappleShootingUpdate();
         else
-            GrapplingUpdate();
+            GrappleUpdate();
 
-        lineRenderer.SetPosition(0,transform.position);
+        lineRenderer.SetPosition(0,grappleFunctionPoint.transform.position);
         lineRenderer.SetPosition(1,grappleBullet.transform.position);
     }
     void GrappleShootingUpdate()
     {
         
     } 
-    void GrapplingUpdate()
+    void GrappleUpdate()
     {
-        Vector2 dir = grapplePoint - (Vector2)transform.position;
+        Vector2 dir = grapplePoint - (Vector2)grappleFunctionPoint.transform.position;
         float grappleSpeed = 15f;
 
         Vector2 fakeGravity = Vector2.down * 6.5f;

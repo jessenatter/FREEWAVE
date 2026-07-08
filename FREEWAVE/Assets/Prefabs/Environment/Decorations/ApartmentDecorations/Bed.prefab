@@ -197,8 +197,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
   startLayer: 7
   endLayer: 10
-  changeLayerTimer: 30
-  destroyTimer: 1000
+  changeLayerTimer:
+    duration: 30
+    current: 0
+  destroyTimer:
+    duration: 1000
+    current: 0
   destroyOnSecondTimer: 0
   waitForCollision: 1
-  _layer: 7
+  collisionLayer: 0
