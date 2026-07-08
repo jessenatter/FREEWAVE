@@ -298,7 +298,7 @@ public class Character : MonoBehaviour
 
         foreach(Interactable interactable in Manager.Instance.interactables)
         {
-            if(interactable.canInteract == false) return;
+            if(interactable.canInteract == false) continue;
             
             if(interactable is PickupAble pickupAble)
                 if(pickupAble.held) continue;

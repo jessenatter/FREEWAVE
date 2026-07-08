@@ -15,7 +15,7 @@ public class Player : Character
     [SerializeField] GameObject grappleBullet,frontArmIK;
     LineRenderer lineRenderer;
     PublicTimer grappleTimer = new PublicTimer(30f);
-    bool canGrapple,interactKeyReleased,attackKeyReleased,dead;
+    bool canGrapple,interactKeyReleased,attackKeyReleased,switchKeyReleased = true,dead;
     CameraScript cam;
     float maxGrappleSpeed = 15f;
 
@@ -161,11 +161,22 @@ public class Player : Character
                 Shoot();
         }
 
-        if(Manager.Instance.switchAimedAction.IsPressed())
-            SwitchAimed();
+        int switchDir = 0;
+        if(Manager.Instance.switchRightAction.IsPressed())
+            switchDir = 1;
+        else if(Manager.Instance.switchLeftAction.IsPressed())
+            switchDir = -1;
 
-        if(Manager.Instance.switchMeleeAction.IsPressed())
-            SwitchMelee();
+        if(switchDir != 0)
+        {
+            if(switchKeyReleased)
+            {
+                SwitchWeapon(switchDir);
+                switchKeyReleased = false;
+            }
+        }
+        else
+            switchKeyReleased = true;
 
         if(Manager.Instance.switchDrugAction.ReadValue<float>() != 0)
             SwitchDrug((int)Manager.Instance.switchDrugAction.ReadValue<float>());
@@ -284,28 +295,23 @@ public class Player : Character
         base.DownAttack();
     }
 
-    void SwitchMelee()
+    void SwitchWeapon(int dir)
     {
-        if(aiming) return;
-        
-        int newIndex = meleeWeapons.IndexOf(currentMelee) + 1;
-        if(newIndex > meleeWeapons.Count - 1) newIndex = 0;
-        
-        currentMelee.SetActive(false);
-        currentMelee = meleeWeapons[newIndex];
-        currentMelee.SetActive(true);
+        if(aiming)
+            currentAimed = SwitchWeaponFromList(aimedWeapons, currentAimed, dir);
+        else
+            currentMelee = SwitchWeaponFromList(meleeWeapons, currentMelee, dir);
     }
 
-    void SwitchAimed()
+    GameObject SwitchWeaponFromList(List<GameObject> weaponList, GameObject currentWeapon, int dir)
     {
-        if(!aiming) return;
+        int newIndex = weaponList.IndexOf(currentWeapon) + dir;
+        newIndex = (newIndex + weaponList.Count) % weaponList.Count;
 
-        int newIndex = aimedWeapons.IndexOf(currentAimed) + 1;
-        if(newIndex > aimedWeapons.Count - 1) newIndex = 0;
-        
-        currentAimed.SetActive(false);
-        currentAimed = aimedWeapons[newIndex];
-        currentAimed.SetActive(true);
+        currentWeapon.SetActive(false);
+        GameObject newWeapon = weaponList[newIndex];
+        newWeapon.SetActive(true);
+        return newWeapon;
     }
 
     void SwitchDrug(int dir)

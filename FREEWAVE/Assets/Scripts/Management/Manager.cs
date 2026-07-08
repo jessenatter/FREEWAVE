@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class Manager : MonoBehaviour
 {
     public static Manager Instance;
-    [HideInInspector]public InputAction moveAction, jumpAction,interactAction,dodgeAction,pointAction,attackAction,lookAction,switchAimedAction,aimAction,useDrugAction,switchMeleeAction,switchDrugAction;
+    [HideInInspector]public InputAction moveAction, jumpAction,interactAction,dodgeAction,pointAction,attackAction,lookAction,switchLeftAction,aimAction,useDrugAction,switchRightAction,switchDrugAction;
     [HideInInspector]public Player player;
     [HideInInspector]public Ship ship;
     [HideInInspector]public CameraScript cam;
@@ -37,11 +37,11 @@ public class Manager : MonoBehaviour
         pointAction = InputSystem.actions.FindAction("Point");
         attackAction = InputSystem.actions.FindAction("Attack");
         lookAction = InputSystem.actions.FindAction("Look");
-        switchAimedAction = InputSystem.actions.FindAction("SwitchAimed");
+        switchLeftAction = InputSystem.actions.FindAction("SwitchLeft");
         useDrugAction = InputSystem.actions.FindAction("UseDrug");
         aimAction = InputSystem.actions.FindAction("Aim");
         switchDrugAction = InputSystem.actions.FindAction("SwitchDrug");
-        switchMeleeAction = InputSystem.actions.FindAction("SwitchMelee");
+        switchRightAction = InputSystem.actions.FindAction("SwitchRight");
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();

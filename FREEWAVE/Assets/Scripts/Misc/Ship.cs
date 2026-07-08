@@ -86,7 +86,7 @@ public class Ship : MonoBehaviour
         else
             interactKeyReleased = true;
 
-        if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchMeleeAction.IsPressed())
+        if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchLeftAction.IsPressed() || Manager.Instance.switchRightAction.IsPressed())
             Boost();
 
         if(Manager.Instance.attackAction.IsPressed())
