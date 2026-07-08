@@ -34,7 +34,7 @@ public class Character : MonoBehaviour
     CharacterAnimator.upperBodyState previousUpperBodyState;
     [HideInInspector] public float health = 10,damage = 1,damageToRecive;
     bool canAttack = true;
-    [SerializeField] protected GameObject hand;
+    [SerializeField] protected GameObject backHand,frontHand;
     [HideInInspector] public PickupAble heldPickupable;
     protected Interactable lastClosestInteractable;
     [SerializeField] bool isPlayer;
@@ -347,9 +347,9 @@ public class Character : MonoBehaviour
         if(lastClosestInteractable is PickupAble pickupAble)
         {
             pickupAble.interactPrompt.SetActive(false);
-            pickupAble.transform.position = hand.transform.position;
-            pickupAble.transform.rotation = hand.transform.rotation;
-            pickupAble.transform.SetParent(hand.transform);
+            pickupAble.transform.position = backHand.transform.position;
+            pickupAble.transform.rotation = backHand.transform.rotation;
+            pickupAble.transform.SetParent(backHand.transform);
             pickupAble.held = true;
             heldPickupable = pickupAble;
             lastClosestInteractable = null;

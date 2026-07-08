@@ -28,6 +28,8 @@ public class Player : Character
 
     List<GameObject> meleeWeapons = new List<GameObject>();
 
+    GameObject currentMelee,currentRanged;
+
     override protected void Start()
     {
         attackTimer = 15;
@@ -49,9 +51,12 @@ public class Player : Character
         characterIsActive = true;
         cam = Manager.Instance.cam;
 
-        knife = hand.transform.GetChild(0).gameObject;
-        grapple = hand.transform.GetChild(1).gameObject;
-        radar = hand.transform.GetChild(2).gameObject;
+        knife = frontHand.transform.GetChild(0).gameObject;
+        grapple = frontHand.transform.GetChild(1).gameObject;
+        radar = frontHand.transform.GetChild(2).gameObject;
+
+        currentMelee = knife;
+        currentRanged = grapple;
     }
     override protected void Update() //reading input, visuals
     {
@@ -114,9 +119,21 @@ public class Player : Character
             interactKeyReleased = true;
         
         if(Mouse.current.rightButton.isPressed || Manager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0)
+        {
+            //start aiming
             aiming = true;
+
+            currentRanged.SetActive(true);
+            currentMelee.SetActive(false);
+        }
         else
+        {
+            //stop aiming
             aiming = false;
+
+            currentRanged.SetActive(false);
+            currentMelee.SetActive(true);
+        }
         
         if(Manager.Instance.attackAction.IsPressed())
         {
@@ -136,6 +153,15 @@ public class Player : Character
             if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchDrugAction.IsPressed())
                 Shoot();
         }
+
+        if(Manager.Instance.switchAimedAction.IsPressed())
+            SwitchRanged();
+
+        if(Manager.Instance.switchMeleeAction.IsPressed())
+            SwitchMelee();
+
+        if(Manager.Instance.switchDrugAction.ReadValue<float>() != 0)
+            SwitchDrug((int)Manager.Instance.switchDrugAction.ReadValue<float>());
     }
     void Interact()
     {
@@ -248,6 +274,23 @@ public class Player : Character
     {
         GrappleCancel();//first bc gravity opperations
         base.DownAttack();
+    }
+
+    void SwitchMelee()
+    {
+        if(aiming) return;
+        
+    }
+
+    void SwitchRanged()
+    {
+        if(!aiming) return;
+
+    }
+
+    void SwitchDrug(int dir)
+    {
+        
     }
 
     override protected void OnTriggerEnter2D(Collider2D collision)
