@@ -35,8 +35,8 @@ public class Character : MonoBehaviour
     [HideInInspector] public float health = 10,damage = 1,damageToRecive;
     bool canAttack = true;
     [SerializeField] GameObject hand;
-    [HideInInspector] public PickupAble heldObject;
-    protected Interactable nearbyInteractable;
+    [HideInInspector] public PickupAble heldPickupable;
+    protected Interactable lastClosestInteractable;
     [SerializeField] bool isPlayer;
     float recentlyIdleTimer = 15,idleTimerCurrent = 0;
     protected virtual void Start()
@@ -305,7 +305,7 @@ public class Character : MonoBehaviour
             if(interactable.canInteract == false) return;
             
             if(interactable is PickupAble pickupAble)
-                if(pickupAble.held) return;
+                if(pickupAble.held) continue;
 
             Vector2 distance = transform.position - interactable.transform.position;
 
@@ -317,54 +317,55 @@ public class Character : MonoBehaviour
                     closestInteractable = interactable;
                     lastPickupDistance = distance.magnitude;
 
-                    if(nearbyInteractable != null)
+                    if(lastClosestInteractable != null)
                     {
-                        if(nearbyInteractable != closestInteractable && isPlayer)
-                            nearbyInteractable.interactPrompt.SetActive(false);
+                        if(lastClosestInteractable != closestInteractable && isPlayer)
+                            lastClosestInteractable.interactPrompt.SetActive(false);
                     }
 
-                    nearbyInteractable = closestInteractable;
+                    lastClosestInteractable = closestInteractable;
                 }
             }
 
-            if(isPlayer && nearbyInteractable != null)
-                nearbyInteractable.interactPrompt.SetActive(true);
+            if(isPlayer && lastClosestInteractable != null)
+                lastClosestInteractable.interactPrompt.SetActive(true);
         }
 
-        if(closestInteractable == null && nearbyInteractable != null)
+        if(closestInteractable == null && lastClosestInteractable != null)
         {
             if(isPlayer)
-                nearbyInteractable.interactPrompt.SetActive(false);
+                lastClosestInteractable.interactPrompt.SetActive(false);
                 
-            nearbyInteractable = null;
+            lastClosestInteractable = null;
             nearInteractable = false;
         }
     }
     protected void InteractWithObject()
     {
-        if(nearbyInteractable == null) return;
+        if(lastClosestInteractable == null) return;
 
-        if(nearbyInteractable is PickupAble pickupAble)
+        if(lastClosestInteractable is PickupAble pickupAble)
         {
             pickupAble.interactPrompt.SetActive(false);
             pickupAble.transform.position = hand.transform.position;
             pickupAble.transform.rotation = hand.transform.rotation;
             pickupAble.transform.SetParent(hand.transform);
             pickupAble.held = true;
-            heldObject = pickupAble;
+            heldPickupable = pickupAble;
+            lastClosestInteractable = null;
         }
         else
         {
-            nearbyInteractable.Interact();
+            lastClosestInteractable.Interact();
         }
     }
 
-    public void RemoveHeldObject()
+    public void RemoveheldPickupable()
     {
-        if(heldObject != null)
+        if(heldPickupable != null)
         {
-            heldObject.transform.SetParent(null);
-            heldObject = null;
+            heldPickupable.transform.SetParent(null);
+            heldPickupable = null;
         }
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision)

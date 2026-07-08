@@ -15,13 +15,13 @@ public class ShieldGenerator : Interactable
         base.Interact();
 
         Player player = Manager.Instance.player;
-        if(player.heldObject == null) return;
+        if(player.heldPickupable == null) return;
 
-        if(player.heldObject.gameObject.tag == "Key")
+        if(player.heldPickupable.gameObject.tag == "Key")
         {
             keyVisual.SetActive(true);
-            GameObject usedKey = player.heldObject.gameObject;
-            player.RemoveHeldObject();
+            GameObject usedKey = player.heldPickupable.gameObject;
+            player.RemoveheldPickupable();
             Destroy(usedKey);
             shield.SetActive(false);
             canInteract = false;
