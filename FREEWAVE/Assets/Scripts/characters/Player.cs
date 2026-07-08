@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 public class Player : Character
 {
-    GameObject knife,grapple,radar;
+    GameObject knife,axe,hammer,grapple,radar;
     bool isGrappling,grappleIsShooting;
     [SerializeField] LayerMask grappleLayer;
     Ship ship;
@@ -28,7 +28,7 @@ public class Player : Character
 
     List<GameObject> meleeWeapons = new List<GameObject>();
 
-    GameObject currentMelee,currentRanged;
+    GameObject currentMelee,currentAimed;
 
     override protected void Start()
     {
@@ -54,9 +54,18 @@ public class Player : Character
         knife = frontHand.transform.GetChild(0).gameObject;
         grapple = frontHand.transform.GetChild(1).gameObject;
         radar = frontHand.transform.GetChild(2).gameObject;
+        axe = frontHand.transform.GetChild(3).gameObject;
+        hammer = frontHand.transform.GetChild(4).gameObject;
 
         currentMelee = knife;
-        currentRanged = grapple;
+        currentAimed = grapple;
+
+        meleeWeapons.Add(knife);
+        meleeWeapons.Add(axe);
+        meleeWeapons.Add(hammer);
+
+        aimedWeapons.Add(grapple);
+        aimedWeapons.Add(radar);
     }
     override protected void Update() //reading input, visuals
     {
@@ -123,7 +132,7 @@ public class Player : Character
             //start aiming
             aiming = true;
 
-            currentRanged.SetActive(true);
+            currentAimed.SetActive(true);
             currentMelee.SetActive(false);
         }
         else
@@ -131,7 +140,7 @@ public class Player : Character
             //stop aiming
             aiming = false;
 
-            currentRanged.SetActive(false);
+            currentAimed.SetActive(false);
             currentMelee.SetActive(true);
         }
         
@@ -155,7 +164,7 @@ public class Player : Character
         }
 
         if(Manager.Instance.switchAimedAction.IsPressed())
-            SwitchRanged();
+            SwitchAimed();
 
         if(Manager.Instance.switchMeleeAction.IsPressed())
             SwitchMelee();
@@ -280,12 +289,24 @@ public class Player : Character
     {
         if(aiming) return;
         
+        int newIndex = meleeWeapons.IndexOf(currentMelee) + 1;
+        if(newIndex > meleeWeapons.Count - 1) newIndex = 0;
+        
+        currentMelee.SetActive(false);
+        currentMelee = meleeWeapons[newIndex];
+        currentMelee.SetActive(true);
     }
 
-    void SwitchRanged()
+    void SwitchAimed()
     {
         if(!aiming) return;
 
+        int newIndex = aimedWeapons.IndexOf(currentAimed) + 1;
+        if(newIndex > aimedWeapons.Count - 1) newIndex = 0;
+        
+        currentAimed.SetActive(false);
+        currentAimed = aimedWeapons[newIndex];
+        currentAimed.SetActive(true);
     }
 
     void SwitchDrug(int dir)
