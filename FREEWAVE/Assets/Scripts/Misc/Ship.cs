@@ -6,7 +6,8 @@ public class Ship : MonoBehaviour
 {
     public Rigidbody2D rb;
     Manager manager;
-    float turnForceMax = 5, turnTimer = 50,turnTimerCurrent,turnAmmount, moveForce = 80;
+    float turnForceMax = 5,turnAmmount, moveForce = 80;
+    PublicTimer turnTimer = new PublicTimer(50f);
     [SerializeField] AnimationCurve turnCurve;
     float maxSpeed = 15;
     float boostForce = 75;
@@ -15,10 +16,10 @@ public class Ship : MonoBehaviour
     [SerializeField] GameObject mainFlame, reverseFlame, leftFlame, rightFlame;
     [SerializeField] ParticleSystem mainSmoke, reverseSmoke1,reverseSmoke2, leftSmoke, rightSmoke;
     [SerializeField] LayerMask breakableWallLayer;
-    float boostCDTimer = 40,boostCDTimerCurrent;
+    PublicTimer boostCDTimer = new PublicTimer(40f);
     bool canBoost = true;
-    float tryBoostTimer = 50,tryBoostTimerCurrent;
-    float boostTimer = 75,boostTimerCurrent;
+    PublicTimer tryBoostTimer = new PublicTimer(50f);
+    PublicTimer boostTimer = new PublicTimer(75f);
     Breakable breakable;
     [SerializeField] GameObject explosion;
     Player player;
@@ -95,11 +96,9 @@ public class Ship : MonoBehaviour
     {
         if(!canBoost)
         {
-            boostCDTimerCurrent++;
-            if(boostCDTimerCurrent == boostCDTimer)
+            if(boostCDTimer.TickLoop())
             {
                 canBoost = true;
-                boostCDTimerCurrent = 0;
             }
         }
     }
@@ -108,11 +107,9 @@ public class Ship : MonoBehaviour
     {
         if(!canBoost)
         {
-            boostTimerCurrent++;
-            if(boostTimerCurrent == boostTimer)
+            if(boostTimer.TickLoop())
             {
                 currentShipState = ShipState.flying;
-                boostTimerCurrent = 0;
             }
         }
     }
@@ -121,19 +118,18 @@ public class Ship : MonoBehaviour
         if(xInput != 0 && Mathf.Sign(xInput) == lastXinput) 
         {
             rb.angularVelocity = 0;
-            turnTimerCurrent++;
-            turnTimerCurrent = Mathf.Clamp(turnTimerCurrent,0,turnTimer);
-            float t = turnTimerCurrent/turnTimer;
+            turnTimer.Tick();
+            float t = turnTimer.Progress;
             turnAmmount = turnCurve.Evaluate(t);
             transform.Rotate(0,0,turnAmmount * xInput * turnForceMax);
         }
         else
         {
-            if(turnTimerCurrent != 0)
+            if(turnTimer.HasProgress)
             {
                 rb.angularVelocity = 0;
                 rb.AddTorque(turnAmmount * 200 * Mathf.Sign(lastXinput));
-                turnTimerCurrent = 0;
+                turnTimer.Reset();
             }
         }
 
@@ -199,15 +195,12 @@ public class Ship : MonoBehaviour
             float breakBoostForce = 15f;
             rb.AddForce(toBreakable.normalized * breakBoostForce,ForceMode2D.Impulse);
 
-            tryBoostTimerCurrent = 0;
+            tryBoostTimer.Reset();
             currentShipState = ShipState.flying;
         }
 
-        tryBoostTimerCurrent++;
-
-        if(tryBoostTimerCurrent == tryBoostTimer)
+        if(tryBoostTimer.TickLoop())
         {
-            tryBoostTimerCurrent = 0;
             currentShipState = ShipState.flying;
         }
     }
@@ -220,6 +213,8 @@ public class Ship : MonoBehaviour
             GameObject _explosion = Instantiate(explosion);
             _explosion.transform.position = mainFlame.transform.position;
             canBoost = false;
+            boostCDTimer.Reset();
+            boostTimer.Reset();
         }
 
         float distance = 10f;
@@ -227,6 +222,7 @@ public class Ship : MonoBehaviour
         if (hit == true)
         {
             currentShipState = ShipState.boostingToWindow;
+            tryBoostTimer.Reset();
             breakable = hit.collider.gameObject.GetComponent<Breakable>();
         }
         else

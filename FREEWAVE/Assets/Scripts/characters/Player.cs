@@ -14,15 +14,15 @@ public class Player : Character
     Vector2 mouseWorld,grapplePoint;
     [SerializeField] GameObject grappleBullet,frontArmIK;
     LineRenderer lineRenderer;
-    float grappleTimer = 30,grappleTimerCurrent;
+    PublicTimer grappleTimer = new PublicTimer(30f);
     bool canGrapple,interactKeyReleased,attackKeyReleased,dead;
     CameraScript cam;
     float maxGrappleSpeed = 15f;
 
     [HideInInspector] public bool inCombat;
     
-    float combatCheckTimer = 70,combatCheckCurrent;
-    float inCombatTimer = 70,inCombatTimerCurrent;
+    PublicTimer combatCheckTimer = new PublicTimer(70f);
+    PublicTimer inCombatTimer = new PublicTimer(70f);
 
     List<GameObject> aimedWeapons = new List<GameObject>();
 
@@ -32,12 +32,12 @@ public class Player : Character
 
     override protected void Start()
     {
-        attackTimer = 15;
-        attackCD = 5;
+        attackTimer.SetDuration(15f);
+        attackCD.SetDuration(5f);
         knockbackForce = 5f;
         dashAttackSpeed = 7f;
-        dashAttackTimer = 20f;
-        hurtTimer = 30f;
+        dashAttackTimer.SetDuration(20f);
+        hurtTimer.SetDuration(30f);
         
         base.Start();
 
@@ -97,11 +97,9 @@ public class Player : Character
 
         if(!canGrapple)
         {
-            grappleTimerCurrent++;
-            if(grappleTimerCurrent == grappleTimer)
+            if(grappleTimer.TickLoop())
             {
                 canGrapple = true;
-                grappleTimerCurrent = 0;
             }
         }
     }
@@ -225,6 +223,7 @@ public class Player : Character
             rb.gravityScale = 0;
             lineRenderer.enabled = true;
             canGrapple = false;
+            grappleTimer.Reset();
         }
     }
     void GrappleStateUpdate()
@@ -358,27 +357,24 @@ public class Player : Character
             if(_dist.magnitude < minDistance)
             {
                 hasEnemy = true;
-                inCombatTimerCurrent = 0;
+                inCombatTimer.Reset();
             }    
         }
 
         if(hasEnemy)
-            combatCheckCurrent++;
+        {
+            if(combatCheckTimer.TickLoop())
+                inCombat = true;
+        }
         else
         {
-            combatCheckCurrent = 0;
-            inCombatTimerCurrent++;
-            if(inCombatTimerCurrent == inCombatTimer)
+            combatCheckTimer.Reset();
+            inCombatTimer.Tick();
+            if(inCombatTimer.IsComplete)
             {
-                inCombatTimerCurrent = 0;
+                inCombatTimer.Reset();
                 inCombat = false;
             }
-        }
-
-        if(combatCheckCurrent == combatCheckTimer)
-        {
-            combatCheckCurrent = 0;
-            inCombat = true;
         }
     }
 

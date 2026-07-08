@@ -9,11 +9,11 @@ public class Enemy : Character
 
     float attackDistance = 1f;
 
-    public float attackChargeTimer = 50f,attackChargeTimerCurrent;
+    public PublicTimer attackChargeTimer = new PublicTimer(50f);
 
     public bool hasPlayer,chargingAttack;
 
-    float awarenessTimer = 1000,awarenessTimerCurrent;
+    PublicTimer awarenessTimer = new PublicTimer(1000f);
 
     [SerializeField] GameObject blood,attackWarning;
 
@@ -36,14 +36,12 @@ public class Enemy : Character
         if(playerEnemyVector.magnitude < awarenessDistance)
         {
             hasPlayer = true;
-            awarenessTimerCurrent = 0;
+            awarenessTimer.Reset();
         }
         else if(playerEnemyVector.magnitude > awarenessDistance * 3f)
         {
-            awarenessTimerCurrent++;
-            if(awarenessTimerCurrent == awarenessTimer)
+            if(awarenessTimer.TickLoop())
             {
-                awarenessTimerCurrent = 0;
                 hasPlayer = false;
             }
         }
@@ -68,15 +66,13 @@ public class Enemy : Character
 
         if(chargingAttack)
         {
-            float t = attackChargeTimerCurrent/attackChargeTimer;
+            float t = attackChargeTimer.Progress;
 
             attackWarning.transform.localScale = attackWarningScale * (1 - t);
 
             xInput = 0;
-            attackChargeTimerCurrent++;
-            if(attackChargeTimerCurrent == attackChargeTimer)
+            if(attackChargeTimer.TickLoop())
             {
-                attackChargeTimerCurrent = 0;
                 chargingAttack = false;
                 currentCharacterState = characterState.movement;
                 attackWarning.SetActive(false);
@@ -98,6 +94,7 @@ public class Enemy : Character
         currentCharacterState = characterState.idle;
         rb.linearVelocity = Vector2.zero;
         chargingAttack = true;
+        attackChargeTimer.Reset();
         attackWarning.SetActive(true);
     }
 
@@ -109,7 +106,7 @@ public class Enemy : Character
         _blood.transform.position += new Vector3(0,0.4f,0);
         _blood.transform.SetParent(transform);
 
-        attackChargeTimerCurrent = 0;
+        attackChargeTimer.Reset();
         chargingAttack = false;
         attackWarning.SetActive(false);
     }

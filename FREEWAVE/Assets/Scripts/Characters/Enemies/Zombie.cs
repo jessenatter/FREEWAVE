@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Zombie : Enemy
 {
-    float lookingForMeatTimer = 1000,restTimer = 500;
-    float lookingForMeatTimerCurrent,restTimerCurrent;
+    PublicTimer lookingForMeatTimer = new PublicTimer(1000f);
+    PublicTimer restTimer = new PublicTimer(500f);
     float hasPlayerMoveSpeed = 1.5f, lookingForMeatMoveSpeed = .7f;
     float eatingCorpseDistance = 0.75f;
     ZombieAnimator zombieAnimator;
@@ -19,18 +19,18 @@ public class Zombie : Enemy
     {    
         zombieAnimator = GetComponent<ZombieAnimator>();
 
-        lookingForMeatTimer += Random.Range(-200,200);
-        restTimer += Random.Range(-200,200);
+        lookingForMeatTimer.SetDuration(lookingForMeatTimer.Duration + Random.Range(-200,200));
+        restTimer.SetDuration(restTimer.Duration + Random.Range(-200,200));
         damage = 1;
 
         moveSpeed = 1.5f;
         jumpForce = 1.5f;
 
-        attackTimer = 30;
-        attackCD = 15;
+        attackTimer.SetDuration(30f);
+        attackCD.SetDuration(15f);
         knockbackForce = 3f;
-        hurtTimer = 30f;
-        attackChargeTimer = 20f;
+        hurtTimer.SetDuration(30f);
+        attackChargeTimer.SetDuration(20f);
 
         base.Start();
         Manager.Instance.enemies.Add(this);
@@ -44,16 +44,14 @@ public class Zombie : Enemy
         {
             moveSpeed = lookingForMeatMoveSpeed;
 
-            lookingForMeatTimerCurrent++;
-            if(lookingForMeatTimerCurrent == lookingForMeatTimer)
+            if(lookingForMeatTimer.TickLoop())
             {
-                lookingForMeatTimerCurrent = 0;
                 currentZombieState = zombieState.resting;
             }
 
             if(hasPlayer)
             {
-                lookingForMeatTimerCurrent = 0;
+                lookingForMeatTimer.Reset();
                 currentZombieState = zombieState.hasPlayer;
             }
             
@@ -62,16 +60,14 @@ public class Zombie : Enemy
         {
             xInput = 0;
 
-            restTimerCurrent++;
-            if(restTimerCurrent == restTimer)
+            if(restTimer.TickLoop())
             {
-                restTimerCurrent = 0;
                 currentZombieState = zombieState.lookingForMeat;
             }
 
             if(hasPlayer)
             {
-                lookingForMeatTimerCurrent = 0;
+                lookingForMeatTimer.Reset();
                 currentZombieState = zombieState.hasPlayer;
             }
         }
@@ -79,7 +75,7 @@ public class Zombie : Enemy
         {
             if(hasPlayer)
             {
-                lookingForMeatTimerCurrent = 0;
+                lookingForMeatTimer.Reset();
                 currentZombieState = zombieState.hasPlayer;
             }
         }

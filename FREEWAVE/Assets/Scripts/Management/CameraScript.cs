@@ -19,7 +19,7 @@ public class CameraScript : MonoBehaviour
 
     bool screenShaking;
     Vector2 shakeVector,initCameraPos;
-    float screenShakeTimer = 20f, screenShakeTimerCurrent;
+    PublicTimer screenShakeTimer = new PublicTimer(20f);
     float screenShakeStrength;
     void Start()
     {
@@ -102,7 +102,8 @@ public class CameraScript : MonoBehaviour
         if (!screenShaking)
         {
             screenShaking = true;
-            screenShakeTimer = duration;
+            screenShakeTimer.SetDuration(duration);
+            screenShakeTimer.Reset();
             screenShakeStrength = strength; //.1 is a good base
         }
     }
@@ -111,10 +112,10 @@ public class CameraScript : MonoBehaviour
     {
         if (screenShaking)
         {
-            screenShakeTimerCurrent++;
-            if (screenShakeTimerCurrent >= screenShakeTimer)
+            screenShakeTimer.Tick();
+            if(screenShakeTimer.IsComplete)
             {
-                screenShakeTimerCurrent = 0;
+                screenShakeTimer.Reset();
                 screenShaking = false;
             }
         }
@@ -126,7 +127,7 @@ public class CameraScript : MonoBehaviour
 
         if (screenShaking)
         {
-            float t = screenShakeTimerCurrent / screenShakeTimer;
+            float t = screenShakeTimer.Progress;
             shakeVector.x = Mathf.Sin(t * amplitude) * screenShakeStrength;
             shakeVector.y = Mathf.Cos(t * amplitude) * screenShakeStrength;
         }

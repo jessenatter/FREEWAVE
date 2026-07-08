@@ -21,11 +21,11 @@ public class Character : MonoBehaviour
         idle,
     }
     [HideInInspector]public characterState currentCharacterState = characterState.movement;
-    float cayoteTimer = 10, cayoteTimerCurrent = 0;
-    [HideInInspector]public float attackTimer = 15,attackTimerCurrent;
-    [HideInInspector]public float attackCD = 10,attackCDcurrent; //use same cooldown for all attacks
-    [HideInInspector]public float dashAttackTimer = 25,dashAttackTimerCurrent;
-    protected float hurtTimer = 30,hurtTimerCurrent;
+    PublicTimer cayoteTimer = new PublicTimer(10f);
+    [HideInInspector]public PublicTimer attackTimer = new PublicTimer(15f);
+    [HideInInspector]public PublicTimer attackCD = new PublicTimer(10f); //use same cooldown for all attacks
+    [HideInInspector]public PublicTimer dashAttackTimer = new PublicTimer(25f);
+    protected PublicTimer hurtTimer = new PublicTimer(30f);
     [HideInInspector]public bool characterIsActive,getAttackInput,groundedHit;
     GameObject attackCollider,downAttackCollider;
     [SerializeField] int hurtLayer;
@@ -38,7 +38,7 @@ public class Character : MonoBehaviour
     [HideInInspector] public PickupAble heldPickupable;
     protected Interactable lastClosestInteractable;
     [SerializeField] bool isPlayer;
-    float recentlyIdleTimer = 15,idleTimerCurrent = 0;
+    PublicTimer recentlyIdleTimer = new PublicTimer(15f);
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -68,11 +68,9 @@ public class Character : MonoBehaviour
         }
         else if(recentlyIdle)
         {
-            idleTimerCurrent++;
-            if(idleTimerCurrent == recentlyIdleTimer)
+            if(recentlyIdleTimer.TickLoop())
             {
                 recentlyIdle = false;
-                idleTimerCurrent = 0;
             }
         }
 
@@ -121,16 +119,14 @@ public class Character : MonoBehaviour
         if (groundedHit)
         {
             grounded = true;
-            cayoteTimerCurrent = 0;
+            cayoteTimer.Reset();
             isJumping = false;
         }
         else if (grounded)
         {
-            cayoteTimerCurrent++;
-            if (cayoteTimerCurrent == cayoteTimer)
+            if(cayoteTimer.TickLoop())
             {
                 grounded = false;
-                cayoteTimerCurrent = 0;
             }
         }
 
@@ -153,6 +149,8 @@ public class Character : MonoBehaviour
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
             attackCollider.SetActive(true);
             canAttack = false;
+            attackTimer.Reset();
+            attackCD.Reset();
             transform.position += Vector3.one * 0.0001f;
         }
     }
@@ -166,6 +164,8 @@ public class Character : MonoBehaviour
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDashAttack;
             attackCollider.SetActive(true);
             dashXinput = xInput;
+            dashAttackTimer.Reset();
+            attackCD.Reset();
             if(xInput != 0)
                 transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * Mathf.Sign(xInput),transform.localScale.y);
         }
@@ -181,6 +181,7 @@ public class Character : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.gravityScale = 5f;
             canAttack = false;
+            attackCD.Reset();
         }
     }
     protected virtual void Hurt(Vector2 hurtDir,float damage)
@@ -199,6 +200,7 @@ public class Character : MonoBehaviour
             
             attackCollider.SetActive(false);
             downAttackCollider.SetActive(false);
+            hurtTimer.Reset();
         }
     }
     protected virtual void Die()
@@ -241,10 +243,8 @@ public class Character : MonoBehaviour
     }
     void AttackUpdate()
     {
-        attackTimerCurrent++;
-        if(attackTimerCurrent == attackTimer)
+        if(attackTimer.TickLoop())
         {
-            attackTimerCurrent = 0;
             currentCharacterState = characterState.movement;
             attackCollider.SetActive(false);
         }
@@ -260,10 +260,8 @@ public class Character : MonoBehaviour
     }
     void DashAttackUpdate()
     {
-        dashAttackTimerCurrent++;
-        if(dashAttackTimerCurrent == dashAttackTimer)
+        if(dashAttackTimer.TickLoop())
         {
-            dashAttackTimerCurrent = 0;
             currentCharacterState = characterState.movement;
             attackCollider.SetActive(false);
         }
@@ -272,12 +270,12 @@ public class Character : MonoBehaviour
     }
     void HurtUpdate()
     {
-        hurtTimerCurrent++;
-        if(hurtTimerCurrent >= hurtTimer)
+        hurtTimer.Tick();
+        if(hurtTimer.IsComplete)
         {
             if(groundedHit)
             {
-                hurtTimerCurrent = 0;
+                hurtTimer.Reset();
                 currentCharacterState = characterState.movement;
             }
         }
@@ -286,10 +284,8 @@ public class Character : MonoBehaviour
     {
         if(!canAttack && currentCharacterState != characterState.attacking)
         {
-            attackCDcurrent++;
-            if(attackCDcurrent == attackCD)
+            if(attackCD.TickLoop())
             {
-                attackCDcurrent = 0;
                 canAttack = true;
             }
         }

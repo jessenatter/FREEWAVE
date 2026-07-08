@@ -3,8 +3,8 @@ using UnityEngine;
 public class LayerSwitcher : MonoBehaviour
 {
     [SerializeField] int startLayer,endLayer;
-    [SerializeField]float changeLayerTimer = 100;
-    [SerializeField]float destroyTimer = 1000;
+    [SerializeField] PublicTimer changeLayerTimer = new PublicTimer(100f);
+    [SerializeField] PublicTimer destroyTimer = new PublicTimer(1000f);
     [SerializeField] bool destroyOnSecondTimer,waitForCollision;
     bool hasCollision;
     [SerializeField] int collisionLayer;
@@ -25,16 +25,14 @@ public class LayerSwitcher : MonoBehaviour
         {
             if(gameObject.layer == startLayer)
             {
-                changeLayerTimer--;
-                if(changeLayerTimer == 0)
+                if(changeLayerTimer.Tick())
                 {
                     gameObject.layer = endLayer;
                 }
             }
             else if(destroyOnSecondTimer)
             {
-                destroyTimer--;
-                if(destroyTimer == 0)
+                if(destroyTimer.Tick())
                     Destroy(gameObject);
             }
         }

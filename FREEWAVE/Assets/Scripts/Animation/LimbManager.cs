@@ -9,7 +9,8 @@ public class LimbManager : MonoBehaviour
     Vector2 initOffsetFromOrgin,recordedPoint;
     int currentPoint = 0;
     [HideInInspector]public limbState currentLimbState;
-    float currentTime,currentTransitionTime;
+    PublicTimer currentTime = new PublicTimer();
+    PublicTimer currentTransitionTime = new PublicTimer();
     bool waitingForExit,transitionedToNextState = true;
 
     [SerializeField] bool isBackLimb;
@@ -84,7 +85,8 @@ public class LimbManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        currentTime++;
+        if(currentLimbState != null)
+            currentTime.TickLoop();
     }
     void UpdatePoints()
     {
@@ -95,7 +97,7 @@ public class LimbManager : MonoBehaviour
 
         float durationPerPoint = currentLimbState.duration / pointsToUse.Count;
 
-        float t = currentTime / durationPerPoint;
+        float t = durationPerPoint <= 0f ? 0f : currentTime.Current / durationPerPoint;
 
         currentPoint = Mathf.FloorToInt(t) % pointsToUse.Count;
 
@@ -124,8 +126,10 @@ public class LimbManager : MonoBehaviour
             if(currentLimbState.startAtPos1)
                 transform.position = initRestPos + pointsToUse[0] * characterDirectionVec;
 
-            currentTime = 0;
-            currentTransitionTime = 0;
+            currentTime.SetDuration(currentLimbState.duration);
+            currentTransitionTime.SetDuration(currentLimbState.transitionDuration);
+            currentTime.Reset();
+            currentTransitionTime.Reset();
 
             recordedPoint = exactTarget;
             transitionedToNextState = false;
@@ -133,14 +137,13 @@ public class LimbManager : MonoBehaviour
 
         if(transitionedToNextState == false)
         {
-            currentTransitionTime++;
-            if(currentTransitionTime == currentLimbState.transitionDuration)
+            if(currentTransitionTime.Tick())
             {
                 transitionedToNextState = true;
             }
         }
 
-        float t2 = currentTransitionTime/currentLimbState.transitionDuration;
+        float t2 = currentTransitionTime.Progress;
         transform.position = Vector2.Lerp(transform.position, exactTarget, t2);
     }   
 }

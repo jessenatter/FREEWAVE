@@ -17,7 +17,7 @@ public class Manager : MonoBehaviour
     [HideInInspector]public List<Interactable> interactables = new List<Interactable>();
     Volume healthVolume;
 
-    float playerRespawnTimer = 50,playerRespawnCurrent;
+    PublicTimer playerRespawnTimer = new PublicTimer(50f);
     bool playerDead = false;
 
     void Awake()
@@ -57,10 +57,8 @@ public class Manager : MonoBehaviour
         
         if(playerDead)
         {
-            playerRespawnCurrent++;
-            if(playerRespawnCurrent == playerRespawnTimer)
+            if(playerRespawnTimer.TickLoop())
             {
-                playerRespawnCurrent = 0;
                 RespawnPlayer();
             }
         }
@@ -75,6 +73,7 @@ public class Manager : MonoBehaviour
     }
     public void PlayerDie()
     {
+        playerRespawnTimer.Reset();
         playerDead = true;
     }
 

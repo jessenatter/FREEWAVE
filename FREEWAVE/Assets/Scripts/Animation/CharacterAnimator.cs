@@ -8,7 +8,7 @@ public class CharacterAnimator : MonoBehaviour
 
     GameObject spine2,head;
     float spine1angle,spine2angle,headAngle;
-    float currentStateTimer;
+    PublicTimer currentStateTimer = new PublicTimer();
     public class bodyState
     {
         public LimbManager.limbState limb;
@@ -92,8 +92,8 @@ public class CharacterAnimator : MonoBehaviour
         DropAttackObject = animationObjectHolder.transform.GetChild(5).gameObject;
         HurtObject = animationObjectHolder.transform.GetChild(6).gameObject;
 
-        float _attackTime = character.attackTimer; //align with timer 
-        float _dashAttackTime = character.dashAttackTimer;
+        float _attackTime = character.attackTimer.Duration; //align with timer 
+        float _dashAttackTime = character.dashAttackTimer.Duration;
 
         //idle
         LimbManager.limbState _lowerIdle = new LimbManager.limbState(IdleObject.transform.GetChild(0).gameObject,idleStateDuration,true,frontLeg,standardTransitionTime,false);
@@ -159,7 +159,7 @@ public class CharacterAnimator : MonoBehaviour
 
     void RotationUpdate()
     {
-        float t = currentStateTimer / currentUpperBodyState.rotationDuration;
+        float t = currentStateTimer.Progress;
         float lerpSpeed = 1f;
 
         float spine1targetAngle = Mathf.Lerp(currentUpperBodyState.spine1rotation.x,currentUpperBodyState.spine1rotation.y,t);
@@ -179,14 +179,13 @@ public class CharacterAnimator : MonoBehaviour
     {
         if(currentUpperBodyState != prevUpperBodyState)
         {
-            currentStateTimer = 0;
+            currentStateTimer.SetDuration(currentUpperBodyState.rotationDuration);
+            currentStateTimer.Reset();
             prevUpperBodyState = currentUpperBodyState;
         }
 
-        currentStateTimer++;
-        if(currentStateTimer == currentUpperBodyState.rotationDuration)
+        if(currentStateTimer.TickLoop())
         {
-            currentStateTimer = 0;
             if(currentUpperBodyState.loop)
                 currentUpperBodyState.loopRotations();
         }
