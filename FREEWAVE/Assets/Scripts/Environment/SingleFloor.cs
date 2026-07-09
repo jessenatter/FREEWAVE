@@ -30,10 +30,7 @@ public class SingleFloor : MonoBehaviour
         _object2.transform.position = spawnPos2.transform.position;
         _object3.transform.position = lampSpawnPos.transform.position;
 
-        _object1.transform.SetParent(this.transform);
-        _object2.transform.SetParent(this.transform);
         _object3.transform.SetParent(this.transform);
-
     }
 
     void Update()
