@@ -230,7 +230,7 @@ public class Player : Character
 
         if(hit == true && canGrapple)
         {
-            SoundManager.PlaySound(0.5f,0.2f,"grapple1","grapple2");
+            SoundManager.PlaySound(0.5f,0.2f,"grapple");
             isGrappling = true;
             grapplePoint = hit.point;
             grappleBullet.transform.position = grapplePoint;

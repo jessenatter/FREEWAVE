@@ -149,7 +149,7 @@ public class Ship : MonoBehaviour
         if (!engineAudioSource.isPlaying)
             engineAudioSource.Play();
 
-        engineAudioSource.volume = engineAudioVolume;
+        engineAudioSource.volume = engineAudioVolume * 0.65f;
         engineAudioSource.pitch = engineAudioPitch;
     }
     void UpdateBoostCDTimer()
