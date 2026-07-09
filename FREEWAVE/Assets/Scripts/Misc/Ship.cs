@@ -24,6 +24,11 @@ public class Ship : MonoBehaviour
     [SerializeField] GameObject explosion;
     Player player;
     bool interactKeyReleased;
+    AudioSource engineAudioSource;
+    float engineLerpSpeed = 2f;
+    float engineBasePitch = 1f,engineThrottlePitch = 0.2f, engineTurnPitch = 0.08f;
+    float engineAudioVolume;
+    float engineAudioPitch;
     public enum ShipState
     {
         waitingForPlayer,
@@ -37,6 +42,19 @@ public class Ship : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        if (engineAudioSource == null)
+            engineAudioSource = GetComponent<AudioSource>();
+
+        if (engineAudioSource != null)
+        {
+            engineAudioSource.loop = true;
+            engineAudioSource.playOnAwake = false;
+            engineAudioSource.volume = 0f;
+            engineAudioSource.pitch = engineBasePitch;
+            engineAudioVolume = 0f;
+            engineAudioPitch = engineBasePitch;
+        }
+
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
         player = manager.player;
     }
@@ -45,6 +63,8 @@ public class Ship : MonoBehaviour
     {
         if(currentShipState != ShipState.waitingForPlayer)
             ReadInputs();
+
+        UpdateEngineAudio();
     }
 
     void FixedUpdate()
@@ -91,6 +111,46 @@ public class Ship : MonoBehaviour
 
         if(Manager.Instance.attackAction.IsPressed())
             Shoot();
+    }
+
+    void UpdateEngineAudio()
+    {
+        if (engineAudioSource == null)
+            return;
+
+        bool engineActive = currentShipState != ShipState.waitingForPlayer && (mainEngine || reverseEngine || xInput != 0f);
+        float targetVolume = engineActive ? 1f : 0f;
+
+        engineAudioVolume = Mathf.MoveTowards(engineAudioVolume, targetVolume, engineLerpSpeed * Time.deltaTime);
+
+        float turnAmount = Mathf.Abs(xInput);
+        float turnPitchOffset = turnAmount > 0f ? turnAmount * engineTurnPitch : 0f;
+        float throttlePitchOffset = 0f;
+
+        if (mainEngine)
+            throttlePitchOffset += engineThrottlePitch;
+
+        if (reverseEngine)
+            throttlePitchOffset += engineThrottlePitch * 0.75f;
+
+        float targetPitch = engineBasePitch + throttlePitchOffset + turnPitchOffset;
+        engineAudioPitch = Mathf.MoveTowards(engineAudioPitch, targetPitch, engineLerpSpeed * Time.deltaTime);
+
+        if (engineAudioVolume <= 0.001f)
+        {
+            engineAudioVolume = 0f;
+            engineAudioPitch = engineBasePitch;
+            engineAudioSource.Stop();
+            engineAudioSource.volume = 0f;
+            engineAudioSource.pitch = engineBasePitch;
+            return;
+        }
+
+        if (!engineAudioSource.isPlaying)
+            engineAudioSource.Play();
+
+        engineAudioSource.volume = engineAudioVolume;
+        engineAudioSource.pitch = engineAudioPitch;
     }
     void UpdateBoostCDTimer()
     {
@@ -190,7 +250,7 @@ public class Ship : MonoBehaviour
         if(toBreakable.magnitude < 1.2f)
         {
             breakable.Break();
-            SoundManager.PlaySound(0.5f,0.2f,"glassSmash1","glassSmash2");
+            SoundManager.PlaySound(0.5f,0.2f,"glassSmash1","glassSmash2","glassSmash3");
             SoundManager.PlaySound(0.5f,0.2f,"crash1","crash2");
             manager.cam.StartScreenShake(15,0.05f);
 
