@@ -5,6 +5,8 @@ public class LiveBuilding : MonoBehaviour
 {
     List<Transform> buildingSegments = new List<Transform>();
 
+    List<LimbManager> limbs = new List<LimbManager>();
+
     [SerializeField] float maxBendAngle = 15f;
 
     [SerializeField] float angleModifier = 1f;
@@ -25,6 +27,8 @@ public class LiveBuilding : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             buildingSegments.Add(transform.GetChild(i));
+            if(transform.GetChild(i).GetComponentInChildren<LimbManager>())
+                limbs.Add(transform.GetChild(i).GetComponentInChildren<LimbManager>());
         }
 
         // Floor index should run from bottom (0) to top.
@@ -42,6 +46,12 @@ public class LiveBuilding : MonoBehaviour
     {
         target = player.characterIsActive ? player.gameObject : ship.gameObject;
 
+        UpdateLayers();
+        UpdateLimbs();
+    }
+
+    void UpdateLayers()
+    {
         for (int i = 0; i < buildingSegments.Count; i++)
         {
             Transform segment = buildingSegments[i];
@@ -62,6 +72,14 @@ public class LiveBuilding : MonoBehaviour
 
             Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetZAngle);
             segment.localRotation = Quaternion.Lerp(segment.localRotation, targetRotation, Time.deltaTime * lerpSpeed);
+        }
+    }
+
+    void UpdateLimbs()
+    {
+        foreach(LimbManager limb in limbs)
+        {
+            limb.transform.position = Vector2.Lerp(limb.transform.position,target.transform.position,Time.deltaTime * lerpSpeed);
         }
     }
 }

@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.U2D.IK;
 
 public class LimbManager : MonoBehaviour
 {
-    [SerializeField] [HideInInspector]public GameObject orgin;
+     public GameObject orgin;
     [SerializeField] Character character;
+    SingleFloor singleFloor;
     Vector2 initOffsetFromOrgin,recordedPoint;
     int currentPoint = 0;
     [HideInInspector]public limbState currentLimbState;
@@ -77,6 +79,9 @@ public class LimbManager : MonoBehaviour
     {
         initOffsetFromOrgin = transform.position - orgin.transform.position;
         recordedPoint = transform.position;
+
+        if(character == null)
+            singleFloor = transform.parent.gameObject.GetComponent<SingleFloor>();
     }
     void Update()
     {
@@ -90,6 +95,8 @@ public class LimbManager : MonoBehaviour
     }
     void UpdatePoints()
     {
+        if(currentLimbState == null) return;
+        
         List<Vector2> pointsToUse = currentLimbState.points;
 
         if(isBackLimb && currentLimbState.backLimbPoints.Count != 0)
@@ -116,7 +123,14 @@ public class LimbManager : MonoBehaviour
         Vector2 nextPoint = pointsToUse[nextIndex];
 
         //only need chr heere
-        Vector2 characterDirectionVec = new Vector2(Mathf.Sign(character.transform.localScale.x),1);
+
+        GameObject characterTransform = null;
+        if(character != null)
+            characterTransform = character.gameObject;
+        else
+            characterTransform = singleFloor.gameObject;
+
+        Vector2 characterDirectionVec = new Vector2(Mathf.Sign(characterTransform.transform.localScale.x),1);
 
         Vector2 initRestPos = (Vector2)orgin.transform.position + (initOffsetFromOrgin * characterDirectionVec);
 
@@ -147,5 +161,7 @@ public class LimbManager : MonoBehaviour
 
         float t2 = currentTransitionTime.Progress;
         transform.position = Vector2.Lerp(transform.position, exactTarget, t2);
+
+
     }   
 }
