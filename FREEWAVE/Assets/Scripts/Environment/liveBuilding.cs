@@ -28,7 +28,10 @@ public class LiveBuilding : MonoBehaviour
         {
             buildingSegments.Add(transform.GetChild(i));
             if(transform.GetChild(i).GetComponentInChildren<LimbManager>())
-                limbs.Add(transform.GetChild(i).GetComponentInChildren<LimbManager>());
+            {
+                foreach(LimbManager lm in transform.GetChild(i).GetComponentsInChildren<LimbManager>())
+                    limbs.Add(lm);
+            }
         }
 
         // Floor index should run from bottom (0) to top.
