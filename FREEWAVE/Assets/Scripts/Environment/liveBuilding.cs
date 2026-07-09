@@ -10,12 +10,17 @@ public class LiveBuilding : MonoBehaviour
     [SerializeField] float angleModifier = 1f;
 
     GameObject target;
+    Player player;
+    Ship ship;
 
     [SerializeField] float lerpSpeed = 5f;
 
     void Awake()
     {
-        target = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
+
+        target = player.gameObject;
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -35,6 +40,8 @@ public class LiveBuilding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        target = player.characterIsActive ? player.gameObject : ship.gameObject;
+
         for (int i = 0; i < buildingSegments.Count; i++)
         {
             Transform segment = buildingSegments[i];

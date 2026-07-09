@@ -23,7 +23,6 @@ public class LayerSwitcher : MonoBehaviour
     {
         if(!waitForCollisionBeforeSwitching || waitForCollisionBeforeSwitching && hasCollision)
         {
-            print("aaa");
             if(gameObject.layer == startLayer)
             {
                 if(changeLayerTimer.Tick())
