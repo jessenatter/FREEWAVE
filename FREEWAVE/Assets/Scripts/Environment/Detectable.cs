@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class Detectable : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        Manager.Instance.detectables.Add(this);
     }
 
     // Update is called once per frame

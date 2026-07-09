@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.XR;
 public class Player : Character
 {
@@ -29,6 +30,8 @@ public class Player : Character
     List<GameObject> meleeWeapons = new List<GameObject>();
 
     GameObject currentMelee,currentAimed, grappleFunctionPoint;
+
+    Light2D radarLight;
 
     override protected void Start()
     {
@@ -68,6 +71,7 @@ public class Player : Character
         aimedWeapons.Add(radar);
 
         grappleFunctionPoint = grapple.transform.GetChild(3).gameObject;
+        radarLight = radar.transform.GetChild(2).GetComponent<Light2D>();
     }
     override protected void Update() //reading input, visuals
     {
@@ -159,8 +163,15 @@ public class Player : Character
 
         if(aiming)
         {
-            if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchDrugAction.IsPressed())
-                Shoot();
+            if(currentAimed == grapple)
+            {
+                if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchDrugAction.IsPressed())
+                    GrappleShoot();
+            }
+            else if(currentAimed == radar)
+            {
+                UpdateRadarLight();
+            }
         }
 
         int switchDir = 0;
@@ -221,7 +232,7 @@ public class Player : Character
         Manager.Instance.mouseObject.transform.position = Vector2.Lerp(transform.position,mouseWorld,.5f);
         frontArmIK.transform.position = mouseWorld;
     }
-    void Shoot()
+    void GrappleShoot()
     {
         Vector2 dir = mouseWorld - (Vector2)transform.position;
         float distance = 50f;
@@ -234,6 +245,7 @@ public class Player : Character
             isGrappling = true;
             grapplePoint = hit.point;
             grappleBullet.transform.position = grapplePoint;
+            grappleBullet.transform.SetParent(hit.collider.gameObject.transform);
             rb.gravityScale = 0;
             lineRenderer.enabled = true;
             canGrapple = false;
@@ -272,6 +284,29 @@ public class Player : Character
         isGrappling = false;
         rb.gravityScale = 1;
         lineRenderer.enabled = false;
+    }
+
+    void UpdateRadarLight()
+    {
+        List<GameObject> detectableObjects = new List<GameObject>();
+
+        foreach (Detectable detectable in Manager.Instance.detectables)
+        {
+            if (detectable != null)
+                detectableObjects.Add(detectable.gameObject);
+        }
+
+        GameObject closestDetectable = PublicUtilities.closestObject(detectableObjects, transform);
+
+        if (closestDetectable == null)
+        {
+            radarLight.color = Color.red;
+            return;
+        }
+
+        float alignment = 0;
+
+        radarLight.color = Color.Lerp(Color.red, Color.green, alignment);
     }
 
     protected override void Jump()

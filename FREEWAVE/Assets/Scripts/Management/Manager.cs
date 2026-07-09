@@ -15,6 +15,8 @@ public class Manager : MonoBehaviour
     [SerializeField] public GameObject mouseObject;
     [HideInInspector]public List<Enemy> enemies = new List<Enemy>();
     [HideInInspector]public List<Interactable> interactables = new List<Interactable>();
+
+    [HideInInspector] public List<Detectable> detectables = new List<Detectable>();
     Volume healthVolume;
 
     PublicTimer playerRespawnTimer = new PublicTimer(50f);
