@@ -190,6 +190,8 @@ public class Ship : MonoBehaviour
         if(toBreakable.magnitude < 1.2f)
         {
             breakable.Break();
+            SoundManager.PlaySound(0.5f,0.2f,"glassSmash1","glassSmash2");
+            SoundManager.PlaySound(0.5f,0.2f,"crash1","crash2");
             manager.cam.StartScreenShake(15,0.05f);
 
             float breakBoostForce = 15f;

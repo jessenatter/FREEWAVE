@@ -115,7 +115,9 @@ public class LimbManager : MonoBehaviour
         Vector2 thisPoint = pointsToUse[currentPoint];
         Vector2 nextPoint = pointsToUse[nextIndex];
 
+        //only need chr heere
         Vector2 characterDirectionVec = new Vector2(Mathf.Sign(character.transform.localScale.x),1);
+
         Vector2 initRestPos = (Vector2)orgin.transform.position + (initOffsetFromOrgin * characterDirectionVec);
 
         Vector2 exactTarget = initRestPos + (Vector2.Lerp(thisPoint, nextPoint, lerpAmmount) * characterDirectionVec);
