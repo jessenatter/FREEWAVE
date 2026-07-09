@@ -204,5 +204,5 @@ MonoBehaviour:
     duration: 1000
     current: 0
   destroyOnSecondTimer: 0
-  waitForCollision: 1
-  collisionLayer: 0
+  waitForCollisionBeforeSwitching: 1
+  collisionLayer: 7
