@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Accessibility;
 
 public class LiveBuilding : MonoBehaviour
 {
@@ -7,16 +9,14 @@ public class LiveBuilding : MonoBehaviour
 
     List<LimbManager> limbs = new List<LimbManager>();
 
-    [SerializeField] float maxBendAngle = 15f;
-
-    [SerializeField] float angleModifier = 1f;
-
+    List<sack> sacks = new List<sack>();
+ 
+    float maxBendAngle = 15f, angleModifier = 1f, lerpSpeed = 5f;
     GameObject target;
     Player player;
     Ship ship;
 
-    [SerializeField] float lerpSpeed = 5f;
-
+    bool alive = true;
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -31,6 +31,12 @@ public class LiveBuilding : MonoBehaviour
             {
                 foreach(LimbManager lm in transform.GetChild(i).GetComponentsInChildren<LimbManager>())
                     limbs.Add(lm);
+            }
+
+            if(transform.GetChild(i).GetComponentInChildren<sack>())
+            {
+                foreach(sack _sack in transform.GetChild(i).GetComponentsInChildren<sack>())
+                    sacks.Add(_sack);
             }
         }
 
@@ -49,8 +55,12 @@ public class LiveBuilding : MonoBehaviour
     {
         target = player.characterIsActive ? player.gameObject : ship.gameObject;
 
+        if(alive == false)
+            return;
+
         UpdateLayers();
         UpdateLimbs();
+        CheckSacks();
     }
 
     void UpdateLayers()
@@ -84,5 +94,21 @@ public class LiveBuilding : MonoBehaviour
         {
             limb.transform.position = Vector2.Lerp(limb.transform.position,target.transform.position,Time.deltaTime * lerpSpeed);
         }
+    }
+
+    void CheckSacks()
+    {
+        if(sacks.Where(s => !s.stabbed).Any())
+            return;
+        
+        if(!alive)
+            return;
+
+        Die();
+    }
+
+    void Die()
+    {
+        alive = false;
     }
 }
