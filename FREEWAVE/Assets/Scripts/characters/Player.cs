@@ -32,6 +32,9 @@ public class Player : Character
     GameObject currentMelee,currentAimed, grappleFunctionPoint;
 
     Light2D radarLight;
+    PublicTimer radarBeepTimer = new PublicTimer(30f);
+    string radarBeepSound = "beep";
+    float radarBeepVolume = 0.2f,radarBeepPitchVariance = 0.05f,radarSlowBeepFrames = 90f, radarFastBeepFrames = 20f;
 
     override protected void Start()
     {
@@ -301,6 +304,7 @@ public class Player : Character
         if (closestDetectable == null)
         {
             radarLight.color = Color.red;
+            radarBeepTimer.Reset();
             return;
         }
 
@@ -310,6 +314,14 @@ public class Player : Character
         // Dot is 1 when aiming directly at target, -1 when aiming opposite.
         float dot = Vector2.Dot(aimDirection, toDetectable);
         float alignment = Mathf.Clamp01((dot + 1f) * 0.5f);
+
+        float slowFrames = Mathf.Max(1f, radarSlowBeepFrames);
+        float fastFrames = Mathf.Clamp(radarFastBeepFrames, 1f, slowFrames);
+        float beepInterval = Mathf.Lerp(slowFrames, fastFrames, alignment);
+        radarBeepTimer.SetDuration(beepInterval);
+
+        if (radarBeepTimer.TickLoop())
+            SoundManager.PlaySound(radarBeepVolume, radarBeepPitchVariance, radarBeepSound);
 
         radarLight.color = Color.Lerp(Color.red, Color.green, alignment);
     }
