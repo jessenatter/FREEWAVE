@@ -304,7 +304,12 @@ public class Player : Character
             return;
         }
 
-        float alignment = 0;
+        Vector2 aimDirection = (mouseWorld - (Vector2)transform.position).normalized;
+        Vector2 toDetectable = ((Vector2)closestDetectable.transform.position - (Vector2)transform.position).normalized;
+
+        // Dot is 1 when aiming directly at target, -1 when aiming opposite.
+        float dot = Vector2.Dot(aimDirection, toDetectable);
+        float alignment = Mathf.Clamp01((dot + 1f) * 0.5f);
 
         radarLight.color = Color.Lerp(Color.red, Color.green, alignment);
     }
