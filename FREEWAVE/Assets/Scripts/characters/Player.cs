@@ -114,17 +114,17 @@ public class Player : Character
     }
     void GetInputs()
     {
-        if(Manager.Instance.moveAction.ReadValue<Vector2>().x != 0)
-            xInput = Mathf.Sign(Manager.Instance.moveAction.ReadValue<Vector2>().x);
+        if(InputManager.Instance.moveAction.ReadValue<Vector2>().x != 0)
+            xInput = Mathf.Sign(InputManager.Instance.moveAction.ReadValue<Vector2>().x);
         else 
             xInput = 0;
         
-        yInput = Manager.Instance.moveAction.ReadValue<Vector2>().y;
+        yInput = InputManager.Instance.moveAction.ReadValue<Vector2>().y;
 
-        if (Manager.Instance.jumpAction.IsPressed())
+        if (InputManager.Instance.jumpAction.IsPressed())
             Jump();
 
-        if (Manager.Instance.interactAction.IsPressed())
+        if (InputManager.Instance.interactAction.IsPressed())
         {
             if(interactKeyReleased)
                 Interact();
@@ -134,7 +134,7 @@ public class Player : Character
         else
             interactKeyReleased = true;
         
-        if(Mouse.current.rightButton.isPressed || Manager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0)
+        if(Mouse.current.rightButton.isPressed || InputManager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0)
         {
             //start aiming
             aiming = true;
@@ -151,7 +151,7 @@ public class Player : Character
             currentMelee.SetActive(true);
         }
         
-        if(Manager.Instance.attackAction.IsPressed())
+        if(InputManager.Instance.attackAction.IsPressed())
         {
             if(attackKeyReleased)
                 getAttackInput = true;
@@ -168,7 +168,7 @@ public class Player : Character
         {
             if(currentAimed == grapple)
             {
-                if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchDrugAction.IsPressed())
+                if(InputManager.Instance.useDrugAction.IsPressed() || InputManager.Instance.switchDrugAction.IsPressed())
                     GrappleShoot();
             }
             else if(currentAimed == radar)
@@ -178,9 +178,9 @@ public class Player : Character
         }
 
         int switchDir = 0;
-        if(Manager.Instance.switchRightAction.IsPressed())
+        if(InputManager.Instance.switchRightAction.IsPressed())
             switchDir = 1;
-        else if(Manager.Instance.switchLeftAction.IsPressed())
+        else if(InputManager.Instance.switchLeftAction.IsPressed())
             switchDir = -1;
 
         if(switchDir != 0)
@@ -194,8 +194,8 @@ public class Player : Character
         else
             switchKeyReleased = true;
 
-        if(Manager.Instance.switchDrugAction.ReadValue<float>() != 0)
-            SwitchDrug((int)Manager.Instance.switchDrugAction.ReadValue<float>());
+        if(InputManager.Instance.switchDrugAction.ReadValue<float>() != 0)
+            SwitchDrug((int)InputManager.Instance.switchDrugAction.ReadValue<float>());
     }
     void Interact()
     {
@@ -220,14 +220,14 @@ public class Player : Character
     }
     void UpdateMouseObject()
     {
-        if(Manager.Instance.lookAction.ReadValue<Vector2>().magnitude == 0)
+        if(InputManager.Instance.lookAction.ReadValue<Vector2>().magnitude == 0)
         {
-            Vector2 mousePos = Manager.Instance.pointAction.ReadValue<Vector2>();
+            Vector2 mousePos = InputManager.Instance.pointAction.ReadValue<Vector2>();
             mouseWorld = Manager.Instance.cam.cameraComponent.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Manager.Instance.cam.cameraComponent.WorldToScreenPoint(transform.position).z));
         }
         else
         {
-            Vector2 aimDir = Manager.Instance.lookAction.ReadValue<Vector2>();
+            Vector2 aimDir = InputManager.Instance.lookAction.ReadValue<Vector2>();
             float distance = 6.5f;
             mouseWorld = (Vector2)transform.position + aimDir * distance;
         }

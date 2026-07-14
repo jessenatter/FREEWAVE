@@ -19161,6 +19161,7 @@ GameObject:
   - component: {fileID: 6830511277725362140}
   - component: {fileID: 2874193333048364687}
   - component: {fileID: 3506206290965360005}
+  - component: {fileID: 1080710457113183679}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Manager
@@ -19196,76 +19197,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1927eead02184c8f8a9730433121e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  moveAction:
-    m_Name: Move
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: bc2ee1d1-4e45-42a3-8e6e-a89cf47ee5e3
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  jumpAction:
-    m_Name: Jump
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: d0a2da65-1ef2-400f-90d0-b17a3589c60d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  interactAction:
-    m_Name: Interact
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 2af91a72-6d32-4a17-a76c-89d528868c1a
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  dashAction:
-    m_Name: Dash
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c00f6fa9-b6c7-4718-b6d0-e5c67edac465
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  pointAction:
-    m_Name: Point
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: b1e6e612-c276-443e-95fa-a04460abc993
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  attackAction:
-    m_Name: Attack
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 3a5e23d4-aaa9-4ebf-be8f-f52b35e5c1af
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  lookAction:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 68423022-659c-44ea-b4d6-1413bcf3f038
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
   player: {fileID: 0}
   ship: {fileID: 0}
   cam: {fileID: 0}
   mouseObject: {fileID: 3137679557397910299}
-  zombies: []
-  pickupAbles: []
-  corpses: []
+  enemies: []
+  interactables: []
+  detectables: []
 --- !u!114 &3506206290965360005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19283,6 +19221,126 @@ MonoBehaviour:
   blendDistance: 0
   weight: 0
   sharedProfile: {fileID: 11400000, guid: a0292151fe73f4969a371b93635d4a45, type: 2}
+--- !u!114 &1080710457113183679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4806560408564794821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e63dfde900b6401eb27673bc9299144, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
+  moveAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6afcf15f-45dc-44bd-894e-84ce4aec4bb9
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  jumpAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a8d1169b-efa5-4151-960c-76de546cd417
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  interactAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f1c61243-f4e6-425d-8d3d-5e30f0fdac84
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  dodgeAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 7e60a8ec-18e4-4fe5-85d2-9fcdd658ff76
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  pointAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6220fc7d-3acc-40c7-b2e0-d30b4a993ce4
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  attackAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4eb8b44d-5be3-44da-9491-891df589e92a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  lookAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 7046474a-d460-461d-b3d6-2af6e8bd0092
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  switchLeftAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 034dd6cd-9660-4787-ad49-81ab1c99a326
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  aimAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6568b744-f115-44c1-af91-33eae097bcbc
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  useDrugAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: cb67f107-666c-46a4-9490-2aee2aefbb3c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  switchRightAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2f83c506-6655-496a-a6b7-4a96d854b2e7
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  switchDrugAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: fcb31018-7eb5-41af-bf4b-b19ef9ea301e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &4816099650684306514
 GameObject:
   m_ObjectHideFlags: 0

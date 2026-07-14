@@ -7,7 +7,7 @@ public class WorldTransition : MonoBehaviour
     GameObject ship;
     float lerpSpeedxy = 10f, lerpSpeedz = 3f;
     float initZ,initFOV;
-    public Camera cameraComponent;
+    Camera cameraComponent;
     
     void Start()
     {

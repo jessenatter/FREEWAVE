@@ -1,7 +1,6 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Ship : MonoBehaviour
 {
@@ -40,8 +39,6 @@ public class Ship : MonoBehaviour
 
     public ShipState currentShipState = ShipState.waitingForPlayer;
 
-    InputAction mainEngineAction,reverseEngineAction, moveAction,boostAction1,boostAction2;
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -59,9 +56,14 @@ public class Ship : MonoBehaviour
         }
 
         if(Manager.Instance != null)
+        {
             manager = Manager.Instance;
-        
-        player = manager.player;
+            player = manager.player;
+        }
+        else
+        {
+            currentShipState = ShipState.flying;
+        }
     }
 
     void Update()
@@ -93,15 +95,15 @@ public class Ship : MonoBehaviour
 
     void ReadInputs()
     {
-        xInput = -Mathf.Sign(manager.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(manager.moveAction.ReadValue<Vector2>().x);
+        xInput = -Mathf.Sign(InputManager.Instance.moveAction.ReadValue<Vector2>().x) * Mathf.Abs(InputManager.Instance.moveAction.ReadValue<Vector2>().x);
 
         if(xInput != 0)
             lastXinput = Mathf.Sign(xInput);
 
-        mainEngine = manager.jumpAction.IsPressed();
-        reverseEngine = manager.dodgeAction.IsPressed();
+        mainEngine = InputManager.Instance.jumpAction.IsPressed();
+        reverseEngine = InputManager.Instance.dodgeAction.IsPressed();
 
-        if(manager.interactAction.IsPressed())
+        if(InputManager.Instance.interactAction.IsPressed() && player != null)
         {
             if(interactKeyReleased)
                 ExitShip();
@@ -111,10 +113,10 @@ public class Ship : MonoBehaviour
         else
             interactKeyReleased = true;
 
-        if(Manager.Instance.useDrugAction.IsPressed() || Manager.Instance.switchLeftAction.IsPressed() || Manager.Instance.switchRightAction.IsPressed())
+        if(InputManager.Instance.useDrugAction.IsPressed() || InputManager.Instance.switchLeftAction.IsPressed() || InputManager.Instance.switchRightAction.IsPressed())
             Boost();
 
-        if(Manager.Instance.attackAction.IsPressed())
+        if(InputManager.Instance.attackAction.IsPressed())
             Shoot();
     }
 
