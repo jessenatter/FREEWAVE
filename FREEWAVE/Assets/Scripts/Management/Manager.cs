@@ -24,7 +24,7 @@ public class Manager : MonoBehaviour
 
     float maxShipYposition = 60f;
 
-    bool shipCanExitAtmosphere = true;
+    bool shipCanExitAtmosphere = false;
 
     void Awake()
     {
