@@ -3,13 +3,10 @@ using UnityEngine.InputSystem;
 
 public class WorldTransition : MonoBehaviour
 {
-    //this script will be both the manager and camera for world transition scene
-    [HideInInspector]public InputAction moveAction, jumpAction,dodgeAction,useDrugAction,switchRightAction;
-
+    //this script will be both the manager and camera for world transition sce
     GameObject ship;
     float lerpSpeedxy = 10f, lerpSpeedz = 3f;
     float initZ,initFOV;
-
     public Camera cameraComponent;
     
     void Start()
@@ -20,12 +17,6 @@ public class WorldTransition : MonoBehaviour
 
         initZ = transform.position.z;
         initFOV = cameraComponent.fieldOfView;
-
-        moveAction = InputSystem.actions.FindAction("Move");
-        jumpAction = InputSystem.actions.FindAction("Jump");
-        dodgeAction = InputSystem.actions.FindAction("Dodge");
-        useDrugAction = InputSystem.actions.FindAction("UseDrug");
-        switchRightAction = InputSystem.actions.FindAction("SwitchRight");
     }
 
     void Update()
