@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Ship : MonoBehaviour
 {
@@ -39,6 +40,8 @@ public class Ship : MonoBehaviour
 
     public ShipState currentShipState = ShipState.waitingForPlayer;
 
+    InputAction mainEngineAction,reverseEngineAction, moveAction,boostAction1,boostAction2;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -55,7 +58,9 @@ public class Ship : MonoBehaviour
             engineAudioPitch = engineBasePitch;
         }
 
-        manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<Manager>();
+        if(Manager.Instance != null)
+            manager = Manager.Instance;
+        
         player = manager.player;
     }
 

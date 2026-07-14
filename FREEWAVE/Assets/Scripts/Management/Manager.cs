@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,6 +22,10 @@ public class Manager : MonoBehaviour
 
     PublicTimer playerRespawnTimer = new PublicTimer(50f);
     bool playerDead = false;
+
+    float maxShipYposition = 60f;
+
+    bool shipCanExitAtmosphere = false;
 
     void Awake()
     {
@@ -67,7 +72,12 @@ public class Manager : MonoBehaviour
 
         healthVolume.weight = 1 - (player.health / 10);
     }
-    
+
+    void FixedUpdate()
+    {
+        CheckShipBreakAtmosphere();
+    }
+
     void RespawnPlayer()
     {
         playerDead = false;
@@ -82,6 +92,27 @@ public class Manager : MonoBehaviour
     void RestartScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void CheckShipBreakAtmosphere()
+    {
+        float ShipSlowDownLerpSpeed = 3f;
+
+        if(ship.transform.position.y > maxShipYposition)
+        {
+            if(shipCanExitAtmosphere)
+            {
+                
+            }
+            else
+            {
+                Vector2 shipAproachAtmosphereVector = new Vector2(ship.rb.linearVelocityX,0);
+                ship.rb.linearVelocity = Vector2.Lerp(ship.rb.linearVelocity,shipAproachAtmosphereVector,ShipSlowDownLerpSpeed * Time.fixedDeltaTime);
+                print(ship.rb.linearVelocityY);
+            }
+        }
+
+
     }
     
 }
