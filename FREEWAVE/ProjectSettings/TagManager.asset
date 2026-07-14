@@ -8,6 +8,7 @@ TagManager:
   - Ship
   - usesSeperateLimbs
   - Key
+  - Key2
   layers:
   - Default
   - TransparentFX
