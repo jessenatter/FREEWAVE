@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2388652507777005733}
   - component: {fileID: 7575442389864748067}
   - component: {fileID: 4993507470754677045}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RedBrickChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,9 +179,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1f9cebf80ac4e91982790e6617b810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
-  startLayer: 8
-  endLayer: 10
+  startLayer: 6
+  endLayer: 8
+  changeLayerTimer:
+    duration: 100
+    current: 0
+  destroyTimer:
+    duration: 1000
+    current: 0
   destroyOnSecondTimer: 1
+  waitForCollisionBeforeSwitching: 0
+  collisionLayer: 0
 --- !u!114 &4993507470754677045
 MonoBehaviour:
   m_ObjectHideFlags: 0

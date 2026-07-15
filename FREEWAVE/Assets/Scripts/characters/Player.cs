@@ -14,6 +14,7 @@ public class Player : Character
     [HideInInspector] public bool canEnterShip,aiming;
     Vector2 mouseWorld,grapplePoint;
     [SerializeField] GameObject frontArmIK;
+    LimbManager frontArmTarget;
     GameObject grappleBullet;
     LineRenderer lineRenderer;
     PublicTimer grappleTimer = new PublicTimer(30f);
@@ -76,6 +77,7 @@ public class Player : Character
 
         grappleFunctionPoint = grapple.transform.GetChild(3).gameObject;
         radarLight = radar.transform.GetChild(2).GetComponent<Light2D>();
+        frontArmTarget = frontArmIK.GetComponent<LimbManager>();
 
         grappleBullet = GameObject.FindGameObjectWithTag("GrappleBullet").gameObject;
         grappleBullet.SetActive(false);
@@ -145,10 +147,15 @@ public class Player : Character
         else
             interactKeyReleased = true;
         
-        if(Mouse.current.rightButton.isPressed || InputManager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0)
+        bool wantsToAim = Mouse.current.rightButton.isPressed || InputManager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0;
+
+        if(wantsToAim)
         {
             //start aiming
             aiming = true;
+
+            if(frontArmTarget != null)
+                frontArmTarget.enabled = false;
 
             currentAimed.SetActive(true);
             currentMelee.SetActive(false);
@@ -157,6 +164,9 @@ public class Player : Character
         {
             //stop aiming
             aiming = false;
+
+            if(frontArmTarget != null)
+                frontArmTarget.enabled = true;
 
             currentAimed.SetActive(false);
             currentMelee.SetActive(true);

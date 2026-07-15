@@ -88,7 +88,6 @@ public class Character : MonoBehaviour
             getAttackInput = false;
         }
 
-        characterAnimator.CharacterAnimatorUpdate();
     }
     protected virtual void FixedUpdate() //rb stuff
     {
@@ -110,6 +109,11 @@ public class Character : MonoBehaviour
         AttackCDupdate();
         checkForInteractables();
         characterAnimator.CharacterAnimatorFixedUpdate(); //i guess we are calling it from here for order of opperations?
+    }
+
+    protected virtual void LateUpdate()
+    {
+        characterAnimator.CharacterAnimatorUpdate();
     }
     protected virtual void MovementUpdate()
     {
