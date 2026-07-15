@@ -13,7 +13,8 @@ public class Player : Character
     float maxDistanceFromShip = 1f;
     [HideInInspector] public bool canEnterShip,aiming;
     Vector2 mouseWorld,grapplePoint;
-    [SerializeField] GameObject grappleBullet,frontArmIK;
+    [SerializeField] GameObject frontArmIK;
+    GameObject grappleBullet;
     LineRenderer lineRenderer;
     PublicTimer grappleTimer = new PublicTimer(30f);
     bool canGrapple,interactKeyReleased,attackKeyReleased,switchKeyReleased = true,dead;
@@ -75,6 +76,9 @@ public class Player : Character
 
         grappleFunctionPoint = grapple.transform.GetChild(3).gameObject;
         radarLight = radar.transform.GetChild(2).GetComponent<Light2D>();
+
+        grappleBullet = GameObject.FindGameObjectWithTag("GrappleBullet").gameObject;
+        grappleBullet.SetActive(false);
     }
     override protected void Update() //reading input, visuals
     {
@@ -247,6 +251,7 @@ public class Player : Character
             SoundManager.PlaySound(0.5f,0.2f,"grapple");
             isGrappling = true;
             grapplePoint = hit.point;
+            grappleBullet.SetActive(true);
             grappleBullet.transform.position = grapplePoint;
             grappleBullet.transform.SetParent(hit.collider.gameObject.transform);
             rb.gravityScale = 0;
@@ -287,6 +292,7 @@ public class Player : Character
         isGrappling = false;
         rb.gravityScale = 1;
         lineRenderer.enabled = false;
+        grappleBullet.SetActive(false);
     }
 
     void UpdateRadarLight()
