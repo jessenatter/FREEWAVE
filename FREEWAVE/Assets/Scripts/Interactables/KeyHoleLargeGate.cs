@@ -2,18 +2,12 @@ using UnityEngine;
 
 public class KeyHoleLargeGate : Interactable
 {
-    public bool keyUsed =false;
+    public bool keyUsed = false;
     GameObject keyVisual;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        keyVisual = transform.parent.transform.GetChild(1).gameObject;
-    }
 
-    // Update is called once per frame
-    void Update()
+    void Awake()
     {
-        
+        keyVisual = transform.GetChild(1).gameObject;
     }
 
     public override void Interact()
