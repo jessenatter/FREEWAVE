@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5764533730366584693}
   - component: {fileID: 3139195376571230963}
   - component: {fileID: 4858857398599584228}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Building Variant 2 Variant
   m_TagString: Untagged
   m_Icon: {fileID: 0}

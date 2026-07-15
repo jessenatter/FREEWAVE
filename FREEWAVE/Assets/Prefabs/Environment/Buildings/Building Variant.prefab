@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7941175048184962438}
   - component: {fileID: 746381285228855296}
   - component: {fileID: 7108128597668127511}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Building Variant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
