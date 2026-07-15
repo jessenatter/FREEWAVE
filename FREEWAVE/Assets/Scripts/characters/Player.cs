@@ -89,9 +89,16 @@ public class Player : Character
             GetInputs();
         }
 
+        
+    }
+
+    override protected void LateUpdate()
+    {
+        base.LateUpdate();
+        
         if(aiming)
         {
-            UpdateMouseObject();
+            AimUpdate();
         }
     }
     override protected void FixedUpdate() //rb stuff
@@ -222,7 +229,7 @@ public class Player : Character
                 FlipShip();
         }
     }
-    void UpdateMouseObject()
+    void AimUpdate()
     {
         if(InputManager.Instance.lookAction.ReadValue<Vector2>().magnitude == 0)
         {

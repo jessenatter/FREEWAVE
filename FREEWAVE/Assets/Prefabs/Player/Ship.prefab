@@ -539,7 +539,7 @@ MonoBehaviour:
   rightSmoke: {fileID: 6433656703026361116}
   breakableWallLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 16384
   explosion: {fileID: 3715073506139763776, guid: a5fe5b8f5fc4e495dacfc2cb39323b05, type: 3}
   currentShipState: 0
 --- !u!82 &7106697119477983465

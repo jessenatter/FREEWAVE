@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7931060375636630722}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpawnPos2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2888585089372758314}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LampSpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2713938286358187101}
   - component: {fileID: 4955689083644639267}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BuildingFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 64122636321633952}
   - component: {fileID: 7245405870745545510}
   - component: {fileID: 896870397684500529}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3139920453112787131}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpawnPos1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,6 +360,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8976694701043830200}
     m_Modifications:
+    - target: {fileID: 839122132536251581, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297979628480656376, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 1764169181603299341, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.242
@@ -400,9 +408,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4114189014444448756, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 4364020370731826548, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
       propertyPath: m_Name
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364020370731826548, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4423950219988555023, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909628405928234998, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4953850739607444395, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6561247183642016150, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
       propertyPath: m_PreviousTrimEdge
@@ -419,6 +447,10 @@ PrefabInstance:
     - target: {fileID: 6561247183642016150, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
       propertyPath: m_ShadowMesh.m_LocalBounds.m_Extent.x
       value: 0.074409485
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893088461314713078, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -446,6 +478,10 @@ PrefabInstance:
     - target: {fileID: 637157450191169264, guid: b255c8b8b72fc4e57b28beb288be950e, type: 3}
       propertyPath: m_Name
       value: Floor (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 637157450191169264, guid: b255c8b8b72fc4e57b28beb288be950e, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4839602735866273642, guid: b255c8b8b72fc4e57b28beb288be950e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -509,6 +545,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8976694701043830200}
     m_Modifications:
+    - target: {fileID: 839122132536251581, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297979628480656376, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 1764169181603299341, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.203
@@ -549,9 +593,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4114189014444448756, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 4364020370731826548, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
       propertyPath: m_Name
       value: Wall (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4364020370731826548, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4423950219988555023, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909628405928234998, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4953850739607444395, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6561247183642016150, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
       propertyPath: m_PreviousTrimEdge
@@ -568,6 +632,10 @@ PrefabInstance:
     - target: {fileID: 6561247183642016150, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
       propertyPath: m_ShadowMesh.m_LocalBounds.m_Extent.x
       value: 0.074409485
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893088461314713078, guid: 9cbd1960438c34cc4a7fb52cdfa7140c, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -595,6 +663,10 @@ PrefabInstance:
     - target: {fileID: 637157450191169264, guid: b255c8b8b72fc4e57b28beb288be950e, type: 3}
       propertyPath: m_Name
       value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 637157450191169264, guid: b255c8b8b72fc4e57b28beb288be950e, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4839602735866273642, guid: b255c8b8b72fc4e57b28beb288be950e, type: 3}
       propertyPath: m_LocalPosition.x

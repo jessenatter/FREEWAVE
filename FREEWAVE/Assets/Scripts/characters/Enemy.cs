@@ -86,8 +86,11 @@ public class Enemy : Character
         damageToRecive = player.damage;
         if(collision.gameObject == Manager.Instance.ship.gameObject)
         {
-            //if(Manager.Instance.ship.rb.linearVelocity)
+            return;
+            if(Manager.Instance.ship.rb.linearVelocity.magnitude < 5f) return;
             print("a");
+            float shipForceModifier = 1f;
+            rb.AddForce(Manager.Instance.ship.rb.linearVelocity * shipForceModifier,ForceMode2D.Impulse);
         }
         base.OnTriggerEnter2D(collision);
     }

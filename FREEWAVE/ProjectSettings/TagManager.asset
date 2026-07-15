@@ -9,6 +9,7 @@ TagManager:
   - usesSeperateLimbs
   - Key
   - Key2
+  - GrappleBullet
   layers:
   - Default
   - TransparentFX
@@ -18,15 +19,15 @@ TagManager:
   - UI
   - Ground
   - Ship
-  - Building
-  - BreakableWall
+  - NotCollidable
   - DecorativeCollidables
   - PlayerAttackCollider
   - EnemyAttackCollider
   - Player
   - Enemy
-  - Foreground
-  - NotCollidable
+  - BreakableWall
+  - 
+  - 
   - 
   - 
   - 
@@ -58,7 +59,7 @@ TagManager:
   - name: Background1
     uniqueID: 3057972703
     locked: 0
-  - name: Buildings
+  - name: Environment
     uniqueID: 1169484097
     locked: 0
   - name: Ship
@@ -73,14 +74,8 @@ TagManager:
   - name: Player
     uniqueID: 966635803
     locked: 0
-  - name: Foreground1
+  - name: Foreground
     uniqueID: 798950809
-    locked: 0
-  - name: Foreground2
-    uniqueID: 2237380939
-    locked: 0
-  - name: Foreground3
-    uniqueID: 2805498937
     locked: 0
   m_RenderingLayers:
   - Default

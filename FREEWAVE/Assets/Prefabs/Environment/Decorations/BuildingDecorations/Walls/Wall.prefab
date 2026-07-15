@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3299019350709055662}
   - component: {fileID: 1115552005644803895}
   - component: {fileID: 6561247183642016150}
-  m_Layer: 9
+  m_Layer: 14
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,6 +165,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BrickVisual (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 3852452014407811677, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.4999998
@@ -234,6 +238,10 @@ PrefabInstance:
     - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_Name
       value: BrickVisual (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3852452014407811677, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_LocalScale.x
@@ -305,6 +313,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BrickVisual (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 3852452014407811677, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.4999998
@@ -374,6 +386,10 @@ PrefabInstance:
     - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_Name
       value: BrickVisual (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3852452014407811677, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_LocalScale.x
@@ -445,6 +461,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BrickVisual (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 3852452014407811677, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.4999998
@@ -514,6 +534,10 @@ PrefabInstance:
     - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_Name
       value: BrickVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 3032614126165554201, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3852452014407811677, guid: 6b1bbbead35584d1fbd94da92dea3fe1, type: 3}
       propertyPath: m_LocalScale.x
@@ -636,6 +660,10 @@ PrefabInstance:
     - target: {fileID: 8264757621094511633, guid: ef856804715544f86ae7939fedd62bbd, type: 3}
       propertyPath: m_Name
       value: WindowVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 8264757621094511633, guid: ef856804715544f86ae7939fedd62bbd, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
