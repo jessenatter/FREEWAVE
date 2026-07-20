@@ -19,6 +19,9 @@ public class Player : Character
     LineRenderer lineRenderer;
     PublicTimer grappleTimer = new PublicTimer(30f);
     bool canGrapple,interactKeyReleased,attackKeyReleased,switchKeyReleased = true,dead;
+    bool interactHeld, interactHoldTriggered;
+    float interactHoldTime;
+    float shipFlipHoldDuration = 0.35f;
     CameraScript cam;
     float maxGrappleSpeed = 15f;
 
@@ -139,13 +142,32 @@ public class Player : Character
 
         if (InputManager.Instance.interactAction.IsPressed())
         {
-            if(interactKeyReleased)
-                Interact();
+            if (!interactHeld && interactKeyReleased)
+            {
+                interactHeld = true;
+                interactHoldTriggered = false;
+                interactHoldTime = 0f;
+                interactKeyReleased = false;
+            }
+            else if (interactHeld)
+                interactHoldTime += Time.deltaTime;
 
-            interactKeyReleased = false;
+            if (interactHeld && !interactHoldTriggered && CanEnterShip() && interactHoldTime >= shipFlipHoldDuration)
+            {
+                FlipShip();
+                interactHoldTriggered = true;
+            }
         }
         else
+        {
+            if (interactHeld && !interactHoldTriggered)
+                Interact();
+
+            interactHeld = false;
+            interactHoldTriggered = false;
+            interactHoldTime = 0f;
             interactKeyReleased = true;
+        }
         
         bool wantsToAim = Mouse.current.rightButton.isPressed || InputManager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0;
 
@@ -220,24 +242,20 @@ public class Player : Character
     }
     void Interact()
     {
-        Vector2 distanceFromShip = transform.position - ship.transform.position;
-
-        if (distanceFromShip.magnitude < maxDistanceFromShip)
-            canEnterShip = true;
-        else
-            canEnterShip = false;
+        canEnterShip = CanEnterShip();
 
         if(nearInteractable)
         {
             InteractWithObject();
         }
         else if(canEnterShip)
-        {
-            if (ship.rb.rotation >= 0 && ship.rb.rotation <= 45 || ship.rb.rotation <= 360 && ship.rb.rotation >= 315)
-                EnterShip();
-            else
-                FlipShip();
-        }
+            EnterShip();
+    }
+
+    bool CanEnterShip()
+    {
+        Vector2 distanceFromShip = transform.position - ship.transform.position;
+        return distanceFromShip.magnitude < maxDistanceFromShip;
     }
     void AimUpdate()
     {
@@ -419,6 +437,10 @@ public class Player : Character
     {
         transform.position = ship.transform.position;
         characterIsActive = true;
+        interactKeyReleased = false;
+        interactHeld = false;
+        interactHoldTriggered = false;
+        interactHoldTime = 0f;
         float exitMultiplier = 2f;
         rb.AddForce(ship.rb.linearVelocity * exitMultiplier,ForceMode2D.Impulse);
         cam.ExitShip();

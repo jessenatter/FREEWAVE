@@ -281,6 +281,8 @@ public class Ship : MonoBehaviour
             rb.AddForce(transform.up * boostForce, ForceMode2D.Impulse);
             GameObject _explosion = Instantiate(explosion);
             _explosion.transform.position = mainFlame.transform.position;
+            SoundManager.PlaySound("explosion",0.75f,0.2f);
+            
             canBoost = false;
             boostCDTimer.Reset();
             boostTimer.Reset();
