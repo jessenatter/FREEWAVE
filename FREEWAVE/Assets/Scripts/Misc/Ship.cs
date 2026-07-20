@@ -287,7 +287,9 @@ public class Ship : MonoBehaviour
         }
 
         float distance = 10f;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, distance, breakableWallLayer);
+        Vector2 castSize = new Vector2(1f, 1f);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, castSize, transform.eulerAngles.z, transform.up, distance, breakableWallLayer);
+        
         if (hit == true)
         {
             currentShipState = ShipState.boostingToWindow;

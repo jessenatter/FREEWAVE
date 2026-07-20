@@ -180,7 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
   endLayer: 10
   changeLayerTimer:
-    duration: 30
+    duration: 90
     current: 0
   destroyTimer:
     duration: 1000
