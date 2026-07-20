@@ -24,6 +24,12 @@ public class Player : Character
     float shipFlipHoldDuration = 0.35f;
     CameraScript cam;
     float maxGrappleSpeed = 15f;
+    AudioSource grappleAudioSource;
+    float grappleAudioBasePitch = 1f;
+    float grappleAudioPitchRange = 0.35f;
+    float grappleAudioPitchCycleSpeed = 2.5f;
+    float grappleAudioActiveTime;
+    float aimFlipDeadzone = 0.1f;
 
     [HideInInspector] public bool inCombat;
     
@@ -47,6 +53,7 @@ public class Player : Character
         attackCD.SetDuration(5f);
         knockbackForce = 5f;
         dashAttackSpeed = 7f;
+        jumpForce = jumpForce + 0.1f;
         dashAttackTimer.SetDuration(20f);
         hurtTimer.SetDuration(30f);
         
@@ -59,6 +66,16 @@ public class Player : Character
         float width = 0.015f;
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;
+
+        if (grappleAudioSource == null)
+            grappleAudioSource = GetComponent<AudioSource>();
+
+        if (grappleAudioSource != null)
+        {
+            grappleAudioSource.loop = true;
+            grappleAudioBasePitch = grappleAudioSource.pitch;
+        }
+
         characterIsActive = true;
         cam = Manager.Instance.cam;
 
@@ -116,7 +133,10 @@ public class Player : Character
     protected override void MovementUpdate()
     {
         if(!isGrappling)
+        {
+            UpdateGrapplePullAudio(false);
             base.MovementUpdate();
+        }
         else 
             GrappleStateUpdate();
 
@@ -271,6 +291,13 @@ public class Player : Character
             mouseWorld = (Vector2)transform.position + aimDir * distance;
         }
 
+        Vector2 toAim = mouseWorld - (Vector2)transform.position;
+        if (Mathf.Abs(toAim.x) > aimFlipDeadzone)
+        {
+            float faceSign = Mathf.Sign(toAim.x);
+            transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * faceSign, transform.localScale.y);
+        }
+
         Manager.Instance.mouseObject.transform.position = Vector2.Lerp(transform.position,mouseWorld,.5f);
         frontArmIK.transform.position = mouseWorld;
     }
@@ -297,6 +324,8 @@ public class Player : Character
     }
     void GrappleStateUpdate()
     {
+        UpdateGrapplePullAudio(!grappleIsShooting);
+
         if(grappleIsShooting)
             GrappleShootingUpdate();
         else
@@ -311,23 +340,51 @@ public class Player : Character
     } 
     void GrappleUpdate()
     {
+        //needs work
         Vector2 dir = grapplePoint - (Vector2)grappleFunctionPoint.transform.position;
-        float grappleSpeed = 15f;
+        float grappleSpeed = 17f;
 
-        Vector2 fakeGravity = Vector2.down * 6.5f;
+        Vector2 fakeGravity = Vector2.down * 8f;
 
         rb.AddForce(dir.normalized * grappleSpeed + fakeGravity);
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity,maxGrappleSpeed);
         
-        if(dir.magnitude < 1.5f)
+        if(dir.magnitude < 1f)
             GrappleCancel();
     }
     void GrappleCancel()
     {
         isGrappling = false;
+        UpdateGrapplePullAudio(false);
         rb.gravityScale = 1;
         lineRenderer.enabled = false;
         grappleBullet.SetActive(false);
+    }
+
+    void UpdateGrapplePullAudio(bool isBeingPulled)
+    {
+        if (grappleAudioSource == null)
+            return;
+
+        if (!isBeingPulled)
+        {
+            grappleAudioActiveTime = 0f;
+            grappleAudioSource.pitch = grappleAudioBasePitch;
+
+            if (grappleAudioSource.isPlaying)
+                grappleAudioSource.Stop();
+
+            return;
+        }
+
+        grappleAudioActiveTime += Time.deltaTime;
+
+        float halfRange = grappleAudioPitchRange * 0.5f;
+        float pitchOffset = Mathf.PingPong(grappleAudioActiveTime * grappleAudioPitchCycleSpeed, grappleAudioPitchRange) - halfRange;
+        grappleAudioSource.pitch = grappleAudioBasePitch + pitchOffset;
+
+        if (!grappleAudioSource.isPlaying)
+            grappleAudioSource.Play();
     }
 
     void UpdateRadarLight()

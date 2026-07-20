@@ -51,7 +51,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 73fc9e52086bf46babc9a52d0eb01e0f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -135,8 +135,8 @@ MonoBehaviour:
   m_ShadowMesh:
     m_Mesh: {fileID: 0}
     m_LocalBounds:
-      m_Center: {x: 0.013389587, y: -0.06890869, z: 0}
-      m_Extent: {x: 0.074409485, y: 1.3924255, z: 0}
+      m_Center: {x: 0.013381958, y: -0.06890869, z: 0}
+      m_Extent: {x: 0.074417114, y: 1.3924255, z: 0}
     m_EdgeProcessing: 1
     m_TrimEdge: 0
     m_FlipX: 0
