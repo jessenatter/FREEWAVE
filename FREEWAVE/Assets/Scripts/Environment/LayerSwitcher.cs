@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class LayerSwitcher : MonoBehaviour
 {
-    [SerializeField] int startLayer,endLayer;
+    [SerializeField] int endLayer;
+    int startLayer;
     [SerializeField] PublicTimer changeLayerTimer = new PublicTimer(100f);
     [SerializeField] PublicTimer destroyTimer = new PublicTimer(1000f);
     [SerializeField] bool destroyOnSecondTimer,waitForCollisionBeforeSwitching;
@@ -11,7 +12,7 @@ public class LayerSwitcher : MonoBehaviour
 
     void Start()
     {
-        gameObject.layer = startLayer;
+        startLayer = gameObject.layer;
     }
 
     void Update()

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2388652507777005733}
   - component: {fileID: 7575442389864748067}
   - component: {fileID: 4993507470754677045}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: RedBrickChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
