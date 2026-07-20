@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4648846345313498243}
   - component: {fileID: 5947033982766208205}
   - component: {fileID: -2494613375551289926}
-  m_Layer: 16
+  m_Layer: 9
   m_Name: shelves2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1f9cebf80ac4e91982790e6617b810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
-  startLayer: 7
   endLayer: 10
   changeLayerTimer:
     duration: 30

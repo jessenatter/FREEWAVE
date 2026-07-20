@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4092829473791554969}
   - component: {fileID: 698223610391956265}
   - component: {fileID: 643372378350074750}
-  m_Layer: 16
+  m_Layer: 9
   m_Name: Bed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1f9cebf80ac4e91982790e6617b810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LayerSwitcher
-  startLayer: 7
   endLayer: 10
   changeLayerTimer:
     duration: 30
