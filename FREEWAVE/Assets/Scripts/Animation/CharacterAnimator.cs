@@ -80,6 +80,8 @@ public class CharacterAnimator : MonoBehaviour
     public virtual void CharacterAnimatorStart()
     {
         character = GetComponent<Character>();
+        currentStateTimer.SetDuration(0f);
+        currentStateTimer.Reset();
 
         spine2 = spine1.transform.GetChild(0).gameObject;
         head = spine2.transform.GetChild(0).gameObject;

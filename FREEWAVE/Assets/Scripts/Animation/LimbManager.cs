@@ -75,10 +75,22 @@ public class LimbManager : MonoBehaviour
         }
     }
 
+    void Awake()
+    {
+        if (orgin != null)
+        {
+            initOffsetFromOrgin = transform.position - orgin.transform.position;
+            recordedPoint = transform.position;
+        }
+    }
+
     void Start()
     {
-        initOffsetFromOrgin = transform.position - orgin.transform.position;
-        recordedPoint = transform.position;
+        if (orgin != null)
+        {
+            initOffsetFromOrgin = transform.position - orgin.transform.position;
+            recordedPoint = transform.position;
+        }
 
         if(character == null)
             singleFloor = transform.parent.gameObject.GetComponent<SingleFloor>();
