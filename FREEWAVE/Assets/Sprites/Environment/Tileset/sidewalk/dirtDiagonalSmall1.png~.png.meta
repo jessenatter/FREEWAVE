@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: e98969c6088384b0c831365e16893bda
+guid: faae79d25048242b6bf48bcf34a0271d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7913886619024490638
-    second: sidewalkLeftSmallDiagonal_0
-  - first:
-      213: 1726421665022671769
-    second: sidewalkLeftSmallDiagonal_1
-  - first:
-      213: -2013228805924751529
-    second: sidewalkLeftSmallDiagonal_2
-  - first:
-      213: 1558800799127386843
-    second: sidewalkLeftSmallDiagonal_3
+      213: 7943161557144538032
+    second: dirtDiagonalSmall1.png~_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -148,89 +139,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sidewalkLeftSmallDiagonal_0
-      rect:
-        serializedVersion: 2
-        x: 7
-        y: 0
-        width: 2041
-        height: 2035
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e800caf43f5c3dd60800000000000000
-      internalID: 7913886619024490638
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sidewalkLeftSmallDiagonal_1
-      rect:
-        serializedVersion: 2
-        x: 1890
-        y: 2033
-        width: 32
-        height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 99bf63c7b5b75f710800000000000000
-      internalID: 1726421665022671769
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sidewalkLeftSmallDiagonal_2
-      rect:
-        serializedVersion: 2
-        x: 5
-        y: 597
-        width: 7
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 757754b41139f04e0800000000000000
-      internalID: -2013228805924751529
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sidewalkLeftSmallDiagonal_3
+      name: dirtDiagonalSmall1.png~_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
-        width: 49
-        height: 47
+        y: 0
+        width: 2048
+        height: 2048
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bda35936119f1a510800000000000000
-      internalID: 1558800799127386843
+      spriteID: 0bb832ff957cb3e60800000000000000
+      internalID: 7943161557144538032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dirtDiagonalSmall1.png~_1
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 2048
+        height: 2048
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca2103a83ed3b4e64a175cf1cb3bbe9f
+      internalID: -1415817289
       vertices: []
       indices: 
       edges: []
@@ -239,7 +186,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 4ad2cca6a5914448cb39b9c7e2249446
     internalID: 0
     vertices: []
     indices: 
@@ -247,12 +194,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":2048.0,"y":2048.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      sidewalkLeftSmallDiagonal_0: 7913886619024490638
-      sidewalkLeftSmallDiagonal_1: 1726421665022671769
-      sidewalkLeftSmallDiagonal_2: -2013228805924751529
-      sidewalkLeftSmallDiagonal_3: 1558800799127386843
+      dirtDiagonalSmall1.png~_0: 7943161557144538032
+      dirtDiagonalSmall1.png~_1: -1415817289
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
