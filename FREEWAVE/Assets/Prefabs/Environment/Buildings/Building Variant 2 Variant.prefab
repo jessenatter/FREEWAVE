@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 552603396461321066, guid: 32c8a4f0c002b473f822679f1d800c13, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9fe620e13e9d34887b5e56898373ccaa, type: 3}
     - target: {fileID: 3055753514188019477, guid: 32c8a4f0c002b473f822679f1d800c13, type: 3}
       propertyPath: wallColor
       value: 1
