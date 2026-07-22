@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 4983129934719697398, guid: 3cbba4cd64af440729a426105d4e0794, type: 3}
+    - target: {fileID: 4043700464991026361, guid: 46b9936934d6a49d8b7905421daa2f4d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4993507470754677045, guid: 46b9936934d6a49d8b7905421daa2f4d, type: 3}
       propertyPath: 'sprites.Array.data[0]'
       value: 
@@ -82,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7236414151164614611, guid: 46b9936934d6a49d8b7905421daa2f4d, type: 3}
       propertyPath: m_Name
-      value: GrayBrickChild
+      value: GrayBrickPhysics
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

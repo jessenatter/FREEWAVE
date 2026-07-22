@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Breakable : MonoBehaviour
 {
-    [SerializeField] GameObject brokenObject;
+    [SerializeField] protected GameObject brokenObject;
 
     void Start()
     {
@@ -14,7 +14,7 @@ public class Breakable : MonoBehaviour
 
     }
     
-    public void Break()
+    public virtual void Break()
     {
         GameObject _brokenObject = Instantiate(brokenObject);
         _brokenObject.transform.position = transform.position;

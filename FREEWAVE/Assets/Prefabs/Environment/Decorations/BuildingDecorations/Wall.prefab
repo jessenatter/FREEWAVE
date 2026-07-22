@@ -100,8 +100,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1764169181603299341}
   - component: {fileID: 3299019350709055662}
-  - component: {fileID: 1115552005644803895}
-  - component: {fileID: 6561247183642016150}
+  - component: {fileID: 6218852491926925650}
+  - component: {fileID: 6464748672905076542}
   m_Layer: 14
   m_Name: Wall
   m_TagString: Untagged
@@ -178,7 +178,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.14883554, y: 2.7848632}
   m_EdgeRadius: 0
---- !u!114 &1115552005644803895
+--- !u!114 &6218852491926925650
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,11 +187,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4364020370731826548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48549740841874a82b4e9aedc4ac6d58, type: 3}
+  m_Script: {fileID: 11500000, guid: 1825bf7eff34d4231940da764d7d28c3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::BreakableWall
   brokenObject: {fileID: 5290512677240975429, guid: 874e3306af4244ee4ac752b56221de5f, type: 3}
---- !u!114 &6561247183642016150
+--- !u!114 &6464748672905076542
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,50 +200,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4364020370731826548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Script: {fileID: 11500000, guid: 6eefb8ce4aff04854b3d6ecfd62378d2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
-  m_ShadowGroup: 0
-  m_Priority: 0
-  m_ComponentVersion: 5
-  m_HasRenderer: 0
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_AlphaCutoff: 0.1
-  m_ApplyToSortingLayers: f75f9aef41e9b44539a488e5000000001bb19d39
-  m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  m_ShapePathHash: 0
-  m_InstanceId: 0
-  m_ShadowShape2DComponent: {fileID: 3299019350709055662}
-  m_ShadowShape2DProvider:
-    rid: 7876999523067494617
-  m_ShadowCastingSource: 2
-  m_ShadowMesh:
-    m_Mesh: {fileID: 0}
-    m_LocalBounds:
-      m_Center: {x: 0.013389587, y: -0.06890869, z: 0}
-      m_Extent: {x: 0.074409485, y: 1.3924255, z: 0}
-    m_EdgeProcessing: 1
-    m_TrimEdge: 0
-    m_FlipX: 0
-    m_FlipY: 0
-    m_InitialTrim: 0
-  m_CastingOption: 1
-  m_PreviousTrimEdge: 0
-  m_PreviousEdgeProcessing: 1
-  m_PreviousShadowCastingSource: 2
-  m_PreviousShadowShape2DSource: {fileID: 3299019350709055662}
-  references:
-    version: 2
-    RefIds:
-    - rid: 7876999523067494617
-      type: {class: ShadowShape2DProvider_Collider2D, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
-      data: 
+  m_EditorClassIdentifier: Assembly-CSharp::VisualWall
+  wallColor: 0
+  greyBrick: {fileID: 2340784863384142067, guid: 4af3f0c5389264f129670f6fdf63442b, type: 3}
+  whiteBrick: {fileID: 3707971616532145715, guid: 92e906a975d93416c9a10cdc401393a4, type: 3}
 --- !u!1001 &1373188209452478445
 PrefabInstance:
   m_ObjectHideFlags: 0

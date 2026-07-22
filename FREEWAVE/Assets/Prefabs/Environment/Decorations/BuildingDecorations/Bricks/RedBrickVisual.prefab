@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6079803433712577914}
   - component: {fileID: 3131797679156604246}
   m_Layer: 0
-  m_Name: RedBrick
+  m_Name: RedBrickVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1169484097
   m_SortingLayer: -2
-  m_SortingOrder: 1
+  m_SortingOrder: 4
   m_Sprite: {fileID: 918697833185770434, guid: dd5d83895cf5848198fbc345d5263777, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

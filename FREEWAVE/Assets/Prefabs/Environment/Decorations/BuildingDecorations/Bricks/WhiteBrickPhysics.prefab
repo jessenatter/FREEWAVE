@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1329915113816845207, guid: dd5d83895cf5848198fbc345d5263777, type: 3}
+    - target: {fileID: 4043700464991026361, guid: 46b9936934d6a49d8b7905421daa2f4d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4993507470754677045, guid: 46b9936934d6a49d8b7905421daa2f4d, type: 3}
       propertyPath: sprites.Array.size
       value: 5
@@ -86,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7236414151164614611, guid: 46b9936934d6a49d8b7905421daa2f4d, type: 3}
       propertyPath: m_Name
-      value: WhiteBrickChild
+      value: WhiteBrickPhysics
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
