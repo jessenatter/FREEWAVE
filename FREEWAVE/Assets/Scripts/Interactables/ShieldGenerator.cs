@@ -21,7 +21,7 @@ public class ShieldGenerator : Interactable
         {
             keyVisual.SetActive(true);
             GameObject usedKey = player.heldPickupable.gameObject;
-            player.RemoveheldPickupable();
+            player.RemoveHeldPickupable();
             Destroy(usedKey);
             shield.SetActive(false);
             canInteract = false;

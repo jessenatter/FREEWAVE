@@ -21,7 +21,7 @@ public class KeyHoleLargeGate : Interactable
         {
             keyVisual.SetActive(true);
             GameObject usedKey = player.heldPickupable.gameObject;
-            player.RemoveheldPickupable();
+            player.RemoveHeldPickupable();
             Destroy(usedKey);
             keyUsed = true;
             canInteract = false;

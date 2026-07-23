@@ -25,27 +25,16 @@ public class Player : Character
     CameraScript cam;
     float maxGrappleSpeed = 15f;
     AudioSource grappleAudioSource;
-    float grappleAudioBasePitch = 1f;
-    float grappleAudioPitchRange = 0.35f;
-    float grappleAudioPitchCycleSpeed = 2.5f;
     float grappleAudioActiveTime;
-    float aimFlipDeadzone = 0.1f;
-
     [HideInInspector] public bool inCombat;
-    
     PublicTimer combatCheckTimer = new PublicTimer(70f);
     PublicTimer inCombatTimer = new PublicTimer(70f);
-
     List<GameObject> aimedWeapons = new List<GameObject>();
-
     List<GameObject> meleeWeapons = new List<GameObject>();
 
     GameObject currentMelee,currentAimed, grappleFunctionPoint;
-
     Light2D radarLight;
     PublicTimer radarBeepTimer = new PublicTimer(30f);
-    string radarBeepSound = "beep";
-    float radarBeepVolume = 0.2f,radarBeepPitchVariance = 0.05f,radarSlowBeepFrames = 90f, radarFastBeepFrames = 20f;
 
     override protected void Start()
     {
@@ -73,7 +62,6 @@ public class Player : Character
         if (grappleAudioSource != null)
         {
             grappleAudioSource.loop = true;
-            grappleAudioBasePitch = grappleAudioSource.pitch;
         }
 
         characterIsActive = true;
@@ -262,6 +250,14 @@ public class Player : Character
     }
     void Interact()
     {
+        if(heldPickupable != null)
+        {
+            if(heldPickupable.GetComponent<Bomb>() != null)
+            {
+                RemoveHeldPickupable();
+                heldPickupable.GetComponent<Bomb>().Throw((int)Mathf.Sign(transform.localScale.x));
+            }
+        }
         canEnterShip = CanEnterShip();
 
         if(nearInteractable)
@@ -292,7 +288,7 @@ public class Player : Character
         }
 
         Vector2 toAim = mouseWorld - (Vector2)transform.position;
-        if (Mathf.Abs(toAim.x) > aimFlipDeadzone)
+        if (Mathf.Abs(toAim.x) > 0.1f)
         {
             float faceSign = Mathf.Sign(toAim.x);
             transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * faceSign, transform.localScale.y);
@@ -363,6 +359,10 @@ public class Player : Character
 
     void UpdateGrapplePullAudio(bool isBeingPulled)
     {
+        const float grappleAudioBasePitch = 1f;
+        const float grappleAudioPitchRange = 0.35f;
+        const float grappleAudioPitchCycleSpeed = 2.5f;
+
         if (grappleAudioSource == null)
             return;
 
@@ -389,6 +389,12 @@ public class Player : Character
 
     void UpdateRadarLight()
     {
+        const string radarBeepSound = "beep";
+        const float radarBeepVolume = 0.2f;
+        const float radarBeepPitchVariance = 0.05f;
+        const float radarSlowBeepFrames = 90f;
+        const float radarFastBeepFrames = 20f;
+
         List<GameObject> detectableObjects = new List<GameObject>();
 
         foreach (Detectable detectable in Manager.Instance.detectables)

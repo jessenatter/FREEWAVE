@@ -305,7 +305,10 @@ public class Character : MonoBehaviour
             if(interactable.canInteract == false) continue;
             
             if(interactable is PickupAble pickupAble)
+            {
+                if(heldPickupable != null) continue;
                 if(pickupAble.held) continue;
+            }
 
             Vector2 distance = transform.position - interactable.transform.position;
 
@@ -346,6 +349,9 @@ public class Character : MonoBehaviour
 
         if(lastClosestInteractable is PickupAble pickupAble)
         {
+            if(heldPickupable != null)
+                return;
+
             pickupAble.interactPrompt.SetActive(false);
             pickupAble.transform.position = backHand.transform.position;
             pickupAble.transform.rotation = backHand.transform.rotation;
@@ -360,7 +366,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    public void RemoveheldPickupable()
+    public void RemoveHeldPickupable()
     {
         if(heldPickupable != null)
         {
