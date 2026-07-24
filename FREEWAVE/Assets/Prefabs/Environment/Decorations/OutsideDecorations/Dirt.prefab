@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7348147720959978788}
   - component: {fileID: 5803182779799462483}
   - component: {fileID: 670395458692956706}
+  - component: {fileID: 2178458979619349082}
   m_Layer: 0
   m_Name: Dirt
   m_TagString: Untagged
@@ -109,3 +110,15 @@ MonoBehaviour:
   - {fileID: -7650045499417364637, guid: 545911b6c6cc242758f95a8e20a205a5, type: 3}
   - {fileID: 5979050371840818550, guid: 545911b6c6cc242758f95a8e20a205a5, type: 3}
   - {fileID: -1196767453120055481, guid: 545911b6c6cc242758f95a8e20a205a5, type: 3}
+--- !u!114 &2178458979619349082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350027365562962501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 221e098fb71e44519a14c331bcc03c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LayerRandomizer
