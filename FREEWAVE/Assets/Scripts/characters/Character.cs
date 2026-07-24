@@ -6,7 +6,7 @@ public class Character : MonoBehaviour
 {
     protected float moveSpeed = 3.5f, jumpForce = 15f,dashAttackSpeed = 10f,knockbackForce = 5f;
     protected float xInput,yInput,dashXinput;
-    bool grounded,isJumping,recentlyIdle;
+    bool grounded,isJumping,canJump,recentlyIdle;
     [SerializeField] protected LayerMask groundLayer;
     protected Rigidbody2D rb;
     protected BoxCollider2D bc;
@@ -125,10 +125,11 @@ public class Character : MonoBehaviour
         {
             grounded = true;
             cayoteTimer.Reset();
+            isJumping = false;
 
             if(jumpCooldown.Tick())
             {
-                isJumping = false;
+                canJump = true;
             }
         }
         else if (grounded)
@@ -148,11 +149,12 @@ public class Character : MonoBehaviour
     }
     protected virtual void Jump()
     {
-        if (grounded && !isJumping)
+        if (grounded && !isJumping && canJump)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocityX,0);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isJumping = true;
+            canJump = false;
         }
     }
     protected virtual void Attack()
