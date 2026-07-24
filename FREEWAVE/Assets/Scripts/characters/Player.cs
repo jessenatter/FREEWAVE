@@ -42,7 +42,7 @@ public class Player : Character
         attackCD.SetDuration(5f);
         knockbackForce = 5f;
         dashAttackSpeed = 7f;
-        jumpForce = jumpForce * 2;
+        moveSpeed = moveSpeed * 1.5f;
         dashAttackTimer.SetDuration(20f);
         hurtTimer.SetDuration(30f);
         

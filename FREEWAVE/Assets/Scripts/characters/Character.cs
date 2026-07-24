@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    protected float moveSpeed = 3.5f, jumpForce = 2f,dashAttackSpeed = 10f,knockbackForce = 5f;
+    protected float moveSpeed = 3.5f, jumpForce = 15f,dashAttackSpeed = 10f,knockbackForce = 5f;
     protected float xInput,yInput,dashXinput;
     bool grounded,isJumping,recentlyIdle;
     [SerializeField] protected LayerMask groundLayer;
@@ -22,6 +22,7 @@ public class Character : MonoBehaviour
     }
     [HideInInspector]public characterState currentCharacterState = characterState.movement;
     PublicTimer cayoteTimer = new PublicTimer(10f);
+    [HideInInspector] public PublicTimer jumpCooldown = new PublicTimer(2f); //ammount of time grounded in order to jump
     [HideInInspector]public PublicTimer attackTimer = new PublicTimer(15f);
     [HideInInspector]public PublicTimer attackCD = new PublicTimer(10f); //use same cooldown for all attacks
     [HideInInspector]public PublicTimer dashAttackTimer = new PublicTimer(25f);
@@ -125,8 +126,10 @@ public class Character : MonoBehaviour
             grounded = true;
             cayoteTimer.Reset();
 
-            
-            isJumping = false;
+            if(jumpCooldown.Tick())
+            {
+                isJumping = false;
+            }
         }
         else if (grounded)
         {
@@ -136,12 +139,18 @@ public class Character : MonoBehaviour
             }
         }
 
+        if(!groundedHit)
+        {
+            jumpCooldown.Reset();
+        }
+
         rb.linearVelocityX = xInput * moveSpeed;
     }
     protected virtual void Jump()
     {
         if (grounded && !isJumping)
         {
+            rb.linearVelocity = new Vector2(rb.linearVelocityX,0);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isJumping = true;
         }
