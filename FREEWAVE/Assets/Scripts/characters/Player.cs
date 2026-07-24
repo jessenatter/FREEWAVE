@@ -56,13 +56,16 @@ public class Player : Character
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;
 
-        if (grappleAudioSource == null)
-            grappleAudioSource = GetComponent<AudioSource>();
+        AudioSource[] playerAudioSources = GetComponents<AudioSource>();
 
-        if (grappleAudioSource != null)
+        if (playerAudioSources.Length > 0)
         {
+            grappleAudioSource = playerAudioSources[0];
             grappleAudioSource.loop = true;
         }
+
+        if (playerAudioSources.Length > 1)
+            playerAudioSources[1].loop = true;
 
         characterIsActive = true;
         cam = Manager.Instance.cam;
@@ -114,6 +117,8 @@ public class Player : Character
     override protected void FixedUpdate() //rb stuff
     {
         base.FixedUpdate();
+        bool isWalking = characterIsActive && !dead && currentCharacterState == characterState.movement && groundedHit && Mathf.Abs(xInput) > 0f && !isGrappling;
+        UpdateFootstepAudio(isWalking);
         CheckCombat();
     }
 
@@ -385,6 +390,36 @@ public class Player : Character
 
         if (!grappleAudioSource.isPlaying)
             grappleAudioSource.Play();
+    }
+
+    void UpdateFootstepAudio(bool isWalking)
+    {
+        const float footstepAudioBasePitch = 1f;
+        const float footstepAudioPitchRange = 0.35f;
+        const float footstepAudioPitchCycleSpeed = 2.5f;
+
+        AudioSource[] playerAudioSources = GetComponents<AudioSource>();
+        if (playerAudioSources.Length < 2)
+            return;
+
+        AudioSource footstepAudioSource = playerAudioSources[1];
+
+        if (!isWalking)
+        {
+            footstepAudioSource.pitch = footstepAudioBasePitch;
+
+            if (footstepAudioSource.isPlaying)
+                footstepAudioSource.Stop();
+
+            return;
+        }
+
+        float halfRange = footstepAudioPitchRange * 0.5f;
+        float pitchOffset = Mathf.PingPong(Time.time * footstepAudioPitchCycleSpeed, footstepAudioPitchRange) - halfRange;
+        footstepAudioSource.pitch = footstepAudioBasePitch + pitchOffset;
+
+        if (!footstepAudioSource.isPlaying)
+            footstepAudioSource.Play();
     }
 
     void UpdateRadarLight()
