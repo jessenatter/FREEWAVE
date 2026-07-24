@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    protected float moveSpeed = 3.5f, jumpForce = 15f,dashAttackSpeed = 10f,knockbackForce = 5f;
+    protected float moveSpeed = 3.5f, jumpForce = 16f,dashAttackSpeed = 10f,knockbackForce = 5f;
     protected float xInput,yInput,dashXinput;
     bool grounded,isJumping,canJump,recentlyIdle;
     [SerializeField] protected LayerMask groundLayer;
