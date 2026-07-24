@@ -471,6 +471,12 @@ public class Player : Character
         GrappleCancel();
     }
 
+    protected override void DoJump()
+    {
+        base.DoJump();
+        SoundManager.PlaySound("jump",.3f,0.2f);
+    }
+
     protected override void Attack()
     {
         base.Attack();

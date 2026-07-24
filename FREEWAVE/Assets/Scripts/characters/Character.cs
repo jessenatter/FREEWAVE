@@ -149,13 +149,15 @@ public class Character : MonoBehaviour
     }
     protected virtual void Jump()
     {
-        if (grounded && !isJumping && canJump)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocityX,0);
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            isJumping = true;
-            canJump = false;
-        }
+        if (grounded && !isJumping && canJump) DoJump();
+    }
+
+    protected virtual void DoJump()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocityX,0);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        isJumping = true;
+        canJump = false;
     }
     protected virtual void Attack()
     {
