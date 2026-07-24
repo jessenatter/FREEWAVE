@@ -42,7 +42,7 @@ public class Player : Character
         attackCD.SetDuration(5f);
         knockbackForce = 5f;
         dashAttackSpeed = 7f;
-        jumpForce = jumpForce + 0.1f;
+        jumpForce = jumpForce * 2;
         dashAttackTimer.SetDuration(20f);
         hurtTimer.SetDuration(30f);
         
@@ -254,8 +254,8 @@ public class Player : Character
         {
             if(heldPickupable.GetComponent<Bomb>() != null)
             {
-                RemoveHeldPickupable();
                 heldPickupable.GetComponent<Bomb>().Throw((int)Mathf.Sign(transform.localScale.x));
+                RemoveHeldPickupable();
             }
         }
         canEnterShip = CanEnterShip();

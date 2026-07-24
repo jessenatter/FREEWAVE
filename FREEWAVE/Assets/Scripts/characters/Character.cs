@@ -124,6 +124,8 @@ public class Character : MonoBehaviour
         {
             grounded = true;
             cayoteTimer.Reset();
+
+            
             isJumping = false;
         }
         else if (grounded)
@@ -352,6 +354,7 @@ public class Character : MonoBehaviour
             if(heldPickupable != null)
                 return;
 
+            pickupAble.Pickup();
             pickupAble.interactPrompt.SetActive(false);
             pickupAble.transform.position = backHand.transform.position;
             pickupAble.transform.rotation = backHand.transform.rotation;

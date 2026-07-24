@@ -4,9 +4,8 @@ public class PickupAble : Interactable
 {
     public bool held = false;
 
-    public override void Interact()
+    public virtual void Pickup()
     {
-        base.Interact();
-        print("v");
+        
     }
 }

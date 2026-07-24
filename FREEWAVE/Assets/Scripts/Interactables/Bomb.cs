@@ -18,10 +18,9 @@ public class Bomb : PickupAble
     {
         
     }
-
-    public override void Interact()
+    public override void Pickup()
     {
-        base.Interact();
+        base.Pickup();
         print("a");
         bc.enabled = false;
         rb.simulated = false;

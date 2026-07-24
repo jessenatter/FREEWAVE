@@ -10,7 +10,7 @@ public class CameraScript : MonoBehaviour
     float lerpSpeedxy = 10f, lerpSpeedz = 3f;
     float initZ,initFOV;
 
-    float shipFOV = 80,playerFOV = 60,aimFOV = 70,combatFOV = 50;
+    float shipFOV = 80,playerFOV = 50,aimFOV = 70,combatFOV = 40;
 
     float shipZ = -10,playerZ = -8,aimZ = -9,combatZ = -7.5f;
     public Camera cameraComponent;
