@@ -1,0 +1,16 @@
+{
+  "lines": [
+    {
+      "speaker": "Elder",
+      "text": "Greetings, traveler! Do you seek the ancient artifacts?"
+    },
+    {
+      "speaker": "Player",
+      "text": "I do. Where can I find them?"
+    },
+    {
+      "speaker": "Elder",
+      "text": "Beware the mist in the Northern Valley..."
+    }
+  ]
+}
