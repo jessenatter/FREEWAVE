@@ -19,6 +19,7 @@ public class Character : MonoBehaviour
         dashAttacking,
         hurting,
         idle,
+        frozen,
     }
     [HideInInspector]public characterState currentCharacterState = characterState.movement;
     PublicTimer cayoteTimer = new PublicTimer(10f);
@@ -56,6 +57,8 @@ public class Character : MonoBehaviour
     }
     protected virtual void Update()
     {
+        if(currentCharacterState == characterState.frozen) return;
+
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
 
         if(hit.collider != null)
@@ -92,6 +95,13 @@ public class Character : MonoBehaviour
     }
     protected virtual void FixedUpdate() //rb stuff
     {
+        if(currentCharacterState == characterState.frozen)
+        {
+            AnimatorUpdate();
+            rb.linearVelocity = new Vector2(0,rb.linearVelocityY);
+            return;
+        }
+
         if(characterIsActive)
         {
             if(currentCharacterState == characterState.movement)
@@ -228,10 +238,16 @@ public class Character : MonoBehaviour
     }
     void AnimatorUpdate()
     {
+        
         if(groundedHit == false)
             isJumping = true;
 
-        if(xInput == 0)
+        if(currentCharacterState == characterState.frozen)
+        {
+            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyIdle;
+            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyIdle;
+        }
+        else if(xInput == 0)
         {
             if(!isJumping && currentCharacterState == characterState.movement)
             {

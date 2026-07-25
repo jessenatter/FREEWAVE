@@ -161,6 +161,9 @@ public class Player : Character
                 interactHoldTriggered = false;
                 interactHoldTime = 0f;
                 interactKeyReleased = false;
+
+                if(currentCharacterState == characterState.frozen)
+                    DialogueManager.Instance.UpdateDialouge();
             }
             else if (interactHeld)
                 interactHoldTime += Time.deltaTime;
@@ -531,7 +534,8 @@ public class Player : Character
         }
         else if(collision.tag == "DialougeTrigger")
         {
-            
+            currentCharacterState = characterState.frozen;
+            DialogueManager.Instance.UpdateDialouge();
         }
 
         if (currentCharacterState == characterState.hurting) return;
