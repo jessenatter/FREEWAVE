@@ -26,6 +26,8 @@ public class Manager : MonoBehaviour
 
     bool shipCanExitAtmosphere = false;
 
+    [HideInInspector] public GameObject dialougeCanvas;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -41,6 +43,8 @@ public class Manager : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>();
 
         healthVolume = GetComponent<Volume>();
+        dialougeCanvas = transform.GetChild(0).gameObject;
+        dialougeCanvas.SetActive(false);
     }
 
     void Update()

@@ -10,6 +10,9 @@ TagManager:
   - Key
   - Key2
   - GrappleBullet
+  - DialougeTrigger
+  - CheckpointTrigger
+  - TransitionTrigger
   layers:
   - Default
   - TransparentFX

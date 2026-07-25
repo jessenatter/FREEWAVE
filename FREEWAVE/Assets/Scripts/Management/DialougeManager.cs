@@ -1,22 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
-
-// 1. MUST be marked [System.Serializable] so Unity can populate fields
-// 2. Kept outside the MonoBehaviour class so JsonUtility can see them
-[System.Serializable]
-public class DialogueLine
-{
-    public string speaker;
-    public string text;
-}
-
-[System.Serializable]
-public class DialogueData
-{
-    public DialogueLine[] lines; 
-}
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
+    List<DialogueLine[]> conversations = new List<DialogueLine[]>();
     private DialogueData currentDialogue;
 
     void Start()
@@ -26,20 +14,18 @@ public class DialogueManager : MonoBehaviour
 
     void LoadDialogue()
     {
-        // Path matches: Assets/Resources/Dialouge/dialouge.json
-        TextAsset jsonFile = Resources.Load<TextAsset>("Dialouge/dialouge");
-
+        string sceneName = SceneManager.GetActiveScene().name;
+        TextAsset jsonFile = Resources.Load<TextAsset>($"Dialouge/{sceneName}");
         if (jsonFile == null)
-        {
-            Debug.LogError("Could not find dialogue file in Resources/Dialouge/dialouge!");
             return;
-        }
 
-        currentDialogue = JsonUtility.FromJson<DialogueData>(jsonFile.text);
+        currentDialogue = DialogueData.FromJson(jsonFile.text);
+        conversations.Clear();
+        conversations.AddRange(currentDialogue.conversations);
 
-        if (currentDialogue != null && currentDialogue.lines != null)
+        foreach (DialogueLine[] conversation in conversations)
         {
-            foreach (DialogueLine line in currentDialogue.lines)
+            foreach (DialogueLine line in conversation)
             {
                 Debug.Log($"{line.speaker}: {line.text}");
             }

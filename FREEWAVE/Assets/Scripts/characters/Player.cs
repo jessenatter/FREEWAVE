@@ -521,6 +521,19 @@ public class Player : Character
 
     override protected void OnTriggerEnter2D(Collider2D collision)
     {
+        if(collision.tag == "CheckpointTrigger")
+        {
+
+        }
+        else if(collision.tag == "TransitionTrigger")
+        {
+
+        }
+        else if(collision.tag == "DialougeTrigger")
+        {
+            
+        }
+
         if (currentCharacterState == characterState.hurting) return;
         
         //set up a real way to do this
