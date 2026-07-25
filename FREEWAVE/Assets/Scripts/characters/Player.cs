@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 public class Player : Character
 {
@@ -602,7 +603,7 @@ public class Player : Character
         }
         else if(collision.tag == "TransitionTrigger")
         {
-
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
         else if(collision.tag == "DialougeTrigger")
         {
