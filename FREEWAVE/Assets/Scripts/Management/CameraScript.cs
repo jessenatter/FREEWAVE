@@ -10,9 +10,9 @@ public class CameraScript : MonoBehaviour
     float lerpSpeedxy = 10f, lerpSpeedz = 3f;
     float initZ,initFOV;
 
-    float shipFOV = 80,playerFOV = 60,aimFOV = 70,combatFOV = 50;
+    float shipFOV = 80,playerFOV = 60,aimFOV = 70,combatFOV = 50,dialougeFOV = 45;
 
-    float shipZ = -10,playerZ = -8,aimZ = -9,combatZ = -7.5f;
+    float shipZ = -10,playerZ = -8,aimZ = -9,combatZ = -7.5f,dialougeZ = -7f;
     public Camera cameraComponent;
     
     Player playerScript;
@@ -63,6 +63,11 @@ public class CameraScript : MonoBehaviour
                 targetZ = combatZ;
                 targetFOV = combatFOV;
                 lookAhead = new Vector2(0,0.5f);
+            }
+            else if(playerScript.currentCharacterState == Character.characterState.frozen)
+            {
+                targetZ = dialougeZ;
+                targetFOV = dialougeFOV;
             }
         }
         else

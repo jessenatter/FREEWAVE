@@ -71,7 +71,7 @@ public class DialogueManager : MonoBehaviour
 
     void ResumeGameplay()
     {
-        Manager.Instance.player.currentCharacterState = Character.characterState.idle;
+        Manager.Instance.player.currentCharacterState = Character.characterState.movement;
         Manager.Instance.dialougeCanvas.SetActive(false);
     }
 }

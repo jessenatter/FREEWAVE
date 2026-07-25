@@ -96,13 +96,11 @@ public class Player : Character
     override protected void Update() //reading input, visuals
     {
         base.Update();
-
+        
         if(characterIsActive && !dead)
         {
             GetInputs();
         }
-
-        
     }
 
     override protected void LateUpdate()
