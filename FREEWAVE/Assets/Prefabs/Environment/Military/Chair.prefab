@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2475676751972492649}
   - component: {fileID: 4857751478931685442}
   - component: {fileID: 8362898069336481977}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Chair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,9 +78,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1169484097
+  m_SortingLayer: -2
+  m_SortingOrder: 80
   m_Sprite: {fileID: -5386869166744503586, guid: 23470a63dd0694f78b65ac6026d8f5e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -126,17 +126,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.12677002, y: -0.63675165}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.43321127, y: 0.9013672}
+    oldSize: {x: 1.2674524, y: 2.6371427}
     newSize: {x: 0.43321127, y: 0.9013672}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.43321127, y: 0.9013672}
+  m_Size: {x: 0.9476013, y: 1.3453016}
   m_EdgeRadius: 0
 --- !u!50 &8362898069336481977
 Rigidbody2D:

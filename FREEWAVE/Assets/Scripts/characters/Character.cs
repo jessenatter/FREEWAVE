@@ -59,7 +59,7 @@ public class Character : MonoBehaviour
     {
         if(currentCharacterState == characterState.frozen) return;
 
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.1f, groundLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.3f, groundLayer);
 
         if(hit.collider != null)
             groundedHit = true;

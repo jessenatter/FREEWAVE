@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3698005332270665412}
   - component: {fileID: 7780117041176183879}
-  - component: {fileID: -6407038332549183430}
   m_Layer: 0
   m_Name: Corpse1
   m_TagString: Untagged
@@ -77,9 +76,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: 1169484097
+  m_SortingLayer: -2
+  m_SortingOrder: 50
   m_Sprite: {fileID: 1194630255873030810, guid: e7d3ad76503c04fcaa25a02acd516238, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -91,16 +90,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-6407038332549183430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4896226560849596076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51e12c12be9e74b429e4e8cda9192441, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Corpse
-  health: 100
