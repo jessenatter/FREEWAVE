@@ -1411,7 +1411,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Where the  did I just land...? '
+  m_text: 'Where did I just land...? '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 007c16de62a7b4065b996d18a8fc8b97, type: 2}
   m_sharedMaterial: {fileID: 8480492298370664936, guid: 007c16de62a7b4065b996d18a8fc8b97, type: 2}
