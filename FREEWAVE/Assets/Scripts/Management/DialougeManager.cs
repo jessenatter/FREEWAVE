@@ -12,7 +12,20 @@ public class DialogueManager : MonoBehaviour
 
     TextMeshProUGUI text;
 
-    int conversationIndex = 0,lineIndex = -1;
+    [HideInInspector] public int conversationIndex = -1,lineIndex = -1;
+
+    public void StartNextConversation()
+    {
+        if(conversations.Count == 0)
+            return;
+
+        if(conversationIndex + 1 >= conversations.Count)
+            return;
+
+        conversationIndex += 1;
+        lineIndex = -1;
+        UpdateDialouge();
+    }
 
     void Awake()
     {
@@ -53,12 +66,15 @@ public class DialogueManager : MonoBehaviour
 
     public void UpdateDialouge() //itterate to next line in current conversation
     {
+        if(conversationIndex < 0 || conversationIndex >= conversations.Count)
+            return;
+
         DialogueLine[] currentConversation = conversations[conversationIndex];
 
         if(lineIndex + 1 >= currentConversation.Length)
         {
             ResumeGameplay();
-            lineIndex = 0;
+            lineIndex = -1;
             return;
         }
 

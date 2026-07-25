@@ -607,7 +607,8 @@ public class Player : Character
         else if(collision.tag == "DialougeTrigger")
         {
             currentCharacterState = characterState.frozen;
-            DialogueManager.Instance.UpdateDialouge();
+            DialogueManager.Instance.StartNextConversation();
+            Destroy(collision.gameObject);
         }
 
         if (currentCharacterState == characterState.hurting) return;
