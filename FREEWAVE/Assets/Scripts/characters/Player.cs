@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.XR;
 public class Player : Character
 {
-    GameObject knife,axe,hammer,grapple,radar;
+    Weapon knife,axe,hammer,grapple,radar;
     bool isGrappling,grappleIsShooting;
     [SerializeField] LayerMask grappleLayer;
     Ship ship;
@@ -29,10 +29,11 @@ public class Player : Character
     [HideInInspector] public bool inCombat;
     PublicTimer combatCheckTimer = new PublicTimer(70f);
     PublicTimer inCombatTimer = new PublicTimer(70f);
-    List<GameObject> aimedWeapons = new List<GameObject>();
-    List<GameObject> meleeWeapons = new List<GameObject>();
+    List<Weapon> aimedWeapons = new List<Weapon>();
+    List<Weapon> meleeWeapons = new List<Weapon>();
 
-    GameObject currentMelee,currentAimed, grappleFunctionPoint;
+    Weapon currentMelee,currentAimed;
+    GameObject grappleFunctionPoint;
     Light2D radarLight;
     PublicTimer radarBeepTimer = new PublicTimer(30f);
 
@@ -70,11 +71,11 @@ public class Player : Character
         characterIsActive = true;
         cam = Manager.Instance.cam;
 
-        knife = frontHand.transform.GetChild(0).gameObject;
-        grapple = frontHand.transform.GetChild(1).gameObject;
-        radar = frontHand.transform.GetChild(2).gameObject;
-        axe = frontHand.transform.GetChild(3).gameObject;
-        hammer = frontHand.transform.GetChild(4).gameObject;
+        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, true, 1f, 15f);
+        grapple = new Weapon(frontHand.transform.GetChild(1).gameObject, true, 1f, 15f);
+        radar = new Weapon(frontHand.transform.GetChild(2).gameObject, true, 1f, 15f);
+        axe = new Weapon(frontHand.transform.GetChild(3).gameObject, true, 1f, 15f);
+        hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, true, 1f, 15f);
 
         currentMelee = knife;
         currentAimed = grapple;
@@ -86,8 +87,8 @@ public class Player : Character
         aimedWeapons.Add(grapple);
         aimedWeapons.Add(radar);
 
-        grappleFunctionPoint = grapple.transform.GetChild(3).gameObject;
-        radarLight = radar.transform.GetChild(2).GetComponent<Light2D>();
+        grappleFunctionPoint = grapple.gameObject.transform.GetChild(3).gameObject;
+        radarLight = radar.gameObject.transform.GetChild(2).GetComponent<Light2D>();
         frontArmTarget = frontArmIK.GetComponent<LimbManager>();
 
         grappleBullet = GameObject.FindGameObjectWithTag("GrappleBullet").gameObject;
@@ -193,8 +194,8 @@ public class Player : Character
             if(frontArmTarget != null)
                 frontArmTarget.enabled = false;
 
-            currentAimed.SetActive(true);
-            currentMelee.SetActive(false);
+            currentAimed.gameObject.SetActive(true);
+            currentMelee.gameObject.SetActive(false);
         }
         else
         {
@@ -204,8 +205,8 @@ public class Player : Character
             if(frontArmTarget != null)
                 frontArmTarget.enabled = true;
 
-            currentAimed.SetActive(false);
-            currentMelee.SetActive(true);
+            currentAimed.gameObject.SetActive(false);
+            currentMelee.gameObject.SetActive(true);
         }
         
         if(InputManager.Instance.attackAction.IsPressed())
@@ -504,14 +505,14 @@ public class Player : Character
             currentMelee = SwitchWeaponFromList(meleeWeapons, currentMelee, dir);
     }
 
-    GameObject SwitchWeaponFromList(List<GameObject> weaponList, GameObject currentWeapon, int dir)
+    Weapon SwitchWeaponFromList(List<Weapon> weaponList, Weapon currentWeapon, int dir)
     {
         int newIndex = weaponList.IndexOf(currentWeapon) + dir;
         newIndex = (newIndex + weaponList.Count) % weaponList.Count;
 
-        currentWeapon.SetActive(false);
-        GameObject newWeapon = weaponList[newIndex];
-        newWeapon.SetActive(true);
+        currentWeapon.gameObject.SetActive(false);
+        Weapon newWeapon = weaponList[newIndex];
+        newWeapon.gameObject.SetActive(true);
         return newWeapon;
     }
 
