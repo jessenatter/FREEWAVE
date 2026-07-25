@@ -599,7 +599,7 @@ public class Player : Character
     {
         if(collision.tag == "CheckpointTrigger")
         {
-
+            
         }
         else if(collision.tag == "TransitionTrigger")
         {
