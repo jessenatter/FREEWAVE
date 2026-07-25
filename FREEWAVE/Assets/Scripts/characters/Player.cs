@@ -71,14 +71,11 @@ public class Player : Character
         characterIsActive = true;
         cam = Manager.Instance.cam;
 
-        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, true, 1f, 15f);
-        grapple = new Weapon(frontHand.transform.GetChild(1).gameObject, true, 1f, 15f);
-        radar = new Weapon(frontHand.transform.GetChild(2).gameObject, true, 1f, 15f);
-        axe = new Weapon(frontHand.transform.GetChild(3).gameObject, true, 1f, 15f);
-        hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, true, 1f, 15f);
-
-        currentMelee = knife;
-        currentAimed = grapple;
+        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 1f, 15f);
+        grapple = new Weapon(frontHand.transform.GetChild(1).gameObject, false, 1f, 15f);
+        radar = new Weapon(frontHand.transform.GetChild(2).gameObject, false, 1f, 15f);
+        axe = new Weapon(frontHand.transform.GetChild(3).gameObject, false, 1f, 15f);
+        hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, false, 1f, 15f);
 
         meleeWeapons.Add(knife);
         meleeWeapons.Add(axe);
@@ -86,6 +83,10 @@ public class Player : Character
 
         aimedWeapons.Add(grapple);
         aimedWeapons.Add(radar);
+
+        currentMelee = GetFirstUnlockedWeapon(meleeWeapons);
+        currentAimed = GetFirstUnlockedWeapon(aimedWeapons);
+        SetHeldWeaponVisuals(false);
 
         grappleFunctionPoint = grapple.gameObject.transform.GetChild(3).gameObject;
         radarLight = radar.gameObject.transform.GetChild(2).GetComponent<Light2D>();
@@ -184,7 +185,11 @@ public class Player : Character
             interactKeyReleased = true;
         }
         
-        bool wantsToAim = Mouse.current.rightButton.isPressed || InputManager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0;
+        EnsureCurrentWeaponsUnlocked();
+
+        bool hasRangedWeaponUnlocked = HasUnlockedWeapon(aimedWeapons);
+        bool hasMeleeWeaponUnlocked = HasUnlockedWeapon(meleeWeapons);
+        bool wantsToAim = (Mouse.current.rightButton.isPressed || InputManager.Instance.lookAction.ReadValue<Vector2>().magnitude != 0) && hasRangedWeaponUnlocked;
 
         if(wantsToAim)
         {
@@ -193,9 +198,6 @@ public class Player : Character
 
             if(frontArmTarget != null)
                 frontArmTarget.enabled = false;
-
-            currentAimed.gameObject.SetActive(true);
-            currentMelee.gameObject.SetActive(false);
         }
         else
         {
@@ -204,12 +206,11 @@ public class Player : Character
 
             if(frontArmTarget != null)
                 frontArmTarget.enabled = true;
-
-            currentAimed.gameObject.SetActive(false);
-            currentMelee.gameObject.SetActive(true);
         }
+
+        SetHeldWeaponVisuals(aiming);
         
-        if(InputManager.Instance.attackAction.IsPressed())
+        if(hasMeleeWeaponUnlocked && InputManager.Instance.attackAction.IsPressed())
         {
             if(attackKeyReleased)
                 getAttackInput = true;
@@ -503,17 +504,89 @@ public class Player : Character
             currentAimed = SwitchWeaponFromList(aimedWeapons, currentAimed, dir);
         else
             currentMelee = SwitchWeaponFromList(meleeWeapons, currentMelee, dir);
+
+        SetHeldWeaponVisuals(aiming);
     }
 
     Weapon SwitchWeaponFromList(List<Weapon> weaponList, Weapon currentWeapon, int dir)
     {
-        int newIndex = weaponList.IndexOf(currentWeapon) + dir;
-        newIndex = (newIndex + weaponList.Count) % weaponList.Count;
+        if(weaponList == null || weaponList.Count == 0)
+            return null;
 
-        currentWeapon.gameObject.SetActive(false);
-        Weapon newWeapon = weaponList[newIndex];
-        newWeapon.gameObject.SetActive(true);
-        return newWeapon;
+        int unlockedCount = 0;
+        foreach(Weapon weapon in weaponList)
+        {
+            if(weapon.unlocked)
+                unlockedCount += 1;
+        }
+
+        if(unlockedCount == 0)
+            return null;
+
+        int startIndex = weaponList.IndexOf(currentWeapon);
+        if(startIndex < 0)
+            startIndex = dir > 0 ? -1 : 0;
+
+        int index = startIndex;
+        for(int i = 0; i < weaponList.Count; i++)
+        {
+            index = (index + dir + weaponList.Count) % weaponList.Count;
+            if(weaponList[index].unlocked)
+                return weaponList[index];
+        }
+
+        return currentWeapon;
+    }
+
+    Weapon GetFirstUnlockedWeapon(List<Weapon> weaponList)
+    {
+        foreach(Weapon weapon in weaponList)
+        {
+            if(weapon.unlocked)
+                return weapon;
+        }
+
+        return null;
+    }
+
+    bool HasUnlockedWeapon(List<Weapon> weaponList)
+    {
+        foreach(Weapon weapon in weaponList)
+        {
+            if(weapon.unlocked)
+                return true;
+        }
+
+        return false;
+    }
+
+    void EnsureCurrentWeaponsUnlocked()
+    {
+        if(currentMelee != null && !currentMelee.unlocked)
+            currentMelee = GetFirstUnlockedWeapon(meleeWeapons);
+
+        if(currentAimed != null && !currentAimed.unlocked)
+            currentAimed = GetFirstUnlockedWeapon(aimedWeapons);
+    }
+
+    void SetHeldWeaponVisuals(bool showAimedWeapon)
+    {
+        foreach(Weapon weapon in meleeWeapons)
+            weapon.gameObject.SetActive(false);
+
+        foreach(Weapon weapon in aimedWeapons)
+            weapon.gameObject.SetActive(false);
+
+        if(showAimedWeapon)
+        {
+            if(currentAimed != null && currentAimed.unlocked)
+                currentAimed.gameObject.SetActive(true);
+        }
+        else
+        {
+            if(currentMelee != null && currentMelee.unlocked)
+                currentMelee.gameObject.SetActive(true);
+        }
     }
 
     void SwitchDrug(int dir)
