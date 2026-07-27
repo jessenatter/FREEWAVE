@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 public class Player : Character
 {
-    Weapon knife,axe,hammer,grapple,radar;
+    [HideInInspector] public Weapon knife,axe,hammer,grapple,radar;
     bool isGrappling,grappleIsShooting;
     [SerializeField] LayerMask grappleLayer;
     Ship ship;
@@ -80,10 +80,6 @@ public class Player : Character
         hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, false, 1f, 15f);
 
         meleeWeapons.Add(knife);
-
-        radar.unlocked = true;
-        
-            
         meleeWeapons.Add(axe);
         meleeWeapons.Add(hammer);
 
@@ -512,6 +508,40 @@ public class Player : Character
             currentMelee = SwitchWeaponFromList(meleeWeapons, currentMelee, dir);
 
         SetHeldWeaponVisuals(aiming);
+    }
+
+    public bool UnlockWeaponByName(string weaponName)
+    {
+        if(string.IsNullOrWhiteSpace(weaponName))
+            return false;
+
+        string normalizedWeaponName = weaponName.Trim().ToLowerInvariant();
+        Weapon weaponToUnlock = null;
+
+        if(normalizedWeaponName == "knife")
+            weaponToUnlock = knife;
+        else if(normalizedWeaponName == "axe")
+            weaponToUnlock = axe;
+        else if(normalizedWeaponName == "hammer")
+            weaponToUnlock = hammer;
+        else if(normalizedWeaponName == "grapple")
+            weaponToUnlock = grapple;
+        else if(normalizedWeaponName == "radar")
+            weaponToUnlock = radar;
+
+        if(weaponToUnlock == null)
+            return false;
+
+        weaponToUnlock.unlocked = true;
+
+        if(currentMelee == null)
+            currentMelee = GetFirstUnlockedWeapon(meleeWeapons);
+
+        if(currentAimed == null)
+            currentAimed = GetFirstUnlockedWeapon(aimedWeapons);
+
+        SetHeldWeaponVisuals(aiming);
+        return true;
     }
 
     Weapon SwitchWeaponFromList(List<Weapon> weaponList, Weapon currentWeapon, int dir)
