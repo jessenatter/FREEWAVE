@@ -32,7 +32,7 @@ Transform:
   m_LocalScale: {x: 3.6075, y: 3.6075, z: 3.6075}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6728005376015298840}
+  - {fileID: 2067597117558783960}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1582691082508041443
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a8dbb71e55dd4018b4f18e2f146bca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Detectable
---- !u!1001 &5993401607470291276
+--- !u!1001 &1352186686108112780
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -190,11 +190,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1041028878195943508, guid: 3dc27b902b21541cd95004b6300efc45, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.092
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1041028878195943508, guid: 3dc27b902b21541cd95004b6300efc45, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.66
+      value: 0.43
       objectReference: {fileID: 0}
     - target: {fileID: 1041028878195943508, guid: 3dc27b902b21541cd95004b6300efc45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -212,13 +212,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractPrompt
       objectReference: {fileID: 0}
+    - target: {fileID: 4783435504565521994, guid: 3dc27b902b21541cd95004b6300efc45, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7451436736649489495, guid: 3dc27b902b21541cd95004b6300efc45, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3dc27b902b21541cd95004b6300efc45, type: 3}
---- !u!224 &6728005376015298840 stripped
+--- !u!224 &2067597117558783960 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1041028878195943508, guid: 3dc27b902b21541cd95004b6300efc45, type: 3}
-  m_PrefabInstance: {fileID: 5993401607470291276}
+  m_PrefabInstance: {fileID: 1352186686108112780}
   m_PrefabAsset: {fileID: 0}
