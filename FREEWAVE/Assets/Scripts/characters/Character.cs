@@ -329,6 +329,7 @@ public class Character : MonoBehaviour
     {
         float minInteractDistance = 1.5f;
         float lastPickupDistance = Mathf.Infinity;
+        int highestPriority = int.MinValue;
         Interactable closestInteractable = null;
 
         foreach(Interactable interactable in Manager.Instance.interactables)
@@ -342,14 +343,18 @@ public class Character : MonoBehaviour
             }
 
             Vector2 distance = transform.position - interactable.transform.position;
+            float distanceMagnitude = distance.magnitude;
 
-            if(distance.magnitude < minInteractDistance)
+            if(distanceMagnitude < minInteractDistance)
             {
                 nearInteractable = true;
-                if(closestInteractable == null || distance.magnitude < lastPickupDistance)
+                if(closestInteractable == null
+                    || interactable.InteractPriority > highestPriority
+                    || (interactable.InteractPriority == highestPriority && distanceMagnitude < lastPickupDistance))
                 {
                     closestInteractable = interactable;
-                    lastPickupDistance = distance.magnitude;
+                    highestPriority = interactable.InteractPriority;
+                    lastPickupDistance = distanceMagnitude;
 
                     if(lastClosestInteractable != null)
                     {

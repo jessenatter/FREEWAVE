@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PickupAble
   interactPrompt: {fileID: 0}
   canInteract: 1
+  interactPriority: 1
   held: 0
 --- !u!114 &7055276497692661530
 MonoBehaviour:

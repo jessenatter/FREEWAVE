@@ -403,6 +403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   interactPrompt: {fileID: 0}
   canInteract: 1
+  interactPriority: 10
 --- !u!1 &6895709873878946388
 GameObject:
   m_ObjectHideFlags: 0

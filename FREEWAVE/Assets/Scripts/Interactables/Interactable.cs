@@ -6,7 +6,8 @@ public class Interactable : MonoBehaviour
 
     [HideInInspector]public bool canInteract = true;
 
-    int interactPriority = 0;
+    [SerializeField] int interactPriority = 0;
+    public int InteractPriority => interactPriority;
 
     void Start()
     {

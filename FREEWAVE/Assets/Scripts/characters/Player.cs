@@ -50,6 +50,7 @@ public class Player : Character
         
         base.Start();
 
+        
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
         lineRenderer = GetComponent<LineRenderer>();
         
@@ -79,6 +80,10 @@ public class Player : Character
         hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, false, 1f, 15f);
 
         meleeWeapons.Add(knife);
+
+        radar.unlocked = true;
+        
+            
         meleeWeapons.Add(axe);
         meleeWeapons.Add(hammer);
 

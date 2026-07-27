@@ -4,10 +4,14 @@ public class CampBase : Interactable
 {
     Animator animator;
     bool open = false;
+    
+    [SerializeField] Interactable insideInteractable; //if there is something inside of the camp
 
     void Awake()
     {
         animator = GetComponent<Animator>();
+        if(insideInteractable != null)
+            insideInteractable.canInteract = false;
     }
     public override void Interact()
     {
@@ -22,6 +26,11 @@ public class CampBase : Interactable
         {
             open = true;
             animator.SetBool("open",true);
+            if(insideInteractable != null)
+                insideInteractable.canInteract = true;
+            
+            //maybe will want to change this
+            canInteract = false;
         }
     }
 }
