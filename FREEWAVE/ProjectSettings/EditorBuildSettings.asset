@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/Level1.unity
     guid: 4477b24f0026846b79167e70b5f4d3f8
   - enabled: 1
+    path: Assets/Scenes/Levels/Level2.unity
+    guid: 1aaa81d7fb26a4725a6ce068695ee77a
+  - enabled: 1
     path: Assets/Scenes/NonLevelScenes/WorldTransition.unity
     guid: 4dff4635902ce4985857d6d93ee35be1
   m_configObjects:
