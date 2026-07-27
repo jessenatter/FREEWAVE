@@ -9,7 +9,6 @@ public class Player : Character
 {
     [HideInInspector] public Weapon knife,axe,hammer,grapple,radar;
     bool isGrappling,grappleIsShooting;
-    [SerializeField] LayerMask grappleLayer;
     Ship ship;
     float maxDistanceFromShip = 1f;
     [HideInInspector] public bool canEnterShip,aiming;
@@ -49,7 +48,6 @@ public class Player : Character
         hurtTimer.SetDuration(30f);
         
         base.Start();
-
         
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
         lineRenderer = GetComponent<LineRenderer>();
@@ -73,11 +71,13 @@ public class Player : Character
         characterIsActive = true;
         cam = Manager.Instance.cam;
 
-        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 1f, 15f);
+        #region //set up tools
+
+        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 2f, 15f);
         grapple = new Weapon(frontHand.transform.GetChild(1).gameObject, false, 1f, 15f);
         radar = new Weapon(frontHand.transform.GetChild(2).gameObject, false, 1f, 15f);
-        axe = new Weapon(frontHand.transform.GetChild(3).gameObject, false, 1f, 15f);
-        hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, false, 1f, 15f);
+        axe = new Weapon(frontHand.transform.GetChild(3).gameObject, false, 4f, 15f);
+        hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, false, 3f, 15f);
 
         meleeWeapons.Add(knife);
         meleeWeapons.Add(axe);
@@ -88,6 +88,7 @@ public class Player : Character
 
         currentMelee = GetFirstUnlockedWeapon(meleeWeapons);
         currentAimed = GetFirstUnlockedWeapon(aimedWeapons);
+
         SetHeldWeaponVisuals(false);
 
         grappleFunctionPoint = grapple.gameObject.transform.GetChild(3).gameObject;
@@ -96,6 +97,8 @@ public class Player : Character
 
         grappleBullet = GameObject.FindGameObjectWithTag("GrappleBullet").gameObject;
         grappleBullet.SetActive(false);
+
+        #endregion
     }
     override protected void Update() //reading input, visuals
     {
@@ -153,7 +156,12 @@ public class Player : Character
         yInput = InputManager.Instance.moveAction.ReadValue<Vector2>().y;
 
         if (InputManager.Instance.jumpAction.IsPressed())
-            Jump();
+        {
+            if(currentCharacterState == characterState.frozen)
+                DialogueManager.Instance.UpdateDialouge();
+            else
+                Jump();
+        }
 
         if (InputManager.Instance.interactAction.IsPressed())
         {
@@ -312,7 +320,7 @@ public class Player : Character
         Vector2 dir = mouseWorld - (Vector2)transform.position;
         float distance = 50f;
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distance, grappleLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distance, groundLayer);
 
         if(hit == true && canGrapple)
         {
@@ -515,22 +523,18 @@ public class Player : Character
         if(string.IsNullOrWhiteSpace(weaponName))
             return false;
 
-        string normalizedWeaponName = weaponName.Trim().ToLowerInvariant();
         Weapon weaponToUnlock = null;
 
-        if(normalizedWeaponName == "knife")
+        if(weaponName == "knife")
             weaponToUnlock = knife;
-        else if(normalizedWeaponName == "axe")
+        else if(weaponName == "axe")
             weaponToUnlock = axe;
-        else if(normalizedWeaponName == "hammer")
+        else if(weaponName == "hammer")
             weaponToUnlock = hammer;
-        else if(normalizedWeaponName == "grapple")
+        else if(weaponName == "grapple")
             weaponToUnlock = grapple;
-        else if(normalizedWeaponName == "radar")
+        else if(weaponName == "radar")
             weaponToUnlock = radar;
-
-        if(weaponToUnlock == null)
-            return false;
 
         weaponToUnlock.unlocked = true;
 
