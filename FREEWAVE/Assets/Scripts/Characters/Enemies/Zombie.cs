@@ -7,6 +7,8 @@ public class Zombie : Enemy
     float hasPlayerMoveSpeed = 1.5f, lookingForMeatMoveSpeed = .7f;
     float eatingCorpseDistance = 0.75f;
     ZombieAnimator zombieAnimator;
+
+    [SerializeField] GameObject bloodParticles, fleshParticles;
     enum zombieState
     {
         lookingForMeat,
@@ -98,10 +100,25 @@ public class Zombie : Enemy
         zombieAnimator.currentLowerBodyState = zombieAnimator.chargeAttackLower;
     }
 
+    protected override void Hurt(Vector2 hurtDir, float damage)
+    {
+        base.Hurt(hurtDir, damage);
+
+        GameObject _blood = Instantiate(bloodParticles);
+        _blood.transform.position = transform.position;
+        _blood.transform.position += new Vector3(0,0.4f,0);
+        _blood.transform.SetParent(transform);
+    }
+
     protected override void Die()
     {
         base.Die();
         Manager.Instance.enemies.Remove(this);
+
+        GameObject _blood = Instantiate(fleshParticles);
+        _blood.transform.position = transform.position;
+        _blood.transform.position += new Vector3(0,0.4f,0);
+        //_blood.transform.SetParent(transform);
     }
 }
 
