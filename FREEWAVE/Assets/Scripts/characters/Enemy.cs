@@ -100,6 +100,7 @@ public class Enemy : Character
     protected override void Hurt(Vector2 hurtDir, float damage)
     {
         base.Hurt(hurtDir, damage);
+        
         attackChargeTimer.Reset();
         chargingAttack = false;
     }
