@@ -86,6 +86,7 @@ public class Enemy : Character
         //cancel attack
         attackChargeTimer.Reset();
         chargingAttack = false;
+        SoundManager.PlaySound(0.5f,0.2f,"stab1","stab2","stab3");
     }
 
     protected override void Die()

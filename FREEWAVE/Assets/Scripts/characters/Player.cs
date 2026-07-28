@@ -492,18 +492,21 @@ public class Player : Character
     {
         base.Attack();
         GrappleCancel();
+        SoundManager.PlaySound("knife",0.7f,0.2f);
     }
 
     protected override void DashAttack()
     {
         base.DashAttack();
         GrappleCancel();
+        SoundManager.PlaySound("knifeSlash",0.7f,0.2f);
     }
 
     protected override void DownAttack()
     {
         GrappleCancel();//first bc gravity opperations
         base.DownAttack();
+        SoundManager.PlaySound("downAttack",0.7f,0.2f);
     }
 
     void SwitchWeapon(int dir)

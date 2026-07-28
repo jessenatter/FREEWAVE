@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    //defines combat / movement behavior for characters
     protected float moveSpeed = 3.5f, jumpForce = 16f,dashAttackSpeed = 10f,knockbackForce = 5f;
     protected float xInput,yInput,dashXinput;
-    bool grounded,isJumping,canJump,recentlyIdle;
-    [SerializeField] protected LayerMask groundLayer;
-    protected Rigidbody2D rb;
-    protected BoxCollider2D bc;
-    protected bool nearInteractable;
+    bool grounded,isJumping,canJump,recentlyIdle,canAttack = true;
+    protected LayerMask groundLayer;
+    protected Rigidbody2D rb; protected BoxCollider2D bc;
+    //please add no more character states during development, keep it to these
     [HideInInspector]public enum characterState
     {
         movement,
@@ -22,28 +22,32 @@ public class Character : MonoBehaviour
         frozen,
         dead,
     }
-    [HideInInspector]public characterState currentCharacterState = characterState.movement;
+    [HideInInspector] public characterState currentCharacterState = characterState.movement;
+
+    #region timers
     PublicTimer cayoteTimer = new PublicTimer(10f);
     [HideInInspector] public PublicTimer jumpCooldown = new PublicTimer(2f); //ammount of time grounded in order to jump
-    [HideInInspector]public PublicTimer attackTimer = new PublicTimer(15f);
-    [HideInInspector]public PublicTimer attackCD = new PublicTimer(10f); //use same cooldown for all attacks
-    [HideInInspector]public PublicTimer dashAttackTimer = new PublicTimer(25f);
+    [HideInInspector] public PublicTimer attackTimer = new PublicTimer(15f);
+    [HideInInspector] public PublicTimer attackCD = new PublicTimer(10f); //use same cooldown for all attacks
+    [HideInInspector] public PublicTimer dashAttackTimer = new PublicTimer(25f);
     protected PublicTimer hurtTimer = new PublicTimer(30f);
-    [HideInInspector]public bool characterIsActive,getAttackInput,groundedHit;
+
+    #endregion
+    [HideInInspector] public bool characterIsActive,getAttackInput,groundedHit,nearInteractable;
     GameObject attackCollider,downAttackCollider;
-    [SerializeField] int hurtLayer;
+    [SerializeField] int hurtLayer; //layer of the collider that can hurt this character
     CharacterAnimator characterAnimator;
     CharacterAnimator.lowerBodyState previousLowerBodyState;
     CharacterAnimator.upperBodyState previousUpperBodyState;
     [HideInInspector] public float health = 10,damage = 1,damageToRecive;
-    bool canAttack = true;
-    [SerializeField] protected GameObject backHand,frontHand;
+    [SerializeField] protected GameObject backHand,frontHand; //for putting stuff in back and front hands
     [HideInInspector] public PickupAble heldPickupable;
     protected Interactable lastClosestInteractable;
     [SerializeField] bool isPlayer;
     PublicTimer recentlyIdleTimer = new PublicTimer(15f);
     protected virtual void Start()
     {
+        groundLayer = LayerMask.GetMask("Ground");
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
         attackCollider = transform.GetChild(0).gameObject;
@@ -68,18 +72,14 @@ public class Character : MonoBehaviour
             groundedHit = false;
 
         if(xInput == 0)
-        {
             recentlyIdle = true;
-        }
         else if(recentlyIdle)
         {
             if(recentlyIdleTimer.TickLoop())
-            {
                 recentlyIdle = false;
-            }
         }
 
-        if(getAttackInput)
+        if(getAttackInput) //attack is determinded by x and y input
         {
             if(xInput == 0 && (Mathf.Sign(yInput) != -1 || grounded))
                 Attack();
@@ -115,12 +115,11 @@ public class Character : MonoBehaviour
                 DashAttackUpdate();
             else if(currentCharacterState == characterState.hurting)
                 HurtUpdate();
-            //else if(currentCharacterState == characterState.dead)
         }
 
         AnimatorUpdate();
         AttackCDupdate();
-        checkForInteractables();
+        CheckForInteractables();
         characterAnimator.CharacterAnimatorFixedUpdate(); //i guess we are calling it from here for order of opperations?
     }
 
@@ -140,22 +139,16 @@ public class Character : MonoBehaviour
             isJumping = false;
 
             if(jumpCooldown.Tick())
-            {
                 canJump = true;
-            }
         }
         else if (grounded)
         {
             if(cayoteTimer.TickLoop())
-            {
                 grounded = false;
-            }
         }
 
         if(!groundedHit)
-        {
             jumpCooldown.Reset();
-        }
 
         rb.linearVelocityX = xInput * moveSpeed;
     }
@@ -240,7 +233,6 @@ public class Character : MonoBehaviour
     }
     void AnimatorUpdate()
     {
-        
         if(groundedHit == false)
             isJumping = true;
 
@@ -322,12 +314,10 @@ public class Character : MonoBehaviour
         if(!canAttack && currentCharacterState != characterState.attacking)
         {
             if(attackCD.TickLoop())
-            {
                 canAttack = true;
-            }
         }
     }
-    void checkForInteractables()
+    void CheckForInteractables()
     {
         float minInteractDistance = 1.5f;
         float lastPickupDistance = Mathf.Infinity;
