@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4877004934178402959}
   - component: {fileID: 3569695967710984012}
   - component: {fileID: 6904876289065448048}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: ZombieLimbPhysics
   m_TagString: Untagged
   m_Icon: {fileID: 0}

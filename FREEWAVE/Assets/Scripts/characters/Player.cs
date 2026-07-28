@@ -31,7 +31,7 @@ public class Player : Character
     PublicTimer inCombatTimer = new PublicTimer(70f);
     List<Weapon> aimedWeapons = new List<Weapon>();
     List<Weapon> meleeWeapons = new List<Weapon>();
-    Weapon currentMelee,currentAimed;
+    [HideInInspector] public Weapon currentMelee,currentAimed;
     GameObject grappleFunctionPoint;
     Light2D radarLight;
     PublicTimer radarBeepTimer = new PublicTimer(30f);
@@ -71,7 +71,7 @@ public class Player : Character
 
         #region //set up tools
 
-        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 20f, 15f);
+        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 2f, 15f);
         grapple = new Weapon(frontHand.transform.GetChild(1).gameObject, false, 1f, 15f);
         radar = new Weapon(frontHand.transform.GetChild(2).gameObject, false, 1f, 15f);
         axe = new Weapon(frontHand.transform.GetChild(3).gameObject, false, 4f, 15f);

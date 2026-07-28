@@ -99,7 +99,7 @@ public class Zombie : Enemy
             float _scale = 1.25f;
             _physicsLimb.transform.localScale = new Vector2(_scale,_scale);
 
-            float dieForce = 1f;
+            float dieForce = 2f;
             _physicsLimb.GetComponent<Rigidbody2D>().AddForce(dieForce * dir,ForceMode2D.Impulse);
         }
 

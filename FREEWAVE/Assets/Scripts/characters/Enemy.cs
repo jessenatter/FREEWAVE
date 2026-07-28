@@ -59,7 +59,7 @@ public class Enemy : Character
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        damageToRecive = player.damage;
+        damageToRecive = player.currentMelee.damage;
         if(collision.gameObject == Manager.Instance.ship.gameObject)
         {
             return;
