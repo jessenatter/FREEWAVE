@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class Zombie : Enemy
@@ -5,7 +7,7 @@ public class Zombie : Enemy
     float hasTargetMoveSpeed = 1.5f, lookingForMeatMoveSpeed = .7f;
     float eatingCorpseDistance = 0.75f; //how close i have to be to a corpse to start eating it
     ZombieAnimator zombieAnimator;
-    [SerializeField] GameObject bloodParticles, fleshParticles;
+    [SerializeField] GameObject bloodParticles, deathParticles,physicsLimb;
     enum zombieState
     {
         lookingForMeat, //patroling for corpses to eat or the player
@@ -81,14 +83,36 @@ public class Zombie : Enemy
         _blood.transform.SetParent(transform);
     }
 
-    protected override void Die()
+    protected override void Die(Vector2 dir)
     {
-        base.Die();
         Manager.Instance.enemies.Remove(this);
 
-        GameObject _deathParticles = Instantiate(fleshParticles);
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach(SpriteRenderer sprite in sprites)
+        {
+            if(sprite.isVisible == false || Random.Range(0f,1f) > 0.5f) continue;
+
+            GameObject _physicsLimb = Instantiate(physicsLimb,sprite.transform);
+            _physicsLimb.GetComponent<SpriteRenderer>().sprite = sprite.sprite;
+            _physicsLimb.transform.SetParent(null);
+
+            float _scale = 1.25f;
+            _physicsLimb.transform.localScale = new Vector2(_scale,_scale);
+
+            float dieForce = 1f;
+            _physicsLimb.GetComponent<Rigidbody2D>().AddForce(dieForce * dir,ForceMode2D.Impulse);
+        }
+
+        GameObject _deathParticles = Instantiate(deathParticles);
         _deathParticles.transform.position = transform.position;
-        _deathParticles.transform.position += new Vector3(0,0.4f,0);
+        _deathParticles.transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+        base.Die(dir);
+    }
+
+    void SetDeadSprites()
+    {
+        
     }
 }
 

@@ -220,14 +220,14 @@ public class Character : MonoBehaviour
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyHurt;
             characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyHurt;
             if(health == 0)
-                Die();
+                Die(hurtDir);
             
             attackCollider.SetActive(false);
             downAttackCollider.SetActive(false);
             hurtTimer.Reset();
         }
     }
-    protected virtual void Die()
+    protected virtual void Die(Vector2 dir)
     {
         currentCharacterState = characterState.dead;
     }

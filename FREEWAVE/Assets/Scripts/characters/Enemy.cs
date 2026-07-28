@@ -89,9 +89,9 @@ public class Enemy : Character
         SoundManager.PlaySound(0.5f,0.2f,"stab1","stab2","stab3");
     }
 
-    protected override void Die()
+    protected override void Die(Vector2 dir)
     {
-        base.Die();
+        base.Die(dir);
         Destroy(gameObject);
     }
 }

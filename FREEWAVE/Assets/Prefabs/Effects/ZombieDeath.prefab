@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9146488550130652482}
   - component: {fileID: 4698449818873707679}
   m_Layer: 0
-  m_Name: ZombieFleshChunks
+  m_Name: ZombieDeath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

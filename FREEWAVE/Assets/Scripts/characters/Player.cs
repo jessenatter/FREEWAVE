@@ -71,7 +71,7 @@ public class Player : Character
 
         #region //set up tools
 
-        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 2f, 15f);
+        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 20f, 15f);
         grapple = new Weapon(frontHand.transform.GetChild(1).gameObject, false, 1f, 15f);
         radar = new Weapon(frontHand.transform.GetChild(2).gameObject, false, 1f, 15f);
         axe = new Weapon(frontHand.transform.GetChild(3).gameObject, false, 4f, 15f);
@@ -719,9 +719,9 @@ public class Player : Character
         }
     }
 
-    protected override void Die()
+    protected override void Die(Vector2 dir)
     {
-        base.Die();
+        base.Die(dir);
         Manager.Instance.PlayerDie();
         dead = true;
     }
