@@ -31,12 +31,10 @@ public class Player : Character
     PublicTimer inCombatTimer = new PublicTimer(70f);
     List<Weapon> aimedWeapons = new List<Weapon>();
     List<Weapon> meleeWeapons = new List<Weapon>();
-
     Weapon currentMelee,currentAimed;
     GameObject grappleFunctionPoint;
     Light2D radarLight;
     PublicTimer radarBeepTimer = new PublicTimer(30f);
-
     override protected void Start()
     {
         attackTimer.SetDuration(15f);

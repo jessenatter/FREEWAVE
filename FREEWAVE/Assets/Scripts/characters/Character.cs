@@ -20,6 +20,7 @@ public class Character : MonoBehaviour
         hurting,
         idle,
         frozen,
+        dead,
     }
     [HideInInspector]public characterState currentCharacterState = characterState.movement;
     PublicTimer cayoteTimer = new PublicTimer(10f);
@@ -114,6 +115,7 @@ public class Character : MonoBehaviour
                 DashAttackUpdate();
             else if(currentCharacterState == characterState.hurting)
                 HurtUpdate();
+            //else if(currentCharacterState == characterState.dead)
         }
 
         AnimatorUpdate();
@@ -234,7 +236,7 @@ public class Character : MonoBehaviour
     }
     protected virtual void Die()
     {
-        
+        currentCharacterState = characterState.dead;
     }
     void AnimatorUpdate()
     {
