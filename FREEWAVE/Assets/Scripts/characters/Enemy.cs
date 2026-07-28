@@ -2,60 +2,44 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    public GameObject target;
     Player player;
-
-    float awarenessDistance = 5f;
-
-    float attackDistance = 1f;
-
-    public PublicTimer attackChargeTimer = new PublicTimer(50f);
-
-    public bool hasPlayer,chargingAttack;
-
+    public GameObject target;
+    float awarenessDistance = 5f; //how close i have to be to the player to follow
+    float attackDistance = 1f; //how close to attack
+    public PublicTimer attackChargeTimer = new PublicTimer(50f); //how long to charge the attack
+    public bool hasTarget,chargingAttack;
     PublicTimer awarenessTimer = new PublicTimer(1000f);
-
     protected override void Start()
     {
         base.Start();
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        player = Manager.Instance.player;
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        Vector2 playerEnemyVector = player.transform.position - transform.position;
-    
-        if(playerEnemyVector.magnitude < awarenessDistance)
-        {
-            hasPlayer = true;
-            awarenessTimer.Reset();
-        }
-        else if(playerEnemyVector.magnitude > awarenessDistance * 3f)
-        {
-            if(awarenessTimer.TickLoop())
-            {
-                hasPlayer = false;
-            }
-        }
-
-        if(playerEnemyVector.magnitude < attackDistance && currentCharacterState == characterState.movement)
-            startChargingAttack();
-
-        if(hasPlayer)
+        if(Manager.Instance.ship.currentShipState == Ship.ShipState.waitingForPlayer)
             target = player.gameObject;
         else
-            target = null;
+            target = Manager.Instance.ship.gameObject;
 
-        Vector2 targetEnemyVector = Vector2.zero;
+        Vector2 targetVector = target.transform.position - transform.position;
+    
+        if(targetVector.magnitude < awarenessDistance)
+        {
+            hasTarget = true;
+            awarenessTimer.Reset(); //reset awareness timer
+        }
+        else if(targetVector.magnitude > awarenessDistance * 2f)
+        {
+            if(awarenessTimer.TickLoop()) //if not in proximity of player for long enough, loose them
+                hasTarget = false;
+        }
 
         if(target != null)
-            targetEnemyVector = target.transform.position - transform.position;
-
-        if(target != null)
-            xInput = Mathf.Sign(targetEnemyVector.x);
+            xInput = Mathf.Sign(targetVector.x);
         else
             xInput = 0;
 
@@ -79,18 +63,16 @@ public class Enemy : Character
         if(collision.gameObject == Manager.Instance.ship.gameObject)
         {
             return;
-            if(Manager.Instance.ship.rb.linearVelocity.magnitude < 5f) return;
-            print("a");
-            float shipForceModifier = 1f;
-            rb.AddForce(Manager.Instance.ship.rb.linearVelocity * shipForceModifier,ForceMode2D.Impulse);
         }
         base.OnTriggerEnter2D(collision);
     }
 
     protected virtual void startChargingAttack()
     {
-        if(currentCharacterState == characterState.attacking || currentCharacterState == characterState.hurting || chargingAttack) return;
+        if(currentCharacterState == characterState.attacking || 
+        currentCharacterState == characterState.hurting || chargingAttack) return;
 
+        //stop moving, start charging attack
         currentCharacterState = characterState.idle;
         rb.linearVelocity = Vector2.zero;
         chargingAttack = true;
@@ -101,6 +83,7 @@ public class Enemy : Character
     {
         base.Hurt(hurtDir, damage);
         
+        //cancel attack
         attackChargeTimer.Reset();
         chargingAttack = false;
     }

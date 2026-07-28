@@ -2,29 +2,22 @@ using UnityEngine;
 
 public class Zombie : Enemy
 {
-    PublicTimer lookingForMeatTimer = new PublicTimer(1000f);
-    PublicTimer restTimer = new PublicTimer(500f);
-    float hasPlayerMoveSpeed = 1.5f, lookingForMeatMoveSpeed = .7f;
-    float eatingCorpseDistance = 0.75f;
+    float hasTargetMoveSpeed = 1.5f, lookingForMeatMoveSpeed = .7f;
+    float eatingCorpseDistance = 0.75f; //how close i have to be to a corpse to start eating it
     ZombieAnimator zombieAnimator;
-
     [SerializeField] GameObject bloodParticles, fleshParticles;
     enum zombieState
     {
-        lookingForMeat,
-        resting,
-        eating,
-        hasPlayer,
+        lookingForMeat, //patroling for corpses to eat or the player
+        eating, //eating a corpse 
+        hasTarget, //has player
     }
     zombieState currentZombieState = zombieState.lookingForMeat;
     protected override void Start()
     {    
         zombieAnimator = GetComponent<ZombieAnimator>();
 
-        lookingForMeatTimer.SetDuration(lookingForMeatTimer.Duration + Random.Range(-200,200));
-        restTimer.SetDuration(restTimer.Duration + Random.Range(-200,200));
         damage = 1;
-
         moveSpeed = 1.5f;
         jumpForce = 1.5f;
 
@@ -45,46 +38,22 @@ public class Zombie : Enemy
         if(currentZombieState == zombieState.lookingForMeat)
         {
             moveSpeed = lookingForMeatMoveSpeed;
-
-            if(lookingForMeatTimer.TickLoop())
-            {
-                currentZombieState = zombieState.resting;
-            }
-
-            if(hasPlayer)
-            {
-                lookingForMeatTimer.Reset();
-                currentZombieState = zombieState.hasPlayer;
-            }
-            
-        }
-        else if(currentZombieState == zombieState.resting)
-        {
-            xInput = 0;
-
-            if(restTimer.TickLoop())
-            {
-                currentZombieState = zombieState.lookingForMeat;
-            }
-
-            if(hasPlayer)
-            {
-                lookingForMeatTimer.Reset();
-                currentZombieState = zombieState.hasPlayer;
-            }
+            CheckForExitState();
         }
         else if(currentZombieState == zombieState.eating)
         {
-            if(hasPlayer)
-            {
-                lookingForMeatTimer.Reset();
-                currentZombieState = zombieState.hasPlayer;
-            }
+            CheckForExitState();
         }
-        else if(currentZombieState == zombieState.hasPlayer)
+        else if(currentZombieState == zombieState.hasTarget)
         {
-            moveSpeed = hasPlayerMoveSpeed;
+            moveSpeed = hasTargetMoveSpeed;
         }
+    }
+
+    void CheckForExitState()
+    {
+        if(hasTarget)
+            currentZombieState = zombieState.hasTarget;
     }
 
     protected override void Update()
@@ -96,6 +65,8 @@ public class Zombie : Enemy
     {
         base.startChargingAttack();
 
+        //use custom zombie animator states for charging attack since base
+        //class only has attack animation no attack charge
         zombieAnimator.currentUpperBodyState = zombieAnimator.chargeAttackUpper;
         zombieAnimator.currentLowerBodyState = zombieAnimator.chargeAttackLower;
     }
@@ -115,10 +86,9 @@ public class Zombie : Enemy
         base.Die();
         Manager.Instance.enemies.Remove(this);
 
-        GameObject _blood = Instantiate(fleshParticles);
-        _blood.transform.position = transform.position;
-        _blood.transform.position += new Vector3(0,0.4f,0);
-        //_blood.transform.SetParent(transform);
+        GameObject _deathParticles = Instantiate(fleshParticles);
+        _deathParticles.transform.position = transform.position;
+        _deathParticles.transform.position += new Vector3(0,0.4f,0);
     }
 }
 
