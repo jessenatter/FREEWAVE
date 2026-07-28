@@ -31,8 +31,8 @@ Material:
     m_Floats:
     - _BlurSize: 1024
     - _BlurStrength: -2.57
-    - _MaxMip: 5.84
-    - _ZMax: 8.28
+    - _MaxMip: 6.82
+    - _ZMax: 8.81
     - _ZMin: 0
     - _blurSize: 5
     m_Colors: []
