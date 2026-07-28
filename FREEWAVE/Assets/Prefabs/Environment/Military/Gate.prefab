@@ -198,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShieldGenerator
   interactPrompt: {fileID: 0}
   canInteract: 1
+  interactPriority: 0
 --- !u!1 &4067646071337360996
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,8 +226,8 @@ Transform:
   m_GameObject: {fileID: 4067646071337360996}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4044, y: 0.5017, z: 0}
-  m_LocalScale: {x: 0.1913, y: 1.6473, z: 1}
+  m_LocalPosition: {x: 0.36, y: 0.3496, z: 0}
+  m_LocalScale: {x: 0.2703643, y: 1.3143675, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2387083336703275196}
@@ -256,7 +257,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: e6adecc2d2e2b4969a7957d32a15eab6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -278,8 +279,8 @@ SpriteRenderer:
   m_SortingLayerID: 1169484097
   m_SortingLayer: -2
   m_SortingOrder: 21
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.41037738, g: 0.66171974, b: 1, a: 1}
+  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
