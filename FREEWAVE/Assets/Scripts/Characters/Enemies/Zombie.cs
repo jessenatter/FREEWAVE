@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class Zombie : Enemy
@@ -16,26 +14,35 @@ public class Zombie : Enemy
 
         attackTimer.SetDuration(30f);
         attackCD.SetDuration(15f);
-        knockbackForce = 3f;
-        hurtTimer.SetDuration(30f);
+        hurtTimer.SetDuration(3f);
         attackChargeTimer.SetDuration(20f);
 
         base.Start();
+
+        if(attacks == null || attacks.Length == 0)
+        {
+            attacks = new Attack[1];
+            float defaultAttackRange = 1.2f;
+            float defaultAttackKnockback = 15f;
+            attacks[0] = new Attack(defaultAttackRange, damage, defaultAttackKnockback, Vector2.zero);
+        }
+
+        Attack primaryAttack = attacks[0];
+        primaryAttack.proximityToPlayer = Mathf.Max(primaryAttack.proximityToPlayer, 1.2f);
+        primaryAttack.damage = Mathf.Max(primaryAttack.damage, damage);
+        primaryAttack.chargeDurationOverride = attackChargeTimer.Duration;
+
+        primaryAttack.chargeUpperBodyState = zombieAnimator.chargeAttackUpper;
+        primaryAttack.chargeLowerBodyState = zombieAnimator.chargeAttackLower;
+        primaryAttack.attackUpperBodyState = zombieAnimator.upperBodyAttack;
+        primaryAttack.attackLowerBodyState = zombieAnimator.lowerBodyAttack;
+
         Manager.Instance.enemies.Add(this);
     }
-    protected override void StartChargingAttack()
-    {
-        base.StartChargingAttack();
 
-        //use custom zombie animator states for charging attack since base
-        //class only has attack animation no attack charge
-        zombieAnimator.currentUpperBodyState = zombieAnimator.chargeAttackUpper;
-        zombieAnimator.currentLowerBodyState = zombieAnimator.chargeAttackLower;
-    }
-
-    protected override void Hurt(Vector2 hurtDir, float damage)
+    protected override void Hurt(int hurtDir, float damage,float knockback)
     {
-        base.Hurt(hurtDir, damage);
+        base.Hurt(hurtDir, damage,knockback);
 
         GameObject _blood = Instantiate(bloodParticles);
         _blood.transform.position = transform.position;
@@ -43,7 +50,7 @@ public class Zombie : Enemy
         _blood.transform.SetParent(transform);
     }
 
-    protected override void Die(Vector2 dir)
+    protected override void Die(int dir)
     {
         Manager.Instance.enemies.Remove(this);
 
@@ -60,7 +67,7 @@ public class Zombie : Enemy
             _physicsLimb.transform.localScale = new Vector2(_scale,_scale);
 
             float dieForce = 2f;
-            _physicsLimb.GetComponent<Rigidbody2D>().AddForce(dieForce * dir,ForceMode2D.Impulse);
+            _physicsLimb.GetComponent<Rigidbody2D>().AddForce(dieForce * new Vector2(dir,0.5f),ForceMode2D.Impulse);
         }
 
         GameObject _deathParticles = Instantiate(deathParticles);

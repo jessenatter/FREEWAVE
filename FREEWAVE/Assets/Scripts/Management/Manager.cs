@@ -36,7 +36,7 @@ public class Manager : MonoBehaviour
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>();
 
-        healthVolume = GetComponent<Volume>();
+        healthVolume = GetComponents<Volume>()[1];
         dialougeCanvas = transform.GetChild(0).gameObject;
         dialougeCanvas.SetActive(false);
     }

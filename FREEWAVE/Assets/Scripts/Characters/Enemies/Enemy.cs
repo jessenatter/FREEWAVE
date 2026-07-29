@@ -3,17 +3,20 @@ using UnityEngine;
 public class Enemy : Character
 {
     Player player;
+    protected CharacterAnimator enemyAnimator;
     public GameObject target;
     float awarenessDistance = 5f; //how close i have to be to the player to follow
-    float attackDistance = 1f; //how close to attack
+    [SerializeField] protected Attack[] attacks;
     public PublicTimer attackChargeTimer = new PublicTimer(50f); //how long to charge the attack
     public bool hasTarget,chargingAttack;
+    public Attack currentAttack;
     PublicTimer awarenessTimer = new PublicTimer(1000f);
     protected override void Start()
     {
         base.Start();
 
         player = Manager.Instance.player;
+        enemyAnimator = GetComponent<CharacterAnimator>();
     }
 
     protected override void FixedUpdate()
@@ -26,6 +29,7 @@ public class Enemy : Character
             target = Manager.Instance.ship.gameObject;
 
         Vector2 targetVector = target.transform.position - transform.position;
+        float targetDistance = targetVector.magnitude;
     
         if(targetVector.magnitude < awarenessDistance)
         {
@@ -45,8 +49,6 @@ public class Enemy : Character
 
         if(chargingAttack)
         {
-            float t = attackChargeTimer.Progress;
-
             xInput = 0;
             if(attackChargeTimer.TickLoop())
             {
@@ -55,11 +57,22 @@ public class Enemy : Character
                 Attack();
             }
         }
+        else if(hasTarget)
+        {
+            Attack nextAttack = SelectAttack(targetDistance);
+            if(nextAttack != null)
+                StartChargingAttack(nextAttack);
+        }
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        damageToRecive = player.currentMelee.damage;
+        if(collision.gameObject.layer == 10)
+        {
+            damageToRecive = player.currentMelee.damage;
+            knockbackForceToRecive = player.currentMelee.knockbackForce;
+        }
+
         if(collision.gameObject == Manager.Instance.ship.gameObject)
         {
             return;
@@ -67,29 +80,76 @@ public class Enemy : Character
         base.OnTriggerEnter2D(collision);
     }
 
-    protected virtual void StartChargingAttack()
+    protected virtual void StartChargingAttack(Attack attack)
     {
+        if(attack == null)
+            return;
+
         if(currentCharacterState == characterState.attacking || 
-        currentCharacterState == characterState.hurting || chargingAttack) return;
+        currentCharacterState == characterState.hurting || chargingAttack || currentCharacterState == characterState.dead) return;
 
         //stop moving, start charging attack
+        currentAttack = attack;
+        attackChargeTimer.SetDuration(currentAttack.ResolveChargeDuration(attackChargeTimer.Duration));
         currentCharacterState = characterState.idle;
         rb.linearVelocity = Vector2.zero;
         chargingAttack = true;
         attackChargeTimer.Reset();
+        currentAttack.ApplyChargeState(enemyAnimator);
     }
 
-    protected override void Hurt(Vector2 hurtDir, float damage)
+    protected override void Attack()
     {
-        base.Hurt(hurtDir, damage);
+        if(currentAttack != null)
+        {
+            if(currentAttack.damage > 0f)
+                damage = currentAttack.damage;
+
+            currentAttack.ApplyAttackState(enemyAnimator);
+        }
+
+        base.Attack();
+    }
+
+    Attack SelectAttack(float targetDistance)
+    {
+        if(attacks == null || attacks.Length == 0)
+            return null;
+
+        Attack closestValidAttack = null;
+        float closestRange = float.MaxValue;
+
+        for(int i = 0; i < attacks.Length; i++)
+        {
+            Attack attack = attacks[i];
+            if(attack == null)
+                continue;
+
+            if(!attack.CanUse(targetDistance))
+                continue;
+
+            if(attack.proximityToPlayer < closestRange)
+            {
+                closestRange = attack.proximityToPlayer;
+                closestValidAttack = attack;
+            }
+        }
+
+        return closestValidAttack;
+    }
+
+    protected override void Hurt(int hurtDir, float damage,float knockback)
+    {
+        base.Hurt(hurtDir, damage,knockback);
         
         //cancel attack
         attackChargeTimer.Reset();
         chargingAttack = false;
+        //currentAttack = null;
         SoundManager.PlaySound(0.5f,0.2f,"stab1","stab2","stab3");
     }
 
-    protected override void Die(Vector2 dir)
+    protected override void Die(int dir)
     {
         base.Die(dir);
         Destroy(gameObject);

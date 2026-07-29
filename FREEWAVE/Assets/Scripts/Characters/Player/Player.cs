@@ -39,11 +39,10 @@ public class Player : Character
     {
         attackTimer.SetDuration(15f);
         attackCD.SetDuration(5f);
-        knockbackForce = 5f;
         dashAttackSpeed = 7f;
         moveSpeed = moveSpeed * 1.5f;
         dashAttackTimer.SetDuration(20f);
-        hurtTimer.SetDuration(30f);
+        hurtTimer.SetDuration(3f);
         
         base.Start();
         
@@ -71,11 +70,11 @@ public class Player : Character
 
         #region //set up tools
 
-        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 2f, 15f);
-        grapple = new Weapon(frontHand.transform.GetChild(1).gameObject, false, 1f, 15f);
-        radar = new Weapon(frontHand.transform.GetChild(2).gameObject, false, 1f, 15f);
-        axe = new Weapon(frontHand.transform.GetChild(3).gameObject, false, 4f, 15f);
-        hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, false, 3f, 15f);
+        knife = new Weapon(frontHand.transform.GetChild(0).gameObject, false, 2f, 15f,20f);
+        grapple = new Weapon(frontHand.transform.GetChild(1).gameObject, false, 1f, 15f,5f);
+        radar = new Weapon(frontHand.transform.GetChild(2).gameObject, false, 1f, 15f,5f);
+        axe = new Weapon(frontHand.transform.GetChild(3).gameObject, false, 4f, 15f,5f);
+        hammer = new Weapon(frontHand.transform.GetChild(4).gameObject, false, 3f, 15f,5f);
 
         meleeWeapons.Add(knife);
         meleeWeapons.Add(axe);
@@ -649,13 +648,14 @@ public class Player : Character
             DialogueManager.Instance.StartNextConversation();
             Destroy(collision.gameObject);
         }
+        else if(collision.gameObject.layer == 11)
+        {
+            if (currentCharacterState == characterState.hurting) return;
 
-        if (currentCharacterState == characterState.hurting) return;
-        
-        //set up a real way to do this
-        //Enemy enemy = collision.gameObject.transform.parent.GetComponent<Enemy>();
-        //damageToRecive = enemy.damage;
-        damageToRecive = 1f;
+            Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+            damageToRecive = enemy.currentAttack.damage;
+            knockbackForceToRecive = enemy.currentAttack.knockbackForce;
+        }
         base.OnTriggerEnter2D(collision);
     }
 
@@ -717,16 +717,17 @@ public class Player : Character
         }
     }
 
-    protected override void Die(Vector2 dir)
+    protected override void Die(int dir)
     {
         base.Die(dir);
         Manager.Instance.PlayerDie();
         dead = true;
     }
 
-    protected override void Hurt(Vector2 hurtDir, float damage)
+    protected override void Hurt(int hurtDir, float damage, float knockback)
     {
-        base.Hurt(hurtDir, damage);
-        cam.StartScreenShake(10,0.01f);
+        base.Hurt(hurtDir, damage,knockback);
+        cam.StartScreenShake(10,0.02f);
+        HapticsManager.PlayHeavy(0.2f);
     }
 }

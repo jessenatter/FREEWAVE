@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     //defines combat / movement behavior for characters
-    protected float moveSpeed = 3.5f, jumpForce = 27.5f,dashAttackSpeed = 10f,knockbackForce = 5f;
+    protected float moveSpeed = 3.5f, jumpForce = 27.5f,dashAttackSpeed = 10f;
     protected float xInput,yInput,dashXinput;
     bool grounded,isJumping,canJump,recentlyIdle,canAttack = true;
     protected LayerMask groundLayer;
@@ -39,7 +39,7 @@ public class Character : MonoBehaviour
     CharacterAnimator characterAnimator;
     CharacterAnimator.lowerBodyState previousLowerBodyState;
     CharacterAnimator.upperBodyState previousUpperBodyState;
-    [HideInInspector] public float health = 10,damage = 1,damageToRecive;
+    [HideInInspector] public float health = 10,damage = 1,damageToRecive,knockbackForceToRecive;
     [SerializeField] protected GameObject backHand,frontHand; //for putting stuff in back and front hands
     [HideInInspector] public PickupAble heldPickupable;
     protected Interactable lastClosestInteractable;
@@ -96,7 +96,6 @@ public class Character : MonoBehaviour
 
             getAttackInput = false;
         }
-
     }
     protected virtual void FixedUpdate() //rb stuff
     {
@@ -126,7 +125,6 @@ public class Character : MonoBehaviour
         CheckForInteractables();
         characterAnimator.CharacterAnimatorFixedUpdate(); //i guess we are calling it from here for order of opperations?
     }
-
     protected virtual void LateUpdate()
     {
         characterAnimator.CharacterAnimatorUpdate();
@@ -160,7 +158,6 @@ public class Character : MonoBehaviour
     {
         if (grounded && !isJumping && canJump) DoJump();
     }
-
     protected virtual void DoJump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocityX,0);
@@ -170,68 +167,64 @@ public class Character : MonoBehaviour
     }
     protected virtual void Attack()
     {
-        if(currentCharacterState == characterState.movement && canAttack)
-        {
-            currentCharacterState = characterState.attacking;
-            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
-            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
-            attackCollider.SetActive(true);
-            canAttack = false;
-            attackTimer.Reset();
-            attackCD.Reset();
-            transform.position += Vector3.one * 0.0001f;
-        }
+        if(currentCharacterState != characterState.movement || !canAttack) return;
+
+        currentCharacterState = characterState.attacking;
+        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyAttack;
+        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyAttack;
+        attackCollider.SetActive(true);
+        canAttack = false;
+        attackTimer.Reset();
+        attackCD.Reset();
+        transform.position += Vector3.one * 0.0001f;
     }
     protected virtual void DashAttack()
     {
-        if(currentCharacterState == characterState.movement && canAttack)
-        {
-            canAttack = false;
-            currentCharacterState = characterState.dashAttacking;
-            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDashAttack;
-            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDashAttack;
-            attackCollider.SetActive(true);
-            dashXinput = xInput;
-            dashAttackTimer.Reset();
-            attackCD.Reset();
-            if(xInput != 0)
-                transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * Mathf.Sign(xInput),transform.localScale.y);
-        }
+        if(currentCharacterState != characterState.movement || !canAttack) return;
+
+        canAttack = false;
+        currentCharacterState = characterState.dashAttacking;
+        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDashAttack;
+        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDashAttack;
+        attackCollider.SetActive(true);
+        dashXinput = xInput;
+        dashAttackTimer.Reset();
+        attackCD.Reset();
+        if(xInput != 0)
+            transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * Mathf.Sign(xInput),transform.localScale.y);
     }
     protected virtual void DownAttack()
     {
-        if(currentCharacterState == characterState.movement && canAttack)
-        {
-            currentCharacterState = characterState.attackingDown;
-            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDropAttack;
-            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDropAttack;
-            downAttackCollider.SetActive(true);
-            rb.linearVelocity = Vector2.zero;
-            rb.gravityScale = downAttackGravityScale;
-            canAttack = false;
-            attackCD.Reset();
-        }
+        if(currentCharacterState != characterState.movement || !canAttack) return;
+        
+        currentCharacterState = characterState.attackingDown;
+        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyDropAttack;
+        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDropAttack;
+        downAttackCollider.SetActive(true);
+        rb.linearVelocity = Vector2.zero;
+        rb.gravityScale = downAttackGravityScale;
+        canAttack = false;
+        attackCD.Reset();
     }
-    protected virtual void Hurt(Vector2 hurtDir,float damage)
+    protected virtual void Hurt(int hurtDir,float damage,float knockbackForce)
     {
-        if(currentCharacterState != characterState.hurting)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.AddForce(hurtDir * knockbackForce,ForceMode2D.Impulse);
-            currentCharacterState = characterState.hurting;
-            health -= damage;
-            health = Mathf.Clamp(health,0,10);
-            characterAnimator.currentUpperBodyState = characterAnimator.upperBodyHurt;
-            characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyHurt;
-            if(health == 0)
-                Die(hurtDir);
-            
-            attackCollider.SetActive(false);
-            downAttackCollider.SetActive(false);
-            hurtTimer.Reset();
-        }
+        if(currentCharacterState == characterState.hurting) return;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(new Vector2(hurtDir,.5f) * knockbackForce,ForceMode2D.Impulse);
+        currentCharacterState = characterState.hurting;
+        health -= damage;
+        health = Mathf.Clamp(health,0,10);
+        characterAnimator.currentUpperBodyState = characterAnimator.upperBodyHurt;
+        characterAnimator.currentLowerBodyState = characterAnimator.lowerBodyHurt;
+        if(health == 0)
+            Die(hurtDir);
+        
+        attackCollider.SetActive(false);
+        downAttackCollider.SetActive(false);
+        hurtTimer.Reset();
     }
-    protected virtual void Die(Vector2 dir)
+    protected virtual void Die(int dir)
     {
         currentCharacterState = characterState.dead;
     }
@@ -412,8 +405,7 @@ public class Character : MonoBehaviour
         if(collision.gameObject.layer == hurtLayer && currentCharacterState != characterState.hurting)
         {
             float _x = Mathf.Sign(transform.position.x - collision.gameObject.transform.parent.transform.position.x);
-            Vector2 hurtVec = new Vector2(_x,1);
-            Hurt(hurtVec,damageToRecive);
+            Hurt((int)_x,damageToRecive,knockbackForceToRecive);
         }
     }
 }
