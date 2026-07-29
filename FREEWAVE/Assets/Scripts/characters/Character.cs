@@ -138,7 +138,14 @@ public class Character : MonoBehaviour
         {
             grounded = true;
             cayoteTimer.Reset();
-            isJumping = false;
+
+            if(isJumping)
+            {
+                isJumping = false;
+
+                if(rb.linearVelocityY < 0)
+                    Land();
+            }
 
             if(jumpCooldown.Tick())
                 canJump = true;
@@ -407,5 +414,10 @@ public class Character : MonoBehaviour
             float _x = Mathf.Sign(transform.position.x - collision.gameObject.transform.parent.transform.position.x);
             Hurt((int)_x,damageToRecive,knockbackForceToRecive);
         }
+    }
+
+    protected virtual void Land()
+    {
+        
     }
 }

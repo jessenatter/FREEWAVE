@@ -147,6 +147,7 @@ public class Enemy : Character
         chargingAttack = false;
         //currentAttack = null;
         SoundManager.PlaySound(0.5f,0.2f,"stab1","stab2","stab3");
+        HapticsManager.PlayMedium(0.2f);
     }
 
     protected override void Die(int dir)

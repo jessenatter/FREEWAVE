@@ -8,7 +8,6 @@ public class Zombie : Enemy
     {    
         zombieAnimator = GetComponent<ZombieAnimator>();
 
-        damage = 1;
         moveSpeed = 1.5f;
         jumpForce = 1.5f;
 
@@ -23,7 +22,7 @@ public class Zombie : Enemy
         {
             attacks = new Attack[1];
             float defaultAttackRange = 1.2f;
-            float defaultAttackKnockback = 15f;
+            float defaultAttackKnockback = 25f;
             attacks[0] = new Attack(defaultAttackRange, damage, defaultAttackKnockback, Vector2.zero);
         }
 

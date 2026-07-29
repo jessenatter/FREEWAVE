@@ -728,6 +728,12 @@ public class Player : Character
     {
         base.Hurt(hurtDir, damage,knockback);
         cam.StartScreenShake(10,0.02f);
-        HapticsManager.PlayHeavy(0.2f);
+        HapticsManager.PlayHeavy(0.3f);
+    }
+
+    protected override void Land()
+    {
+        base.Land();
+        HapticsManager.PlayLight(0.1f);
     }
 }
