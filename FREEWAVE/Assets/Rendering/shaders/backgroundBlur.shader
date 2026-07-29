@@ -1,10 +1,10 @@
-Shader "Custom/DarkenAndBlurByDepth2D_Mip"
+Shader "Custom/DarkenAndGaussianBlurByDepth2D"
 {
     Properties {
         _MainTex("Sprite", 2D) = "white" {}
-        _ZMin("Brightest Z", Float) = 0
-        _ZMax("Darkest Z", Float) = -10
-        _MaxMip("Max Blur Mip Level", Float) = 5
+        _MaxZLevel("Max Z Level (full effect)", Float) = 10
+        _BlurLevel("Blur Level", Range(0, 24)) = 6
+        _Darkness("Darkness", Range(0, 1)) = 0.6
     }
 
     SubShader {
@@ -32,10 +32,11 @@ Shader "Custom/DarkenAndBlurByDepth2D_Mip"
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
+            float4 _MainTex_TexelSize;
 
-            float _ZMin;
-            float _ZMax;
-            float _MaxMip;
+            float _MaxZLevel;
+            float _BlurLevel;
+            float _Darkness;
 
             Varyings vert(Attributes v)
             {
@@ -51,20 +52,49 @@ Shader "Custom/DarkenAndBlurByDepth2D_Mip"
 
             float4 frag(Varyings i) : SV_Target
             {
-                float t = saturate((i.worldZ - _ZMin)/(_ZMax - _ZMin));
+                float maxZ = max(abs(_MaxZLevel), 1e-5);
+                float t = saturate(abs(i.worldZ) / maxZ);
+                float blurRadius = _BlurLevel * t * t;
+                float2 blurStep1 = _MainTex_TexelSize.xy * blurRadius;
+                float2 blurStep2 = blurStep1 * 2.0;
 
-                float mipLevel = t * _MaxMip;
+                float4 colNear = 0.0;
+                float4 colFar = 0.0;
 
-                float4 col = SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv, mipLevel);
+                // 3x3 Gaussian kernel:
+                // [1 2 1]
+                // [2 4 2] / 16
+                // [1 2 1]
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(-blurStep1.x, -blurStep1.y)) * 1.0;
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(0.0,        -blurStep1.y)) * 2.0;
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2( blurStep1.x, -blurStep1.y)) * 1.0;
 
-                float2 offset = 1.0 / float2(2048, 2048);
-                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv + float2(offset.x, 0), mipLevel);
-                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv - float2(offset.x, 0), mipLevel);
-                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv + float2(0, offset.y), mipLevel);
-                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, i.uv - float2(0, offset.y), mipLevel);
-                col /= 5.0;
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(-blurStep1.x, 0.0)) * 2.0;
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) * 4.0;
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2( blurStep1.x, 0.0)) * 2.0;
 
-                col.rgb *= (1.0 - t);
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(-blurStep1.x,  blurStep1.y)) * 1.0;
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(0.0,         blurStep1.y)) * 2.0;
+                colNear += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2( blurStep1.x,  blurStep1.y)) * 1.0;
+                colNear *= (1.0 / 16.0);
+
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(-blurStep2.x, -blurStep2.y)) * 1.0;
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(0.0,        -blurStep2.y)) * 2.0;
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2( blurStep2.x, -blurStep2.y)) * 1.0;
+
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(-blurStep2.x, 0.0)) * 2.0;
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) * 4.0;
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2( blurStep2.x, 0.0)) * 2.0;
+
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(-blurStep2.x,  blurStep2.y)) * 1.0;
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(0.0,         blurStep2.y)) * 2.0;
+                colFar += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2( blurStep2.x,  blurStep2.y)) * 1.0;
+                colFar *= (1.0 / 16.0);
+
+                float4 col = lerp(colNear, colFar, t);
+
+                float darknessFactor = lerp(1.0, 1.0 - _Darkness, t);
+                col.rgb *= darknessFactor;
 
                 return col;
             }
