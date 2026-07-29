@@ -368,7 +368,7 @@ public class Player : Character
     {
         isGrappling = false;
         UpdateGrapplePullAudio(false);
-        rb.gravityScale = 1;
+        rb.gravityScale = initGravityScale;
         lineRenderer.enabled = false;
         grappleBullet.SetActive(false);
     }

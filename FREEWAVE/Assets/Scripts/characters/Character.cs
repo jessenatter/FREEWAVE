@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     //defines combat / movement behavior for characters
-    protected float moveSpeed = 3.5f, jumpForce = 16f,dashAttackSpeed = 10f,knockbackForce = 5f;
+    protected float moveSpeed = 3.5f, jumpForce = 25f,dashAttackSpeed = 10f,knockbackForce = 5f;
     protected float xInput,yInput,dashXinput;
     bool grounded,isJumping,canJump,recentlyIdle,canAttack = true;
     protected LayerMask groundLayer;
@@ -45,6 +45,8 @@ public class Character : MonoBehaviour
     protected Interactable lastClosestInteractable;
     [SerializeField] bool isPlayer;
     PublicTimer recentlyIdleTimer = new PublicTimer(15f);
+
+    protected float initGravityScale = 2.5f,downAttackGravityScale;
     protected virtual void Start()
     {
         groundLayer = LayerMask.GetMask("Ground");
@@ -59,6 +61,8 @@ public class Character : MonoBehaviour
         characterAnimator.idleStateDuration = 150f;
         
         characterAnimator.CharacterAnimatorStart();
+        rb.gravityScale = initGravityScale;
+        downAttackGravityScale = initGravityScale * 2f;
     }
     protected virtual void Update()
     {
@@ -203,7 +207,7 @@ public class Character : MonoBehaviour
             characterAnimator.currentUpperBodyState = characterAnimator.upperBodyDropAttack;
             downAttackCollider.SetActive(true);
             rb.linearVelocity = Vector2.zero;
-            rb.gravityScale = 5f;
+            rb.gravityScale = downAttackGravityScale;
             canAttack = false;
             attackCD.Reset();
         }
@@ -284,7 +288,7 @@ public class Character : MonoBehaviour
         {
             currentCharacterState = characterState.movement;
             downAttackCollider.SetActive(false);
-            rb.gravityScale = 1;
+            rb.gravityScale = initGravityScale;
         }
     }
     void DashAttackUpdate()
