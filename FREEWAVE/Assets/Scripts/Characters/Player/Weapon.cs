@@ -7,7 +7,6 @@ public class Weapon
     public bool unlocked;
     public float damage;
     public float attackDuration;
-
     public float knockbackForce;
 
     public Weapon(GameObject gameObject, bool unlocked, float damage, float attackDuration,float knockbackForce)

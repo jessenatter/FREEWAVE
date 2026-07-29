@@ -90,7 +90,6 @@ public class Enemy : Character
 
         //stop moving, start charging attack
         currentAttack = attack;
-        attackChargeTimer.SetDuration(currentAttack.ResolveChargeDuration(attackChargeTimer.Duration));
         currentCharacterState = characterState.idle;
         rb.linearVelocity = Vector2.zero;
         chargingAttack = true;

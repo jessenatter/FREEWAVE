@@ -20,21 +20,14 @@ public class Zombie : Enemy
 
         if(attacks == null || attacks.Length == 0)
         {
-            attacks = new Attack[1];
-            float defaultAttackRange = 1.2f;
+            attacks = new Attack[2];
             float defaultAttackKnockback = 25f;
-            attacks[0] = new Attack(defaultAttackRange, damage, defaultAttackKnockback, Vector2.zero);
+            attacks[0] = new Attack(1.2f, damage, defaultAttackKnockback, Vector2.zero,zombieAnimator.chargeAttackUpper,
+            zombieAnimator.chargeAttackLower,zombieAnimator.upperBodyAttack,zombieAnimator.lowerBodyAttack);
+
+            attacks[1] = new Attack(2.2f, damage, defaultAttackKnockback, new Vector2(1f,0f),zombieAnimator.chargeAttackUpper,
+            zombieAnimator.chargeAttackLower,zombieAnimator.upperBodyAttack,zombieAnimator.lowerBodyAttack);
         }
-
-        Attack primaryAttack = attacks[0];
-        primaryAttack.proximityToPlayer = Mathf.Max(primaryAttack.proximityToPlayer, 1.2f);
-        primaryAttack.damage = Mathf.Max(primaryAttack.damage, damage);
-        primaryAttack.chargeDurationOverride = attackChargeTimer.Duration;
-
-        primaryAttack.chargeUpperBodyState = zombieAnimator.chargeAttackUpper;
-        primaryAttack.chargeLowerBodyState = zombieAnimator.chargeAttackLower;
-        primaryAttack.attackUpperBodyState = zombieAnimator.upperBodyAttack;
-        primaryAttack.attackLowerBodyState = zombieAnimator.lowerBodyAttack;
 
         Manager.Instance.enemies.Add(this);
     }
@@ -69,9 +62,10 @@ public class Zombie : Enemy
             _physicsLimb.GetComponent<Rigidbody2D>().AddForce(dieForce * new Vector2(dir,0.5f),ForceMode2D.Impulse);
         }
 
-        GameObject _deathParticles = Instantiate(deathParticles);
-        _deathParticles.transform.position = transform.position;
-        _deathParticles.transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+        //GameObject _deathParticles = Instantiate(deathParticles);
+        //_deathParticles.transform.position = transform.position;
+        //_deathParticles.transform.GetChild(0).GetComponent<SpriteRenderer>();
 
         base.Die(dir);
     }

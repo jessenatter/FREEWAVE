@@ -8,24 +8,12 @@ public class Attack //for enemies
     public Vector2 movementInput;
     public CharacterAnimator.upperBodyState chargeUpperBodyState,attackUpperBodyState;
     public CharacterAnimator.lowerBodyState chargeLowerBodyState,attackLowerBodyState;
-    public float chargeDurationOverride;
-
     public float knockbackForce;
-    public Attack(float proximityToPlayer, float damage, float knockbackForce, Vector2 movementInput)
-    {
-        this.proximityToPlayer = proximityToPlayer;
-        this.damage = damage;
-        this.knockbackForce = knockbackForce;
-        this.movementInput = movementInput;
-        chargeDurationOverride = 0f;
-    }
-
     public Attack(
         float proximityToPlayer,
         float damage,
         float knockbackForce,
         Vector2 movementInput,
-        float chargeDurationOverride,
         CharacterAnimator.upperBodyState chargeUpperBodyState,
         CharacterAnimator.lowerBodyState chargeLowerBodyState,
         CharacterAnimator.upperBodyState attackUpperBodyState,
@@ -35,7 +23,6 @@ public class Attack //for enemies
         this.damage = damage;
         this.knockbackForce = knockbackForce;
         this.movementInput = movementInput;
-        this.chargeDurationOverride = chargeDurationOverride;
         this.chargeUpperBodyState = chargeUpperBodyState;
         this.chargeLowerBodyState = chargeLowerBodyState;
         this.attackUpperBodyState = attackUpperBodyState;
@@ -45,17 +32,6 @@ public class Attack //for enemies
     public bool CanUse(float distanceToTarget)
     {
         return distanceToTarget <= proximityToPlayer;
-    }
-
-    public float ResolveChargeDuration(float fallback)
-    {
-        if(chargeDurationOverride > 0f)
-            return chargeDurationOverride;
-
-        if(chargeUpperBodyState != null && chargeUpperBodyState.duration > 0f)
-            return chargeUpperBodyState.duration;
-
-        return fallback;
     }
 
     public void ApplyChargeState(CharacterAnimator animator)
