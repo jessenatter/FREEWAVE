@@ -33,12 +33,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlurLevel: 24
+    - _BlurLevel: 8.5
     - _BlurSize: 1024
     - _BlurStrength: -2.57
-    - _Darkness: 0.812
+    - _Darkness: 0.79
     - _MaxMip: 7.01
-    - _MaxZLevel: 3
+    - _MaxZLevel: 0.71
     - _NormalStrength: 0.01
     - _Scale: 1.52
     - _Speed: 0.5

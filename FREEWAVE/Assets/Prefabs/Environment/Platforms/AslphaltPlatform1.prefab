@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 381956895810050207}
   - component: {fileID: 5043659870229001079}
-  - component: {fileID: 7383018692119717904}
+  - component: {fileID: 7018536404608259755}
   m_Layer: 6
   m_Name: AslphaltPlatform1
   m_TagString: Untagged
@@ -91,8 +91,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &7383018692119717904
-PolygonCollider2D:
+--- !u!61 &7018536404608259755
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -125,7 +125,7 @@ PolygonCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.08080864, y: 0.20779163}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -135,12 +135,5 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -4.461414, y: 1.0050071}
-      - {x: -4.4125714, y: -0.72134316}
-      - {x: -0.29789472, y: -0.6957302}
-      - {x: 4.0986547, y: -1.3197055}
-      - {x: 4.929531, y: 0.51748556}
-      - {x: 0.33980274, y: 1.0513074}
-  m_UseDelaunayMesh: 0
+  m_Size: {x: 9.157221, y: 1.7470757}
+  m_EdgeRadius: 0

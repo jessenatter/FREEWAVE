@@ -56,6 +56,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: DirtPlatform2
       objectReference: {fileID: 0}
+    - target: {fileID: 7018536404608259755, guid: 0d1e91098890842029fbc9734a2ec46b, type: 3}
+      propertyPath: m_Size.y
+      value: 1.5714467
+      objectReference: {fileID: 0}
+    - target: {fileID: 7018536404608259755, guid: 0d1e91098890842029fbc9734a2ec46b, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.11997709
+      objectReference: {fileID: 0}
+    - target: {fileID: 7018536404608259755, guid: 0d1e91098890842029fbc9734a2ec46b, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 9.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 7018536404608259755, guid: 0d1e91098890842029fbc9734a2ec46b, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 3.88
+      objectReference: {fileID: 0}
     - target: {fileID: 7383018692119717904, guid: 0d1e91098890842029fbc9734a2ec46b, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 9.81

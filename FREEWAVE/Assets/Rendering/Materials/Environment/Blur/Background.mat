@@ -36,9 +36,9 @@ Material:
     - _BlurLevel: 24
     - _BlurSize: 1024
     - _BlurStrength: -2.57
-    - _Darkness: 0.812
+    - _Darkness: 0.561
     - _MaxMip: 7.01
-    - _MaxZLevel: 3
+    - _MaxZLevel: 1
     - _NormalStrength: 0.01
     - _Scale: 1.52
     - _Speed: 0.5
