@@ -4,17 +4,8 @@ using UnityEngine;
 
 public class Zombie : Enemy
 {
-    float hasTargetMoveSpeed = 1.5f, lookingForMeatMoveSpeed = .7f;
-    float eatingCorpseDistance = 0.75f; //how close i have to be to a corpse to start eating it
     ZombieAnimator zombieAnimator;
     [SerializeField] GameObject bloodParticles, deathParticles,physicsLimb;
-    enum zombieState
-    {
-        lookingForMeat, //patroling for corpses to eat or the player
-        eating, //eating a corpse 
-        hasTarget, //has player
-    }
-    zombieState currentZombieState = zombieState.lookingForMeat;
     protected override void Start()
     {    
         zombieAnimator = GetComponent<ZombieAnimator>();
@@ -32,40 +23,9 @@ public class Zombie : Enemy
         base.Start();
         Manager.Instance.enemies.Add(this);
     }
-
-    protected override void FixedUpdate()
+    protected override void StartChargingAttack()
     {
-        base.FixedUpdate();
-
-        if(currentZombieState == zombieState.lookingForMeat)
-        {
-            moveSpeed = lookingForMeatMoveSpeed;
-            CheckForExitState();
-        }
-        else if(currentZombieState == zombieState.eating)
-        {
-            CheckForExitState();
-        }
-        else if(currentZombieState == zombieState.hasTarget)
-        {
-            moveSpeed = hasTargetMoveSpeed;
-        }
-    }
-
-    void CheckForExitState()
-    {
-        if(hasTarget)
-            currentZombieState = zombieState.hasTarget;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-    }
-
-    protected override void startChargingAttack()
-    {
-        base.startChargingAttack();
+        base.StartChargingAttack();
 
         //use custom zombie animator states for charging attack since base
         //class only has attack animation no attack charge
@@ -108,11 +68,6 @@ public class Zombie : Enemy
         _deathParticles.transform.GetChild(0).GetComponent<SpriteRenderer>();
 
         base.Die(dir);
-    }
-
-    void SetDeadSprites()
-    {
-        
     }
 }
 

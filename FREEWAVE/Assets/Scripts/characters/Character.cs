@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     //defines combat / movement behavior for characters
-    protected float moveSpeed = 3.5f, jumpForce = 25f,dashAttackSpeed = 10f,knockbackForce = 5f;
+    protected float moveSpeed = 3.5f, jumpForce = 27.5f,dashAttackSpeed = 10f,knockbackForce = 5f;
     protected float xInput,yInput,dashXinput;
     bool grounded,isJumping,canJump,recentlyIdle,canAttack = true;
     protected LayerMask groundLayer;
@@ -46,7 +46,7 @@ public class Character : MonoBehaviour
     [SerializeField] bool isPlayer;
     PublicTimer recentlyIdleTimer = new PublicTimer(15f);
 
-    protected float initGravityScale = 2.5f,downAttackGravityScale;
+    protected float initGravityScale = 2.7f,downAttackGravityScale;
     protected virtual void Start()
     {
         groundLayer = LayerMask.GetMask("Ground");
