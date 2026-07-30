@@ -10,6 +10,7 @@ public class Character : MonoBehaviour
     bool grounded,isJumping,canJump,recentlyIdle,canAttack = true;
     protected LayerMask groundLayer;
     protected Rigidbody2D rb; protected BoxCollider2D bc;
+
     //please add no more character states during development, keep it to these
     [HideInInspector]public enum characterState
     {
@@ -31,6 +32,7 @@ public class Character : MonoBehaviour
     [HideInInspector] public PublicTimer attackCD = new PublicTimer(10f); //use same cooldown for all attacks
     [HideInInspector] public PublicTimer dashAttackTimer = new PublicTimer(25f);
     protected PublicTimer hurtTimer = new PublicTimer(30f);
+    protected PublicTimer postHitInvincibilityTimer = new PublicTimer(60f);
 
     #endregion
     [HideInInspector] public bool characterIsActive,getAttackInput,groundedHit,nearInteractable;
@@ -44,8 +46,9 @@ public class Character : MonoBehaviour
     [HideInInspector] public PickupAble heldPickupable;
     protected Interactable lastClosestInteractable;
     [SerializeField] bool isPlayer;
+    [SerializeField] protected float postHitInvincibilitySeconds = 1f;
+    protected bool isPostHitInvincible;
     PublicTimer recentlyIdleTimer = new PublicTimer(15f);
-
     protected float initGravityScale = 2.7f,downAttackGravityScale;
     protected virtual void Start()
     {
@@ -63,6 +66,8 @@ public class Character : MonoBehaviour
         characterAnimator.CharacterAnimatorStart();
         rb.gravityScale = initGravityScale;
         downAttackGravityScale = initGravityScale * 2f;
+        postHitInvincibilityTimer.SetDuration(postHitInvincibilitySeconds * 60f);
+        postHitInvincibilityTimer.Complete();
     }
     protected virtual void Update()
     {
@@ -99,6 +104,8 @@ public class Character : MonoBehaviour
     }
     protected virtual void FixedUpdate() //rb stuff
     {
+        UpdatePostHitInvincibility();
+
         if(currentCharacterState == characterState.frozen)
         {
             AnimatorUpdate();
@@ -183,7 +190,6 @@ public class Character : MonoBehaviour
         canAttack = false;
         attackTimer.Reset();
         attackCD.Reset();
-        transform.position += Vector3.one * 0.0001f;
     }
     protected virtual void DashAttack()
     {
@@ -215,7 +221,7 @@ public class Character : MonoBehaviour
     }
     protected virtual void Hurt(int hurtDir,float damage,float knockbackForce)
     {
-        if(currentCharacterState == characterState.hurting) return;
+        if(currentCharacterState == characterState.hurting || currentCharacterState == characterState.dead || isPostHitInvincible) return;
 
         rb.linearVelocity = Vector2.zero;
         rb.AddForce(new Vector2(hurtDir,.5f) * knockbackForce,ForceMode2D.Impulse);
@@ -230,6 +236,8 @@ public class Character : MonoBehaviour
         attackCollider.SetActive(false);
         downAttackCollider.SetActive(false);
         hurtTimer.Reset();
+        isPostHitInvincible = true;
+        postHitInvincibilityTimer.Reset();
     }
     protected virtual void Die(int dir)
     {
@@ -284,12 +292,11 @@ public class Character : MonoBehaviour
     }
     void DownAttackUpdate()
     {
-        if(groundedHit)
-        {
-            currentCharacterState = characterState.movement;
-            downAttackCollider.SetActive(false);
-            rb.gravityScale = initGravityScale;
-        }
+        if(!groundedHit) return;
+
+        currentCharacterState = characterState.movement;
+        downAttackCollider.SetActive(false);
+        rb.gravityScale = initGravityScale;
     }
     void DashAttackUpdate()
     {
@@ -306,11 +313,8 @@ public class Character : MonoBehaviour
         hurtTimer.Tick();
         if(hurtTimer.IsComplete)
         {
-            if(groundedHit)
-            {
-                hurtTimer.Reset();
-                currentCharacterState = characterState.movement;
-            }
+            hurtTimer.Reset();
+            currentCharacterState = characterState.movement;
         }
     }
     void AttackCDupdate()
@@ -320,6 +324,13 @@ public class Character : MonoBehaviour
             if(attackCD.TickLoop())
                 canAttack = true;
         }
+    }
+    void UpdatePostHitInvincibility()
+    {
+        if(!isPostHitInvincible) return;
+
+        if(postHitInvincibilityTimer.Tick())
+            isPostHitInvincible = false;
     }
     void CheckForInteractables()
     {
@@ -417,7 +428,7 @@ public class Character : MonoBehaviour
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.layer == hurtLayer && currentCharacterState != characterState.hurting)
+        if(collision.gameObject.layer == hurtLayer)
         {
             float _x = Mathf.Sign(transform.position.x - collision.gameObject.transform.parent.transform.position.x);
             Hurt((int)_x,damageToRecive,knockbackForceToRecive);
