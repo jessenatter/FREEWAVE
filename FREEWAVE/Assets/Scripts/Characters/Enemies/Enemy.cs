@@ -14,6 +14,7 @@ public class Enemy : Character
     protected override void Start()
     {
         base.Start();
+        postHitInvincibilityTimer = new PublicTimer(1f);
 
         player = Manager.Instance.player;
         enemyAnimator = GetComponent<CharacterAnimator>();

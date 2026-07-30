@@ -32,10 +32,10 @@ public class Character : MonoBehaviour
     [HideInInspector] public PublicTimer attackCD = new PublicTimer(10f); //use same cooldown for all attacks
     [HideInInspector] public PublicTimer dashAttackTimer = new PublicTimer(25f);
     protected PublicTimer hurtTimer = new PublicTimer(30f);
-    protected PublicTimer postHitInvincibilityTimer = new PublicTimer(60f);
+    protected PublicTimer postHitInvincibilityTimer = new PublicTimer(30f);
 
     #endregion
-    [HideInInspector] public bool characterIsActive,getAttackInput,groundedHit,nearInteractable;
+    [HideInInspector] public bool characterIsActive,getAttackInput,groundedHit;
     GameObject attackCollider,downAttackCollider;
     [SerializeField] int hurtLayer; //layer of the collider that can hurt this character
     CharacterAnimator characterAnimator;
@@ -44,8 +44,6 @@ public class Character : MonoBehaviour
     [HideInInspector] public float health = 10,damage = 1,damageToRecive,knockbackForceToRecive;
     [SerializeField] protected GameObject backHand,frontHand; //for putting stuff in back and front hands
     [HideInInspector] public PickupAble heldPickupable;
-    protected Interactable lastClosestInteractable;
-    [SerializeField] bool isPlayer;
     [SerializeField] protected float postHitInvincibilitySeconds = 1f;
     protected bool isPostHitInvincible;
     PublicTimer recentlyIdleTimer = new PublicTimer(15f);
@@ -129,7 +127,6 @@ public class Character : MonoBehaviour
 
         AnimatorUpdate();
         AttackCDupdate();
-        CheckForInteractables();
         characterAnimator.CharacterAnimatorFixedUpdate(); //i guess we are calling it from here for order of opperations?
     }
     protected virtual void LateUpdate()
@@ -331,100 +328,6 @@ public class Character : MonoBehaviour
 
         if(postHitInvincibilityTimer.Tick())
             isPostHitInvincible = false;
-    }
-    void CheckForInteractables()
-    {
-        float minInteractDistance = 1.5f;
-        float lastPickupDistance = Mathf.Infinity;
-        int highestPriority = int.MinValue;
-        Interactable closestInteractable = null;
-
-        foreach(Interactable interactable in Manager.Instance.interactables)
-        {
-            if(interactable.canInteract == false) continue;
-            
-            if(interactable is PickupAble pickupAble)
-            {
-                if(heldPickupable != null) continue;
-                if(pickupAble.held) continue;
-            }
-
-            Vector2 distance = transform.position - interactable.transform.position;
-            float distanceMagnitude = distance.magnitude;
-
-            if(distanceMagnitude < minInteractDistance)
-            {
-                nearInteractable = true;
-                if(closestInteractable == null
-                    || interactable.InteractPriority > highestPriority
-                    || (interactable.InteractPriority == highestPriority && distanceMagnitude < lastPickupDistance))
-                {
-                    closestInteractable = interactable;
-                    highestPriority = interactable.InteractPriority;
-                    lastPickupDistance = distanceMagnitude;
-
-                    if(lastClosestInteractable != null)
-                    {
-                        if(lastClosestInteractable != closestInteractable && isPlayer)
-                            lastClosestInteractable.interactPrompt.SetActive(false);
-                    }
-
-                    lastClosestInteractable = closestInteractable;
-                }
-            }
-
-            if(isPlayer && lastClosestInteractable != null)
-                lastClosestInteractable.interactPrompt.SetActive(true);
-        }
-
-        if(closestInteractable == null && lastClosestInteractable != null)
-        {
-            if(isPlayer)
-                lastClosestInteractable.interactPrompt.SetActive(false);
-                
-            lastClosestInteractable = null;
-            nearInteractable = false;
-        }
-    }
-    protected void InteractWithObject()
-    {
-        if(lastClosestInteractable == null) return;
-
-        if(lastClosestInteractable is PickupAble pickupAble)
-        {
-            if(heldPickupable != null)
-                return;
-            
-            OnPickup(pickupAble);
-        }
-        else
-            OnInteract();
-    }
-
-    protected virtual void OnInteract()
-    {
-        lastClosestInteractable.Interact();
-    }
-
-    protected virtual void OnPickup(PickupAble pickupAble)
-    {
-        pickupAble.Pickup();
-        pickupAble.interactPrompt.SetActive(false);
-        pickupAble.transform.position = backHand.transform.position;
-        pickupAble.transform.rotation = backHand.transform.rotation;
-        pickupAble.transform.SetParent(backHand.transform);
-        pickupAble.held = true;
-        heldPickupable = pickupAble;
-        lastClosestInteractable = null;
-    }
-
-    public void RemoveHeldPickupable()
-    {
-        if(heldPickupable != null)
-        {
-            heldPickupable.transform.SetParent(null);
-            heldPickupable = null;
-        }
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {

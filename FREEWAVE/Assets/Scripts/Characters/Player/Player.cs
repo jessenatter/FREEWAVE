@@ -13,6 +13,8 @@ public class Player : Character
     float maxDistanceFromShip = 1f;
     [HideInInspector] public bool canEnterShip,aiming;
     Vector2 mouseWorld,grapplePoint;
+    bool nearInteractable;
+    Interactable lastClosestInteractable;
     [SerializeField] GameObject frontArmIK;
     LimbManager frontArmTarget;
     GameObject grappleBullet;
@@ -119,6 +121,7 @@ public class Player : Character
     override protected void FixedUpdate() //rb stuff
     {
         base.FixedUpdate();
+        CheckForInteractables();
         bool isWalking = characterIsActive && !dead && currentCharacterState == characterState.movement && groundedHit && Mathf.Abs(xInput) > 0f && !isGrappling;
         UpdateFootstepAudio(isWalking);
         CheckCombat();
@@ -281,17 +284,101 @@ public class Player : Character
             EnterShip();
     }
 
-    protected override void OnPickup(PickupAble pickupAble)
+    void CheckForInteractables()
     {
-        base.OnPickup(pickupAble);
+        float minInteractDistance = 1.5f;
+        float lastPickupDistance = Mathf.Infinity;
+        int highestPriority = int.MinValue;
+        Interactable closestInteractable = null;
+
+        nearInteractable = false;
+
+        foreach(Interactable interactable in Manager.Instance.interactables)
+        {
+            if(interactable.canInteract == false) continue;
+
+            if(interactable is PickupAble pickupAble)
+            {
+                if(heldPickupable != null) continue;
+                if(pickupAble.held) continue;
+            }
+
+            Vector2 distance = transform.position - interactable.transform.position;
+            float distanceMagnitude = distance.magnitude;
+
+            if(distanceMagnitude < minInteractDistance)
+            {
+                nearInteractable = true;
+                if(closestInteractable == null
+                    || interactable.InteractPriority > highestPriority
+                    || (interactable.InteractPriority == highestPriority && distanceMagnitude < lastPickupDistance))
+                {
+                    closestInteractable = interactable;
+                    highestPriority = interactable.InteractPriority;
+                    lastPickupDistance = distanceMagnitude;
+
+                    if(lastClosestInteractable != null && lastClosestInteractable != closestInteractable)
+                        lastClosestInteractable.interactPrompt.SetActive(false);
+
+                    lastClosestInteractable = closestInteractable;
+                }
+            }
+
+            if(lastClosestInteractable != null)
+                lastClosestInteractable.interactPrompt.SetActive(true);
+        }
+
+        if(closestInteractable == null && lastClosestInteractable != null)
+        {
+            lastClosestInteractable.interactPrompt.SetActive(false);
+            lastClosestInteractable = null;
+            nearInteractable = false;
+        }
+    }
+
+    void InteractWithObject()
+    {
+        if(lastClosestInteractable == null) return;
+
+        if(lastClosestInteractable is PickupAble pickupAble)
+        {
+            if(heldPickupable != null)
+                return;
+
+            OnPickup(pickupAble);
+        }
+        else
+            OnInteract();
+    }
+
+    void OnPickup(PickupAble pickupAble)
+    {
+        pickupAble.Pickup();
+        pickupAble.interactPrompt.SetActive(false);
+        pickupAble.transform.position = backHand.transform.position;
+        pickupAble.transform.rotation = backHand.transform.rotation;
+        pickupAble.transform.SetParent(backHand.transform);
+        pickupAble.held = true;
+        heldPickupable = pickupAble;
+        lastClosestInteractable = null;
+
         SoundManager.PlaySound("pickup",0.6f,0f);
         HapticsManager.PlayMedium(0.1f);
     }
 
-    protected override void OnInteract()
+    void OnInteract()
     {
-        base.OnInteract();
+        lastClosestInteractable.Interact();
         SoundManager.PlaySound("interact",0.6f,0f);
+    }
+
+    public void RemoveHeldPickupable()
+    {
+        if(heldPickupable != null)
+        {
+            heldPickupable.transform.SetParent(null);
+            heldPickupable = null;
+        }
     }
 
     bool CanEnterShip()
