@@ -75,7 +75,7 @@ public class CharacterAnimator : MonoBehaviour
 
     protected float standardTransitionTime = 300f,quickTransitionTime = 150f,onePointTime = 0.1f;
 
-    public float runStateDuration,idleStateDuration;
+    [HideInInspector] public float runStateDuration,idleStateDuration;
     protected Character character;
     public virtual void CharacterAnimatorStart()
     {

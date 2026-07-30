@@ -4,8 +4,8 @@ public class ZombieAnimator : CharacterAnimator
 {
     GameObject chargeAttack;
 
-    public upperBodyState chargeAttackUpper;
-    public lowerBodyState chargeAttackLower;
+    [HideInInspector] public upperBodyState chargeAttackUpper;
+    [HideInInspector] public lowerBodyState chargeAttackLower;
 
     Zombie zombie;
 

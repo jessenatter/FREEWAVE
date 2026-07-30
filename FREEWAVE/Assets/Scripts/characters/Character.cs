@@ -41,10 +41,10 @@ public class Character : MonoBehaviour
     CharacterAnimator characterAnimator;
     CharacterAnimator.lowerBodyState previousLowerBodyState;
     CharacterAnimator.upperBodyState previousUpperBodyState;
-    [HideInInspector] public float health = 10,damage = 1,damageToRecive,knockbackForceToRecive;
+    [HideInInspector] public float health = 10,damageToRecive,knockbackForceToRecive;
     [SerializeField] protected GameObject backHand,frontHand; //for putting stuff in back and front hands
     [HideInInspector] public PickupAble heldPickupable;
-    [SerializeField] protected float postHitInvincibilitySeconds = 1f;
+    protected float postHitInvincibilitySeconds = 1f;
     protected bool isPostHitInvincible;
     PublicTimer recentlyIdleTimer = new PublicTimer(15f);
     protected float initGravityScale = 2.7f,downAttackGravityScale;

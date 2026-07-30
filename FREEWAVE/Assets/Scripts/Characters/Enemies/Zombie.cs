@@ -3,16 +3,12 @@ using UnityEngine;
 public class Zombie : Enemy
 {
     ZombieAnimator zombieAnimator;
-    [SerializeField] [Range(0f,1f)] float attackChanceAtCorrectDistance = 0.65f;
-    [SerializeField] [Min(1f)] float attackChanceRollInterval = 8f;
-    PublicTimer attackChanceRollTimer = new PublicTimer(8f);
     [SerializeField] GameObject bloodParticles, deathParticles,physicsLimb;
     protected override void Start()
     {    
         zombieAnimator = GetComponent<ZombieAnimator>();
-        attackChanceRollTimer.SetDuration(attackChanceRollInterval);
 
-        moveSpeed = moveSpeed * Random.Range(1.00f,1.20f);
+        moveSpeed = moveSpeed * Random.Range(1.00f,1.20f) * 0.8f;
         jumpForce = jumpForce * 1f;
         dashAttackSpeed = dashAttackSpeed * 1f;
 
@@ -28,32 +24,15 @@ public class Zombie : Enemy
         {
             attacks = new Attack[2];
             float defaultAttackKnockback = 25f;
-            attacks[0] = new Attack(1.2f, damage, defaultAttackKnockback, Vector2.zero,zombieAnimator.chargeAttackUpper,
+            attacks[0] = new Attack(1.2f, 4f, defaultAttackKnockback, Vector2.zero,zombieAnimator.chargeAttackUpper,
             zombieAnimator.chargeAttackLower,zombieAnimator.upperBodyAttack,zombieAnimator.lowerBodyAttack);
 
-            attacks[1] = new Attack(2.2f, damage, defaultAttackKnockback, new Vector2(1f,0f),zombieAnimator.chargeAttackUpper,
+            attacks[1] = new Attack(2.2f, 1f, defaultAttackKnockback, new Vector2(1f,0f),zombieAnimator.chargeAttackUpper,
             zombieAnimator.chargeAttackLower,zombieAnimator.upperBodyAttack,zombieAnimator.lowerBodyAttack);
         }
 
         Manager.Instance.enemies.Add(this);
     }
-
-    protected override Attack SelectAttack(float targetDistance)
-    {
-        Attack selectedAttack = base.SelectAttack(targetDistance);
-        if(selectedAttack == null)
-            return null;
-
-        // Roll at an interval so chance is meaningful and not evaluated every physics frame.
-        if(!attackChanceRollTimer.TickLoop())
-            return null;
-
-        if(Random.Range(0f,1f) > attackChanceAtCorrectDistance)
-            return null;
-
-        return selectedAttack;
-    }
-
     protected override void Update()
     {
         base.Update();

@@ -4,25 +4,29 @@ public class Enemy : Character
 {
     Player player;
     protected CharacterAnimator enemyAnimator;
-    public GameObject target;
-    float awarenessDistance = 5f; //how close i have to be to the player to follow
-    [SerializeField] protected Attack[] attacks;
-    public PublicTimer attackChargeTimer = new PublicTimer(50f); //how long to charge the attack
-    public bool hasTarget,chargingAttack;
-    public Attack currentAttack;
-    PublicTimer awarenessTimer = new PublicTimer(1000f);
+    [HideInInspector] public GameObject target;
+    float awarenessDistance = 4f; //how close i have to be to the player to follow
+    protected Attack[] attacks;
+    [HideInInspector] public bool hasTarget,chargingAttack;
+    [HideInInspector] public Attack currentAttack;
+    [HideInInspector] public PublicTimer attackChargeTimer = new PublicTimer(50f); //how long to charge the attack
+    PublicTimer awarenessTimer = new PublicTimer(500f); //how long to loose the player
+    protected float attackChanceAtCorrectDistance = 0.65f; //range 0-1
+    protected float attackChanceRollInterval = 8f; //min value is 1 
+    protected PublicTimer attackChanceRollTimer = new PublicTimer(8f);
     protected override void Start()
     {
         base.Start();
-        postHitInvincibilityTimer = new PublicTimer(1f);
+        attackChanceRollTimer.SetDuration(attackChanceRollInterval);
 
         player = Manager.Instance.player;
         enemyAnimator = GetComponent<CharacterAnimator>();
     }
-
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+
+        #region //follow target
 
         if(Manager.Instance.ship.currentShipState == Ship.ShipState.waitingForPlayer)
             target = player.gameObject;
@@ -44,33 +48,38 @@ public class Enemy : Character
         }
 
         if(target != null && grounded)
-            xInput = Mathf.Sign(targetVector.x);
+            xInput = Mathf.Sign(targetVector.x); //move towards player/ship if grounded
         else
             xInput = 0;
+        
+        #endregion 
+
+        #region //attack logic
 
         if(chargingAttack)
         {
-            xInput = 0;
+            xInput = 0; //stop moving when chargign attack
             if(attackChargeTimer.TickLoop())
             {
                 chargingAttack = false;
                 currentCharacterState = characterState.movement;
                 GiveAttackInput((int)currentAttack.movementInput.x);
-                //Attack();
             }
         }
-        else if(hasTarget)
+        else if(hasTarget) //if i have a target, see if im close enough to attack
         {
-            Attack nextAttack = SelectAttack(targetDistance);
+            Attack nextAttack = SelectAttack(targetDistance); //try to see if there is a vald attack for my position
             if(nextAttack != null)
-                StartChargingAttack(nextAttack);
+                StartChargingAttack(nextAttack); //if there is then start charging it 
         }
-    }
 
+        #endregion
+    }
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer == 10)
         {
+            //set values for getting hurt
             damageToRecive = player.currentMelee.damage;
             knockbackForceToRecive = player.currentMelee.knockbackForce;
         }
@@ -81,14 +90,9 @@ public class Enemy : Character
         }
         base.OnTriggerEnter2D(collision);
     }
-
     protected virtual void StartChargingAttack(Attack attack)
     {
-        if(attack == null)
-            return;
-
-        if(currentCharacterState == characterState.attacking || 
-        currentCharacterState == characterState.hurting || chargingAttack || currentCharacterState == characterState.dead) return;
+        if(currentCharacterState != characterState.movement) return;
 
         //stop moving, start charging attack
         currentAttack = attack;
@@ -98,22 +102,14 @@ public class Enemy : Character
         attackChargeTimer.Reset();
         currentAttack.ApplyChargeState(enemyAnimator);
     }
-
     void GiveAttackInput(int _xInput)
     {
-        if(currentAttack.damage > 0f)
-            damage = currentAttack.damage;
-
         currentAttack.ApplyAttackState(enemyAnimator);
         getAttackInput = true;
         xInput = Mathf.Abs(_xInput) * Mathf.Sign(transform.localScale.x);
     }
-
     protected virtual Attack SelectAttack(float targetDistance)
     {
-        if(attacks == null || attacks.Length == 0)
-            return null;
-
         Attack closestValidAttack = null;
         float closestRange = float.MaxValue;
 
@@ -133,9 +129,17 @@ public class Enemy : Character
             }
         }
 
+        if(closestValidAttack == null)
+            return null;
+
+        if(!attackChanceRollTimer.TickLoop())
+            return null;
+
+        if(Random.Range(0f,1f) > attackChanceAtCorrectDistance)
+            return null;
+
         return closestValidAttack;
     }
-
     protected override void Hurt(int hurtDir, float damage,float knockback)
     {
         base.Hurt(hurtDir, damage,knockback);
@@ -147,7 +151,6 @@ public class Enemy : Character
         SoundManager.PlaySound(0.5f,0.2f,"stab1","stab2","stab3");
         HapticsManager.PlayMedium(0.2f);
     }
-
     protected override void Die(int dir)
     {
         base.Die(dir);
