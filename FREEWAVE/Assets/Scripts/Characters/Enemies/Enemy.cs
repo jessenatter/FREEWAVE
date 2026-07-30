@@ -108,7 +108,7 @@ public class Enemy : Character
         xInput = Mathf.Abs(_xInput) * Mathf.Sign(transform.localScale.x);
     }
 
-    Attack SelectAttack(float targetDistance)
+    protected virtual Attack SelectAttack(float targetDistance)
     {
         if(attacks == null || attacks.Length == 0)
             return null;
