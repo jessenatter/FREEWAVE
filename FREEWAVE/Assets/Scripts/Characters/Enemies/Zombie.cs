@@ -12,7 +12,7 @@ public class Zombie : Enemy
         zombieAnimator = GetComponent<ZombieAnimator>();
         attackChanceRollTimer.SetDuration(attackChanceRollInterval);
 
-        moveSpeed = moveSpeed * 1f;
+        moveSpeed = moveSpeed * Random.Range(1.00f,1.20f);
         jumpForce = jumpForce * 1f;
         dashAttackSpeed = dashAttackSpeed * 1f;
 
