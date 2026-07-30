@@ -43,7 +43,7 @@ public class Enemy : Character
                 hasTarget = false;
         }
 
-        if(target != null)
+        if(target != null && grounded)
             xInput = Mathf.Sign(targetVector.x);
         else
             xInput = 0;

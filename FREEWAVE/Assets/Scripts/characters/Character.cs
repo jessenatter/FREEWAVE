@@ -7,7 +7,7 @@ public class Character : MonoBehaviour
     //defines combat / movement behavior for characters
     protected float moveSpeed = 3.5f, jumpForce = 27.5f,dashAttackSpeed = 10f;
     protected float xInput,yInput,dashXinput;
-    bool grounded,isJumping,canJump,recentlyIdle,canAttack = true;
+    protected bool grounded,isJumping,canJump,recentlyIdle,canAttack = true;
     protected LayerMask groundLayer;
     protected Rigidbody2D rb; protected BoxCollider2D bc;
 
