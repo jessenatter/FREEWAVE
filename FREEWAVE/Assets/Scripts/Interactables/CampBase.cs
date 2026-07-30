@@ -26,6 +26,7 @@ public class CampBase : Interactable
         {
             open = true;
             animator.SetBool("open",true);
+            SoundManager.PlaySound("base",0.5f,0);
             if(insideInteractable != null)
                 insideInteractable.canInteract = true;
             

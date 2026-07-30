@@ -281,6 +281,19 @@ public class Player : Character
             EnterShip();
     }
 
+    protected override void OnPickup(PickupAble pickupAble)
+    {
+        base.OnPickup(pickupAble);
+        SoundManager.PlaySound("pickup",0.6f,0f);
+        HapticsManager.PlayMedium(0.1f);
+    }
+
+    protected override void OnInteract()
+    {
+        base.OnInteract();
+        SoundManager.PlaySound("interact",0.6f,0f);
+    }
+
     bool CanEnterShip()
     {
         Vector2 distanceFromShip = transform.position - ship.transform.position;

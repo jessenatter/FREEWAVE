@@ -383,20 +383,28 @@ public class Character : MonoBehaviour
         {
             if(heldPickupable != null)
                 return;
-
-            pickupAble.Pickup();
-            pickupAble.interactPrompt.SetActive(false);
-            pickupAble.transform.position = backHand.transform.position;
-            pickupAble.transform.rotation = backHand.transform.rotation;
-            pickupAble.transform.SetParent(backHand.transform);
-            pickupAble.held = true;
-            heldPickupable = pickupAble;
-            lastClosestInteractable = null;
+            
+            OnPickup(pickupAble);
         }
         else
-        {
-            lastClosestInteractable.Interact();
-        }
+            OnInteract();
+    }
+
+    protected virtual void OnInteract()
+    {
+        lastClosestInteractable.Interact();
+    }
+
+    protected virtual void OnPickup(PickupAble pickupAble)
+    {
+        pickupAble.Pickup();
+        pickupAble.interactPrompt.SetActive(false);
+        pickupAble.transform.position = backHand.transform.position;
+        pickupAble.transform.rotation = backHand.transform.rotation;
+        pickupAble.transform.SetParent(backHand.transform);
+        pickupAble.held = true;
+        heldPickupable = pickupAble;
+        lastClosestInteractable = null;
     }
 
     public void RemoveHeldPickupable()
