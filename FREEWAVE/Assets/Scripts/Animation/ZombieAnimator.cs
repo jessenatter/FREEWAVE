@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class ZombieAnimator : CharacterAnimator
 {
-    GameObject chargeAttack;
+    GameObject chargeAttack,chargeDashAttack;
 
-    [HideInInspector] public upperBodyState chargeAttackUpper;
-    [HideInInspector] public lowerBodyState chargeAttackLower;
+    [HideInInspector] public upperBodyState chargeAttackUpper,chargeDashAttackUpper;
+    [HideInInspector] public lowerBodyState chargeAttackLower,chargeDashAttackLower;
 
     Zombie zombie;
 
@@ -36,13 +36,22 @@ public class ZombieAnimator : CharacterAnimator
         upperBodyHurt.rotationDuration = 20f;
 
         chargeAttack = animationObjectHolder.transform.GetChild(7).gameObject;
+        chargeDashAttack = animationObjectHolder.transform.GetChild(8).gameObject;
         
         //charge attack
-        LimbManager.limbState _chargeAttackLower = new LimbManager.limbState(chargeAttack.transform.GetChild(0).gameObject,zombie.attackChargeTimer.Duration,false,frontLeg,quickTransitionTime,false);
+        LimbManager.limbState _chargeAttackLower = new LimbManager.limbState(chargeAttack.transform.GetChild(0).gameObject,zombie.attackChargeDuration,false,frontLeg,quickTransitionTime,false);
         chargeAttackLower = new lowerBodyState(_chargeAttackLower,this);
 
-        Vector2 upperBodySpine2HurtRotation = new Vector2(-10,10);
-        LimbManager.limbState _chargeAttackUpper = new LimbManager.limbState(chargeAttack.transform.GetChild(1).gameObject,zombie.attackChargeTimer.Duration,false,frontArm,quickTransitionTime,false);
-        chargeAttackUpper = new upperBodyState( _chargeAttackUpper,this,Vector2.zero,upperBodySpine2HurtRotation,Vector2.zero,false,zombie.attackChargeTimer.Duration);
+        Vector2 upperBodySpine2chargeAttackRotation = new Vector2(-10,10);
+        LimbManager.limbState _chargeAttackUpper = new LimbManager.limbState(chargeAttack.transform.GetChild(1).gameObject,zombie.attackChargeDuration,false,frontArm,quickTransitionTime,false);
+        chargeAttackUpper = new upperBodyState( _chargeAttackUpper,this,Vector2.zero,upperBodySpine2chargeAttackRotation,Vector2.zero,false,zombie.attackChargeDuration);
+
+        //charge dash attack
+        LimbManager.limbState _chargeDashAttackLower = new LimbManager.limbState(chargeDashAttack.transform.GetChild(0).gameObject,zombie.dashAttackChargeDuration,false,frontLeg,quickTransitionTime,false);
+        chargeDashAttackLower = new lowerBodyState(_chargeDashAttackLower,this);
+
+        Vector2 upperBodySpine2DashAttackRotation = new Vector2(-10,10);
+        LimbManager.limbState _chargeDashAttackUpper = new LimbManager.limbState(chargeDashAttack.transform.GetChild(1).gameObject,zombie.dashAttackChargeDuration,false,frontArm,quickTransitionTime,false);
+        chargeDashAttackUpper = new upperBodyState( _chargeDashAttackUpper,this,Vector2.zero,upperBodySpine2DashAttackRotation,Vector2.zero,false,zombie.dashAttackChargeDuration);
     }
 }

@@ -6,7 +6,7 @@ public class Enemy : Character
     protected CharacterAnimator enemyAnimator;
     [HideInInspector] public GameObject target;
     float awarenessDistance = 4f; //how close i have to be to the player to follow
-    protected Attack[] attacks;
+    [HideInInspector] public Attack[] attacks;
     [HideInInspector] public bool hasTarget,chargingAttack;
     [HideInInspector] public Attack currentAttack;
     [HideInInspector] public PublicTimer attackChargeTimer = new PublicTimer(50f); //how long to charge the attack
@@ -14,6 +14,9 @@ public class Enemy : Character
     protected float attackChanceAtCorrectDistance = 0.65f; //range 0-1
     protected float attackChanceRollInterval = 8f; //min value is 1 
     protected PublicTimer attackChanceRollTimer = new PublicTimer(8f);
+
+    [HideInInspector] public float attackChargeDuration = 50f,dashAttackChargeDuration = 70f;
+    [HideInInspector] public float attackDuration = 15f,dashAttackDuration = 30f;
     protected override void Start()
     {
         base.Start();
@@ -99,12 +102,15 @@ public class Enemy : Character
         currentCharacterState = characterState.idle;
         rb.linearVelocity = Vector2.zero;
         chargingAttack = true;
+        attackChargeTimer.SetDuration(currentAttack.chargeDuration);
         attackChargeTimer.Reset();
         currentAttack.ApplyChargeState(enemyAnimator);
     }
     void GiveAttackInput(int _xInput)
     {
         currentAttack.ApplyAttackState(enemyAnimator);
+        attackTimer.SetDuration(currentAttack.attackDuration);
+        attackTimer.Reset();
         getAttackInput = true;
         xInput = Mathf.Abs(_xInput) * Mathf.Sign(transform.localScale.x);
     }

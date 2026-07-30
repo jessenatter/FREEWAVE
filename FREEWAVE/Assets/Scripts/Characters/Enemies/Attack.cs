@@ -9,6 +9,8 @@ public class Attack //for enemies
     public CharacterAnimator.upperBodyState chargeUpperBodyState,attackUpperBodyState;
     public CharacterAnimator.lowerBodyState chargeLowerBodyState,attackLowerBodyState;
     public float knockbackForce;
+    public float chargeDuration;
+    public float attackDuration;
     public Attack(
         float proximityToPlayer,
         float damage,
@@ -17,7 +19,9 @@ public class Attack //for enemies
         CharacterAnimator.upperBodyState chargeUpperBodyState,
         CharacterAnimator.lowerBodyState chargeLowerBodyState,
         CharacterAnimator.upperBodyState attackUpperBodyState,
-        CharacterAnimator.lowerBodyState attackLowerBodyState)
+        CharacterAnimator.lowerBodyState attackLowerBodyState,
+        float chargeDuration = 20f,
+        float attackDuration = 30f)
     {
         this.proximityToPlayer = proximityToPlayer;
         this.damage = damage;
@@ -27,6 +31,8 @@ public class Attack //for enemies
         this.chargeLowerBodyState = chargeLowerBodyState;
         this.attackUpperBodyState = attackUpperBodyState;
         this.attackLowerBodyState = attackLowerBodyState;
+        this.chargeDuration = chargeDuration;
+        this.attackDuration = attackDuration;
     }
 
     public bool CanUse(float distanceToTarget)
