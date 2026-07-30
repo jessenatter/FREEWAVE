@@ -309,10 +309,13 @@ public class Character : MonoBehaviour
     {
         hurtTimer.Tick();
         if(hurtTimer.IsComplete)
-        {
-            hurtTimer.Reset();
-            currentCharacterState = characterState.movement;
-        }
+            ExitHurtState();
+    }
+
+    protected virtual void ExitHurtState()
+    {
+        hurtTimer.Reset();
+        currentCharacterState = characterState.movement;
     }
     void AttackCDupdate()
     {

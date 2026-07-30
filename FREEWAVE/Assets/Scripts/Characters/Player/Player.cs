@@ -45,6 +45,7 @@ public class Player : Character
         moveSpeed = moveSpeed * 1.5f;
         dashAttackTimer.SetDuration(20f);
         hurtTimer.SetDuration(3f);
+        postHitInvincibilitySeconds = 0.5f;
         
         base.Start();
         

@@ -19,7 +19,9 @@ public class Enemy : Character
     [HideInInspector] public float attackDuration = 15f,dashAttackDuration = 30f;
     protected override void Start()
     {
+        postHitInvincibilitySeconds = 0.5f;
         base.Start();
+        
         attackChanceRollTimer.SetDuration(attackChanceRollInterval);
 
         player = Manager.Instance.player;
@@ -161,5 +163,12 @@ public class Enemy : Character
     {
         base.Die(dir);
         Destroy(gameObject);
+    }
+
+    protected override void ExitHurtState()
+    {
+        if(!groundedHit) return;
+        
+        base.ExitHurtState(); 
     }
 }
