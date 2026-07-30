@@ -54,7 +54,8 @@ public class Enemy : Character
             {
                 chargingAttack = false;
                 currentCharacterState = characterState.movement;
-                Attack();
+                GiveAttackInput((int)currentAttack.movementInput.x);
+                //Attack();
             }
         }
         else if(hasTarget)
@@ -97,17 +98,14 @@ public class Enemy : Character
         currentAttack.ApplyChargeState(enemyAnimator);
     }
 
-    protected override void Attack()
+    void GiveAttackInput(int _xInput)
     {
-        if(currentAttack != null)
-        {
-            if(currentAttack.damage > 0f)
-                damage = currentAttack.damage;
+        if(currentAttack.damage > 0f)
+            damage = currentAttack.damage;
 
-            currentAttack.ApplyAttackState(enemyAnimator);
-        }
-
-        base.Attack();
+        currentAttack.ApplyAttackState(enemyAnimator);
+        getAttackInput = true;
+        xInput = Mathf.Abs(_xInput) * Mathf.Sign(transform.localScale.x);
     }
 
     Attack SelectAttack(float targetDistance)

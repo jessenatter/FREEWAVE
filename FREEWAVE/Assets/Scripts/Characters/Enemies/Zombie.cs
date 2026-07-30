@@ -8,9 +8,11 @@ public class Zombie : Enemy
     {    
         zombieAnimator = GetComponent<ZombieAnimator>();
 
-        moveSpeed = 1.5f;
-        jumpForce = 1.5f;
+        moveSpeed = moveSpeed * 1f;
+        jumpForce = jumpForce * 1f;
+        dashAttackSpeed = dashAttackSpeed * 1f;
 
+        dashAttackTimer.SetDuration(20f);
         attackTimer.SetDuration(30f);
         attackCD.SetDuration(15f);
         hurtTimer.SetDuration(3f);
@@ -30,6 +32,13 @@ public class Zombie : Enemy
         }
 
         Manager.Instance.enemies.Add(this);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        print(currentCharacterState);
     }
 
     protected override void Hurt(int hurtDir, float damage,float knockback)
@@ -68,6 +77,21 @@ public class Zombie : Enemy
         //_deathParticles.transform.GetChild(0).GetComponent<SpriteRenderer>();
 
         base.Die(dir);
+    }
+
+    protected override void Attack()
+    {
+        base.Attack();
+
+        //SoundManager.PlaySound(0.6f,0.25f,"zombieVoice1","zombieVoice2");
+    }
+
+    protected override void DashAttack()
+    {
+        base.DashAttack();
+
+        //print("a");
+        //SoundManager.PlaySound(0.6f,0.25f,"zombieVoice1","zombieVoice2");
     }
 }
 
