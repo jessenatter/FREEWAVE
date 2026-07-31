@@ -44,7 +44,7 @@ public class Player : Character
         dashAttackSpeed = 7f;
         moveSpeed = moveSpeed * 1.5f;
         dashAttackTimer.SetDuration(20f);
-        hurtTimer.SetDuration(1f);
+        hurtTimer.SetDuration(5f);
         postHitInvincibilitySeconds = 0.5f;
         
         base.Start();
@@ -761,7 +761,7 @@ public class Player : Character
             enemy.currentCharacterState == characterState.idle)
             {
                 damageToRecive = 1f;
-                knockbackForceToRecive = 20f;
+                knockbackForceToRecive = 18f;
             }
             else
             {
