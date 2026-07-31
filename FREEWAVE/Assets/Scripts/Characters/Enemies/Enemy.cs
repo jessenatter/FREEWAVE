@@ -30,7 +30,7 @@ public class Enemy : Character
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        return;
+        //return;
         #region //follow target
 
         if(Manager.Instance.ship.currentShipState == Ship.ShipState.waitingForPlayer)
@@ -100,6 +100,8 @@ public class Enemy : Character
     {
         if(currentCharacterState != characterState.movement) return;
 
+        print("start charign attack");
+        
         //stop moving, start charging attack
         currentAttack = attack;
         currentCharacterState = characterState.idle;

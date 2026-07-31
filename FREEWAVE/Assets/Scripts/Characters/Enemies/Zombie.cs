@@ -38,7 +38,7 @@ public class Zombie : Enemy
     {
         base.Update();
 
-        print(currentCharacterState);
+        //print(currentCharacterState);
     }
 
     protected override void Hurt(int hurtDir, float damage,float knockback)
