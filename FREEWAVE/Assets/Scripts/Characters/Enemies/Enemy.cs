@@ -33,8 +33,6 @@ public class Enemy : Character
 
         #region //follow target
 
-        return;
-
         if(Manager.Instance.ship.currentShipState == Ship.ShipState.waitingForPlayer)
             target = player.gameObject;
         else
@@ -65,9 +63,10 @@ public class Enemy : Character
 
         if(chargingAttack)
         {
-            xInput = 0; //stop moving when chargign attack
+            print("charging attack");
             if(attackChargeTimer.TickLoop())
             {
+                print("do attack");
                 chargingAttack = false;
                 currentCharacterState = characterState.movement;
                 GiveAttackInput((int)currentAttack.movementInput.x);
@@ -152,14 +151,14 @@ public class Enemy : Character
     }
     protected override void Hurt(int hurtDir, float damage,float knockback)
     {
-        base.Hurt(hurtDir, damage,knockback);
-        
-        //cancel attack
+        //cancel attack charge
         attackChargeTimer.Reset();
         chargingAttack = false;
         //currentAttack = null;
         SoundManager.PlaySound(0.5f,0.2f,"stab1","stab2","stab3");
         HapticsManager.PlayMedium(0.2f);
+
+        base.Hurt(hurtDir, damage,knockback);
     }
     protected override void Die(int dir)
     {

@@ -44,7 +44,7 @@ public class Player : Character
         dashAttackSpeed = 7f;
         moveSpeed = moveSpeed * 1.5f;
         dashAttackTimer.SetDuration(20f);
-        hurtTimer.SetDuration(3f);
+        hurtTimer.SetDuration(5f);
         postHitInvincibilitySeconds = 0.5f;
         
         base.Start();
@@ -753,7 +753,7 @@ public class Player : Character
         }
         else if(collision.gameObject.layer == 11)
         {
-            if (currentCharacterState == characterState.hurting) return;
+            if (currentCharacterState != characterState.movement) return;
 
             Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
             damageToRecive = enemy.currentAttack.damage;

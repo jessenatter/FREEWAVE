@@ -7,6 +7,8 @@ public class Character : MonoBehaviour
 {
     //defines combat / movement behavior for characters
     protected float moveSpeed = 3.5f, jumpForce = 27.5f,dashAttackSpeed = 10f;
+    [SerializeField] float knockbackCarryDecay = 4f;
+    float carriedKnockbackXVelocity;
     protected float xInput,yInput,dashXinput;
     protected bool grounded,isJumping,canJump,recentlyIdle,canAttack = true,airMovement = false;
     protected LayerMask groundLayer;
@@ -167,13 +169,24 @@ public class Character : MonoBehaviour
 
         if(airMovement)
             ApplyHoriziontalMoveSpeed();
-        else if(groundedHit)
+        else if(groundedHit || Mathf.Abs(carriedKnockbackXVelocity) > 0.01f)
             ApplyHoriziontalMoveSpeed();
     }
 
     void ApplyHoriziontalMoveSpeed()
     {
-        rb.linearVelocityX = xInput * moveSpeed;
+        float inputXVelocity = xInput * moveSpeed;
+
+        if(Mathf.Abs(carriedKnockbackXVelocity) > 0.01f)
+        {
+            rb.linearVelocityX = inputXVelocity + carriedKnockbackXVelocity;
+            carriedKnockbackXVelocity = Mathf.MoveTowards(carriedKnockbackXVelocity,0f,knockbackCarryDecay * Time.fixedDeltaTime);
+        }
+        else
+        {
+            carriedKnockbackXVelocity = 0f;
+            rb.linearVelocityX = inputXVelocity;
+        }
     }
     protected virtual void Jump()
     {
@@ -325,6 +338,7 @@ public class Character : MonoBehaviour
     protected virtual void ExitHurtState()
     {
         hurtTimer.Reset();
+        carriedKnockbackXVelocity = rb.linearVelocityX;
         currentCharacterState = characterState.movement;
     }
     void AttackCDupdate()
