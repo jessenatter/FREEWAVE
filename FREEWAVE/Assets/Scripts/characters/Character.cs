@@ -7,7 +7,7 @@ public class Character : MonoBehaviour
 {
     //defines combat / movement behavior for characters
     protected float moveSpeed = 3.5f, jumpForce = 27.5f,dashAttackSpeed = 10f;
-    [SerializeField] float knockbackCarryDecay = 4f;
+    float knockbackCarryDecay = 8f;
     float carriedKnockbackXVelocity;
     protected float xInput,yInput,dashXinput;
     protected bool grounded,isJumping,canJump,recentlyIdle,canAttack = true,airMovement = false;
@@ -176,7 +176,9 @@ public class Character : MonoBehaviour
     void ApplyHoriziontalMoveSpeed()
     {
         float inputXVelocity = xInput * moveSpeed;
-
+        if(groundedHit)
+            carriedKnockbackXVelocity = 0f;
+            
         if(Mathf.Abs(carriedKnockbackXVelocity) > 0.01f)
         {
             rb.linearVelocityX = inputXVelocity + carriedKnockbackXVelocity;

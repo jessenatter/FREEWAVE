@@ -44,7 +44,7 @@ public class Player : Character
         dashAttackSpeed = 7f;
         moveSpeed = moveSpeed * 1.5f;
         dashAttackTimer.SetDuration(20f);
-        hurtTimer.SetDuration(5f);
+        hurtTimer.SetDuration(1f);
         postHitInvincibilitySeconds = 0.5f;
         
         base.Start();
@@ -756,8 +756,18 @@ public class Player : Character
             if (currentCharacterState != characterState.movement) return;
 
             Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
-            damageToRecive = enemy.currentAttack.damage;
-            knockbackForceToRecive = enemy.currentAttack.knockbackForce;
+            if(enemy.currentCharacterState == characterState.movement ||
+            enemy.currentCharacterState == characterState.hurting ||
+            enemy.currentCharacterState == characterState.idle)
+            {
+                damageToRecive = 1f;
+                knockbackForceToRecive = 20f;
+            }
+            else
+            {
+                damageToRecive = enemy.currentAttack.damage;
+                knockbackForceToRecive = enemy.currentAttack.knockbackForce;
+            }
         }
         base.OnTriggerEnter2D(collision);
     }

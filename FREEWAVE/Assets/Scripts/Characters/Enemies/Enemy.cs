@@ -30,7 +30,7 @@ public class Enemy : Character
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-
+        return;
         #region //follow target
 
         if(Manager.Instance.ship.currentShipState == Ship.ShipState.waitingForPlayer)
