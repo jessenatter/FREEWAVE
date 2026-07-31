@@ -10,13 +10,14 @@ public class Zombie : Enemy
 
         moveSpeed = moveSpeed * Random.Range(1.00f,1.20f) * 0.8f;
         jumpForce = jumpForce * 1f;
-        dashAttackSpeed = dashAttackSpeed * 1f;
+        dashAttackSpeed = dashAttackSpeed * 0.6f;
 
         dashAttackTimer.SetDuration(20f);
         attackTimer.SetDuration(30f);
         attackCD.SetDuration(15f);
         hurtTimer.SetDuration(3f);
         attackChargeTimer.SetDuration(20f);
+        groundedDistance = 0.05f;
 
         base.Start();
 
@@ -37,7 +38,7 @@ public class Zombie : Enemy
     {
         base.Update();
 
-        print(currentCharacterState);
+        print(groundedHit);
     }
 
     protected override void Hurt(int hurtDir, float damage,float knockback)
@@ -91,6 +92,11 @@ public class Zombie : Enemy
 
         //print("a");
         //SoundManager.PlaySound(0.6f,0.25f,"zombieVoice1","zombieVoice2");
+    }
+
+    protected override void ExitHurtState()
+    {
+        base.ExitHurtState();
     }
 }
 

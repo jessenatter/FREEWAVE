@@ -33,6 +33,8 @@ public class Enemy : Character
 
         #region //follow target
 
+        return;
+
         if(Manager.Instance.ship.currentShipState == Ship.ShipState.waitingForPlayer)
             target = player.gameObject;
         else
@@ -163,12 +165,5 @@ public class Enemy : Character
     {
         base.Die(dir);
         Destroy(gameObject);
-    }
-
-    protected override void ExitHurtState()
-    {
-        if(!groundedHit) return;
-        
-        base.ExitHurtState(); 
     }
 }

@@ -98,6 +98,8 @@ public class Player : Character
         grappleBullet = GameObject.FindGameObjectWithTag("GrappleBullet").gameObject;
         grappleBullet.SetActive(false);
 
+        airMovement = true;
+
         #endregion
     }
     override protected void Update() //reading input, visuals

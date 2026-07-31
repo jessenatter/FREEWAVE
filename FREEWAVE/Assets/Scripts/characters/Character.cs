@@ -1,5 +1,6 @@
 using System;
 using Unity.Mathematics;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -7,7 +8,7 @@ public class Character : MonoBehaviour
     //defines combat / movement behavior for characters
     protected float moveSpeed = 3.5f, jumpForce = 27.5f,dashAttackSpeed = 10f;
     protected float xInput,yInput,dashXinput;
-    protected bool grounded,isJumping,canJump,recentlyIdle,canAttack = true;
+    protected bool grounded,isJumping,canJump,recentlyIdle,canAttack = true,airMovement = false;
     protected LayerMask groundLayer;
     protected Rigidbody2D rb; protected BoxCollider2D bc;
 
@@ -48,6 +49,7 @@ public class Character : MonoBehaviour
     protected bool isPostHitInvincible;
     PublicTimer recentlyIdleTimer = new PublicTimer(15f);
     protected float initGravityScale = 2.7f,downAttackGravityScale;
+    protected float groundedDistance = 0.3f;
     protected virtual void Start()
     {
         groundLayer = LayerMask.GetMask("Ground");
@@ -71,7 +73,7 @@ public class Character : MonoBehaviour
     {
         if(currentCharacterState == characterState.frozen) return;
 
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, 0.3f, groundLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size * 0.9f, 0, Vector2.down, groundedDistance, groundLayer);
 
         if(hit.collider != null)
             groundedHit = true;
@@ -163,6 +165,14 @@ public class Character : MonoBehaviour
         if(!groundedHit)
             jumpCooldown.Reset();
 
+        if(airMovement)
+            ApplyHoriziontalMoveSpeed();
+        else if(groundedHit)
+            ApplyHoriziontalMoveSpeed();
+    }
+
+    void ApplyHoriziontalMoveSpeed()
+    {
         rb.linearVelocityX = xInput * moveSpeed;
     }
     protected virtual void Jump()
