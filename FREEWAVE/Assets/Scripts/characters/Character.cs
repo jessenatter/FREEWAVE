@@ -231,7 +231,7 @@ public class Character : MonoBehaviour
         if(currentCharacterState == characterState.hurting || currentCharacterState == characterState.dead || isPostHitInvincible) return;
 
         rb.linearVelocity = Vector2.zero;
-        rb.AddForce(new Vector2(hurtDir,.5f) * knockbackForce,ForceMode2D.Impulse);
+        rb.AddForce(new Vector2(hurtDir,1f) * knockbackForce,ForceMode2D.Impulse);
         currentCharacterState = characterState.hurting;
         health -= damage;
         health = Mathf.Clamp(health,0,10);

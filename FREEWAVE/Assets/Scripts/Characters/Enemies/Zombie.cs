@@ -45,10 +45,18 @@ public class Zombie : Enemy
     {
         base.Hurt(hurtDir, damage,knockback);
 
-        GameObject _blood = Instantiate(bloodParticles);
-        _blood.transform.position = transform.position;
-        _blood.transform.position += new Vector3(0,0.4f,0);
+        GameObject _blood = SpawnBlood(transform);
         _blood.transform.SetParent(transform);
+    }
+
+    GameObject SpawnBlood(Transform _transform)
+    {
+        GameObject _blood = Instantiate(bloodParticles);
+        _blood.transform.position = _transform.position;
+        _blood.transform.position += new Vector3(0,0.4f,0);
+        _blood.transform.SetParent(null);
+
+        return _blood;
     }
 
     protected override void Die(int dir)
@@ -58,23 +66,25 @@ public class Zombie : Enemy
         SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
         foreach(SpriteRenderer sprite in sprites)
         {
-            if(sprite.isVisible == false || Random.Range(0f,1f) > 0.5f) continue;
+            if(sprite.isVisible == false) continue;
 
-            GameObject _physicsLimb = Instantiate(physicsLimb,sprite.transform);
-            _physicsLimb.GetComponent<SpriteRenderer>().sprite = sprite.sprite;
-            _physicsLimb.transform.SetParent(null);
+            if (Random.Range(0f,1f) > 0.5f) //50 50 blood vs limb
+            {
+                SpawnBlood(sprite.transform);
+            }
+            else
+            {
+                GameObject _physicsLimb = Instantiate(physicsLimb,sprite.transform);
+                _physicsLimb.GetComponent<SpriteRenderer>().sprite = sprite.sprite;
+                _physicsLimb.transform.SetParent(null);
 
-            float _scale = 1.25f;
-            _physicsLimb.transform.localScale = new Vector2(_scale,_scale);
+                float _scale = 1.25f;
+                _physicsLimb.transform.localScale = new Vector2(_scale,_scale);
 
-            float dieForce = 2f;
-            _physicsLimb.GetComponent<Rigidbody2D>().AddForce(dieForce * new Vector2(dir,0.5f),ForceMode2D.Impulse);
+                float dieForce = Random.Range(1.5f,2f);
+                _physicsLimb.GetComponent<Rigidbody2D>().AddForce(dieForce * new Vector2(dir,1f),ForceMode2D.Impulse);
+            }
         }
-
-
-        //GameObject _deathParticles = Instantiate(deathParticles);
-        //_deathParticles.transform.position = transform.position;
-        //_deathParticles.transform.GetChild(0).GetComponent<SpriteRenderer>();
 
         base.Die(dir);
     }
