@@ -27,10 +27,10 @@ public class Zombie : Enemy
             attacks = new Attack[2];
             float defaultAttackKnockback = 25f;
             attacks[0] = new Attack(1.2f, 4f, defaultAttackKnockback, Vector2.zero,zombieAnimator.chargeAttackUpper,
-            zombieAnimator.chargeAttackLower,zombieAnimator.upperBodyAttack,zombieAnimator.lowerBodyAttack, 20f, 30f, 0.90f);
+            zombieAnimator.chargeAttackLower,zombieAnimator.upperBodyAttack,zombieAnimator.lowerBodyAttack, 20f, 30f, 1f);
 
             attacks[1] = new Attack(2.2f, 1f, defaultAttackKnockback, new Vector2(1f,0f),zombieAnimator.chargeDashAttackUpper,
-            zombieAnimator.chargeDashAttackLower,zombieAnimator.upperBodyAttack,zombieAnimator.lowerBodyAttack, 20f, 30f, 0.20f);
+            zombieAnimator.chargeDashAttackLower,zombieAnimator.upperBodyAttack,zombieAnimator.lowerBodyAttack, 20f, 30f, 0.50f);
         }
 
         Manager.Instance.enemies.Add(this);

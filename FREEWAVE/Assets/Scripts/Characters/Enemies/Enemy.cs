@@ -9,10 +9,12 @@ public class Enemy : Character
     [HideInInspector] public Attack[] attacks;
     [HideInInspector] public bool hasTarget,chargingAttack;
     [HideInInspector] public Attack currentAttack;
+    int queuedAttackDirection;
+    bool hasQueuedAttackInput;
     [HideInInspector] public PublicTimer attackChargeTimer = new PublicTimer(50f); //how long to charge the attack
     PublicTimer awarenessTimer = new PublicTimer(500f); //how long to loose the player
     protected float attackChanceRollInterval = 8f; //min value is 1 
-    protected PublicTimer attackChanceRollTimer = new PublicTimer(10f);
+    protected PublicTimer attackChanceRollTimer = new PublicTimer(8f);
 
     [HideInInspector] public float attackChargeDuration = 50f,dashAttackChargeDuration = 70f;
     [HideInInspector] public float attackDuration = 15f,dashAttackDuration = 30f;
@@ -66,17 +68,25 @@ public class Enemy : Character
             {
                 chargingAttack = false;
                 currentCharacterState = characterState.movement;
-                GiveAttackInput((int)currentAttack.movementInput.x);
+                queuedAttackDirection = (int)currentAttack.movementInput.x;
+                hasQueuedAttackInput = true;
             }
         }
         else if(hasTarget) //if i have a target, see if im close enough to attack
         {
             //fine some way  to make this fixx work
-            //if()
-            //currentCharacterState = characterState.movement;
+            if(currentCharacterState == characterState.idle)
+                currentCharacterState = characterState.movement;
+                
             Attack nextAttack = SelectAttack(targetDistance); //try to see if there is a vald attack for my position
             if(nextAttack != null)
                 StartChargingAttack(nextAttack); //if there is then start charging it 
+        }
+
+        if(hasQueuedAttackInput && canAttack)
+        {
+            hasQueuedAttackInput = false;
+            GiveAttackInput(queuedAttackDirection);
         }
 
         #endregion
@@ -101,6 +111,7 @@ public class Enemy : Character
         if(currentCharacterState != characterState.movement) return;
 
         //stop moving, start charging attack
+        hasQueuedAttackInput = false;
         currentAttack = attack;
         currentCharacterState = characterState.idle;
         rb.linearVelocity = Vector2.zero;
@@ -150,6 +161,7 @@ public class Enemy : Character
     protected override void Hurt(int hurtDir, float damage,float knockback)
     {
         //cancel attack charge
+        hasQueuedAttackInput = false;
         attackChargeTimer.Reset();
         chargingAttack = false;
         //currentAttack = null;
