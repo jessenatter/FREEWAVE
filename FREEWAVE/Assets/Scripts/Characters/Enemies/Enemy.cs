@@ -11,9 +11,8 @@ public class Enemy : Character
     [HideInInspector] public Attack currentAttack;
     [HideInInspector] public PublicTimer attackChargeTimer = new PublicTimer(50f); //how long to charge the attack
     PublicTimer awarenessTimer = new PublicTimer(500f); //how long to loose the player
-    protected float attackChanceAtCorrectDistance = 0.65f; //range 0-1
     protected float attackChanceRollInterval = 8f; //min value is 1 
-    protected PublicTimer attackChanceRollTimer = new PublicTimer(8f);
+    protected PublicTimer attackChanceRollTimer = new PublicTimer(10f);
 
     [HideInInspector] public float attackChargeDuration = 50f,dashAttackChargeDuration = 70f;
     [HideInInspector] public float attackDuration = 15f,dashAttackDuration = 30f;
@@ -30,7 +29,7 @@ public class Enemy : Character
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        return;
+        //return;
         #region //follow target
 
         if(Manager.Instance.ship.currentShipState == Ship.ShipState.waitingForPlayer)
@@ -52,7 +51,7 @@ public class Enemy : Character
                 hasTarget = false;
         }
 
-        if(target != null && grounded)
+        if(target != null && groundedHit)
             xInput = Mathf.Sign(targetVector.x); //move towards player/ship if grounded
         else
             xInput = 0;
@@ -61,7 +60,6 @@ public class Enemy : Character
 
         #region //attack logic
 
-        print(chargingAttack);
         if(chargingAttack)
         {
             if(attackChargeTimer.TickLoop())
@@ -73,8 +71,9 @@ public class Enemy : Character
         }
         else if(hasTarget) //if i have a target, see if im close enough to attack
         {
-            print("aa");
-            currentCharacterState = characterState.movement;
+            //fine some way  to make this fixx work
+            //if()
+            //currentCharacterState = characterState.movement;
             Attack nextAttack = SelectAttack(targetDistance); //try to see if there is a vald attack for my position
             if(nextAttack != null)
                 StartChargingAttack(nextAttack); //if there is then start charging it 
@@ -101,8 +100,6 @@ public class Enemy : Character
     {
         if(currentCharacterState != characterState.movement) return;
 
-        print("start charign attack");
-        
         //stop moving, start charging attack
         currentAttack = attack;
         currentCharacterState = characterState.idle;
@@ -122,6 +119,10 @@ public class Enemy : Character
     }
     protected virtual Attack SelectAttack(float targetDistance)
     {
+        if(!attackChanceRollTimer.TickLoop())
+            return null;
+
+        print("try attack");
         Attack closestValidAttack = null;
         float closestRange = float.MaxValue;
 
@@ -134,21 +135,15 @@ public class Enemy : Character
             if(!attack.CanUse(targetDistance))
                 continue;
 
+            if(Random.Range(0f,1f) > attack.attackChance)
+                continue;
+
             if(attack.proximityToPlayer < closestRange)
             {
                 closestRange = attack.proximityToPlayer;
                 closestValidAttack = attack;
             }
         }
-
-        if(closestValidAttack == null)
-            return null;
-
-        if(!attackChanceRollTimer.TickLoop())
-            return null;
-
-        if(Random.Range(0f,1f) > attackChanceAtCorrectDistance)
-            return null;
 
         return closestValidAttack;
     }

@@ -11,6 +11,7 @@ public class Attack //for enemies
     public float knockbackForce;
     public float chargeDuration;
     public float attackDuration;
+    public float attackChance = 0.65f;
     public Attack(
         float proximityToPlayer,
         float damage,
@@ -21,7 +22,8 @@ public class Attack //for enemies
         CharacterAnimator.upperBodyState attackUpperBodyState,
         CharacterAnimator.lowerBodyState attackLowerBodyState,
         float chargeDuration = 20f,
-        float attackDuration = 30f)
+        float attackDuration = 30f,
+        float attackChance = 0.65f)
     {
         this.proximityToPlayer = proximityToPlayer;
         this.damage = damage;
@@ -33,6 +35,7 @@ public class Attack //for enemies
         this.attackLowerBodyState = attackLowerBodyState;
         this.chargeDuration = chargeDuration;
         this.attackDuration = attackDuration;
+        this.attackChance = attackChance;
     }
 
     public bool CanUse(float distanceToTarget)

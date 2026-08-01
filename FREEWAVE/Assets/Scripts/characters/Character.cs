@@ -310,6 +310,7 @@ public class Character : MonoBehaviour
         {
             currentCharacterState = characterState.movement;
             attackCollider.SetActive(false);
+            print("bb");
         }
     }
     void DownAttackUpdate()
@@ -326,6 +327,7 @@ public class Character : MonoBehaviour
         {
             currentCharacterState = characterState.movement;
             attackCollider.SetActive(false);
+            print("aa");
         }
         
         rb.linearVelocityX = dashXinput * dashAttackSpeed;
