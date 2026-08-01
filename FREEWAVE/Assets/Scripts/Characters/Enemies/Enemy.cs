@@ -30,7 +30,7 @@ public class Enemy : Character
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        //return;
+        return;
         #region //follow target
 
         if(Manager.Instance.ship.currentShipState == Ship.ShipState.waitingForPlayer)
@@ -61,12 +61,11 @@ public class Enemy : Character
 
         #region //attack logic
 
+        print(chargingAttack);
         if(chargingAttack)
         {
-            print("charging attack");
             if(attackChargeTimer.TickLoop())
             {
-                print("do attack");
                 chargingAttack = false;
                 currentCharacterState = characterState.movement;
                 GiveAttackInput((int)currentAttack.movementInput.x);
@@ -74,6 +73,8 @@ public class Enemy : Character
         }
         else if(hasTarget) //if i have a target, see if im close enough to attack
         {
+            print("aa");
+            currentCharacterState = characterState.movement;
             Attack nextAttack = SelectAttack(targetDistance); //try to see if there is a vald attack for my position
             if(nextAttack != null)
                 StartChargingAttack(nextAttack); //if there is then start charging it 
