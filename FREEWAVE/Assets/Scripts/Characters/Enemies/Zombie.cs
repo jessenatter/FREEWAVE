@@ -14,10 +14,11 @@ public class Zombie : Enemy
         dashAttackSpeed = dashAttackSpeed * 0.6f;
 
         dashAttackTimer.SetDuration(20f);
-        attackTimer.SetDuration(30f);
+        dashAttackTimer.SetDuration(30f);
+        attackTimer.SetDuration(25f);
         attackCD.SetDuration(15f);
         hurtTimer.SetDuration(3f);
-        attackChargeTimer.SetDuration(20f);
+        attackChargeTimer.SetDuration(15f);
         groundedDistance = 0.05f;
 
         base.Start();
@@ -38,8 +39,6 @@ public class Zombie : Enemy
     protected override void Update()
     {
         base.Update();
-
-        //print(currentCharacterState);
     }
 
     protected override void Hurt(int hurtDir, float damage,float knockback)
@@ -93,15 +92,12 @@ public class Zombie : Enemy
     protected override void Attack()
     {
         base.Attack();
-        print("attack");
         //SoundManager.PlaySound(0.6f,0.25f,"zombieVoice1","zombieVoice2");
     }
 
     protected override void DashAttack()
     {
         base.DashAttack();
-        print("dashAttack");
-        //print("a");
         //SoundManager.PlaySound(0.6f,0.25f,"zombieVoice1","zombieVoice2");
     }
 

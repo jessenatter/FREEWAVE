@@ -6,7 +6,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     //defines combat / movement behavior for characters
-    protected float moveSpeed = 3.5f, jumpForce = 27.5f,dashAttackSpeed = 10f;
+    protected float moveSpeed = 3.5f, jumpForce = 28f,dashAttackSpeed = 10f;
     float knockbackCarryDecay = 8f;
     float carriedKnockbackXVelocity;
     protected float xInput,yInput,dashXinput;
@@ -310,7 +310,6 @@ public class Character : MonoBehaviour
         {
             currentCharacterState = characterState.movement;
             attackCollider.SetActive(false);
-            print("bb");
         }
     }
     void DownAttackUpdate()
@@ -327,7 +326,6 @@ public class Character : MonoBehaviour
         {
             currentCharacterState = characterState.movement;
             attackCollider.SetActive(false);
-            print("aa");
         }
         
         rb.linearVelocityX = dashXinput * dashAttackSpeed;
