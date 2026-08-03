@@ -17,9 +17,9 @@ public class Player : Character
     Interactable lastClosestInteractable;
     [SerializeField] GameObject frontArmIK;
     LimbManager frontArmTarget;
-    GameObject grappleBullet;
+    GameObject grappleBullet, grappleParent;
     LineRenderer lineRenderer;
-    PublicTimer grappleTimer = new PublicTimer(30f);
+    PublicTimer grappleCDtimer = new PublicTimer(30f); 
     bool canGrapple,interactKeyReleased,attackKeyReleased,switchKeyReleased = true,dead;
     bool interactHeld, interactHoldTriggered;
     float interactHoldTime;
@@ -143,7 +143,7 @@ public class Player : Character
 
         if(!canGrapple)
         {
-            if(grappleTimer.TickLoop())
+            if(grappleCDtimer.TickLoop())
             {
                 canGrapple = true;
             }
@@ -416,7 +416,7 @@ public class Player : Character
     void GrappleShoot()
     {
         Vector2 dir = mouseWorld - (Vector2)transform.position;
-        float distance = 50f;
+        float distance = 50f; //distance the ray checks
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distance, groundLayer);
 
@@ -426,34 +426,43 @@ public class Player : Character
             isGrappling = true;
             grapplePoint = hit.point;
             grappleBullet.SetActive(true);
-            grappleBullet.transform.position = grapplePoint;
-            grappleBullet.transform.SetParent(hit.collider.gameObject.transform);
+            grappleBullet.transform.position = grappleFunctionPoint.transform.position;
+            grappleParent = hit.collider.gameObject;
             rb.gravityScale = 0;
             lineRenderer.enabled = true;
             canGrapple = false;
-            grappleTimer.Reset();
+            grappleCDtimer.Reset();
+            grappleIsShooting = true;
         }
     }
     void GrappleStateUpdate()
     {
+        Vector2 dir = grapplePoint - (Vector2)grappleFunctionPoint.transform.position;
+
         UpdateGrapplePullAudio(!grappleIsShooting);
 
         if(grappleIsShooting)
-            GrappleShootingUpdate();
+            GrappleShootingUpdate(dir);
         else
-            GrappleUpdate();
+            GrappleUpdate(dir);
 
         lineRenderer.SetPosition(0,grappleFunctionPoint.transform.position);
         lineRenderer.SetPosition(1,grappleBullet.transform.position);
     }
-    void GrappleShootingUpdate()
+    void GrappleShootingUpdate(Vector2 dir)
     {
-        
+        float grappleShootSpeed = .1f;
+        grappleBullet.transform.Translate(dir * grappleShootSpeed);
+        if(((Vector2)grappleBullet.transform.position - grapplePoint).magnitude < 0.1f)
+        {
+            grappleIsShooting = false;
+            grappleBullet.transform.SetParent(grappleParent.transform);
+        }
+
+        print("a");
     } 
-    void GrappleUpdate()
+    void GrappleUpdate(Vector2 dir)
     {
-        //needs work
-        Vector2 dir = grapplePoint - (Vector2)grappleFunctionPoint.transform.position;
         float grappleSpeed = 17f;
 
         Vector2 fakeGravity = Vector2.down * 8f;
