@@ -71,6 +71,9 @@ public class Enemy : Character
                 queuedAttackDirection = (int)currentAttack.movementInput.x;
                 hasQueuedAttackInput = true;
             }
+
+            if(groundedHit)
+                rb.linearVelocityY = 0;
         }
         else if(hasTarget) //if i have a target, see if im close enough to attack
         {
@@ -133,7 +136,6 @@ public class Enemy : Character
         if(!attackChanceRollTimer.TickLoop())
             return null;
 
-        print("try attack");
         Attack closestValidAttack = null;
         float closestRange = float.MaxValue;
 

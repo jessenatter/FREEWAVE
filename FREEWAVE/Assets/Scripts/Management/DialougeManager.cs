@@ -59,7 +59,7 @@ public class DialogueManager : MonoBehaviour
         {
             foreach (DialogueLine line in conversation)
             {
-                Debug.Log($"{line.speaker}: {line.text}");
+                //Debug.Log($"{line.speaker}: {line.text}");
             }
         }
     }
