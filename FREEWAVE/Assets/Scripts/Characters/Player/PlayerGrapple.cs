@@ -1,8 +1,5 @@
+using Unity.Mathematics;
 using UnityEngine;
-
-[DisallowMultipleComponent]
-[RequireComponent(typeof(Player))]
-[RequireComponent(typeof(LineRenderer))]
 public class PlayerGrapple : MonoBehaviour
 {
     Player player;
@@ -13,16 +10,15 @@ public class PlayerGrapple : MonoBehaviour
     GameObject grappleParent;
     GameObject grappleFunctionPoint;
     Vector2 grapplePoint;
-    PublicTimer grappleCDtimer = new PublicTimer(30f);
+    PublicTimer grappleCDtimer = new PublicTimer(50f);
     bool canGrapple;
     bool grappleIsShooting;
     bool isGrappling;
     bool initialized;
     float grappleAudioActiveTime;
-    float maxGrappleSpeed = 15f;
-
+    float maxGrappleSpeed = 20f;
+    int grappleXdir;
     public bool IsGrappling => isGrappling;
-
     public void Initialize(Player owner)
     {
         player = owner;
@@ -62,13 +58,11 @@ public class PlayerGrapple : MonoBehaviour
 
         initialized = rb != null && lineRenderer != null && grappleFunctionPoint != null && grappleBullet != null;
     }
-
     public void TickCooldown()
     {
         if(!canGrapple && grappleCDtimer.TickLoop())
             canGrapple = true;
     }
-
     public void TryShoot()
     {
         if(!initialized || !canGrapple)
@@ -112,56 +106,65 @@ public class PlayerGrapple : MonoBehaviour
         lineRenderer.SetPosition(1,grappleBullet.transform.position);
     }
 
-    public void Cancel()
+    public void StopGrapple()
     {
-        if(rb == null)
-            return;
+        if(!isGrappling) return;
 
         isGrappling = false;
         grappleIsShooting = false;
         UpdateGrapplePullAudio(false);
         rb.gravityScale = player.InitialGravityScale;
-
-        if(lineRenderer != null)
-            lineRenderer.enabled = false;
-
-        if(grappleBullet != null)
-            grappleBullet.SetActive(false);
+        lineRenderer.enabled = false;
+        grappleBullet.SetActive(false);
+        GrappleBoostDismount();
     }
-
     public void StopPullAudio()
     {
         UpdateGrapplePullAudio(false);
     }
-
-    void OnDisable()
-    {
-        UpdateGrapplePullAudio(false);
-    }
-
     void GrappleShootingUpdate(Vector2 dir)
     {
         float grappleShootSpeed = 0.1f;
-        grappleBullet.transform.Translate(dir * grappleShootSpeed);
-        if(((Vector2)grappleBullet.transform.position - grapplePoint).magnitude < 0.1f)
+        Vector2 currentPosition = grappleBullet.transform.position;
+        Vector2 nextPosition = Vector2.MoveTowards(currentPosition, grapplePoint, grappleShootSpeed);
+
+        grappleBullet.transform.position = nextPosition;
+
+        if((grapplePoint - nextPosition).sqrMagnitude <= grappleShootSpeed * grappleShootSpeed)
         {
+            grappleBullet.transform.position = grapplePoint;
             grappleIsShooting = false;
             grappleBullet.transform.SetParent(grappleParent.transform);
         }
     }
 
+    void GrappleReturningUpdate()
+    {
+        
+    }
+    
     void GrappleUpdate(Vector2 dir)
     {
-        float grappleSpeed = 17f;
+        float grappleSpeed = 16f;
         Vector2 fakeGravity = Vector2.down * 8f;
 
         rb.AddForce(dir.normalized * grappleSpeed + fakeGravity);
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity,maxGrappleSpeed);
 
+        grappleXdir = (int)Mathf.Sign(dir.x);
+
         if(dir.magnitude < 1f)
-            Cancel();
+            StopGrapple();
     }
 
+    void GrappleBoostDismount()
+    {
+        if(player.groundedHit) return;
+
+        Vector2 dir = new Vector2(grappleXdir,1);
+        float dismountForce = 25f;
+        rb.AddForce(dir * dismountForce,ForceMode2D.Impulse);
+    }
     void UpdateGrapplePullAudio(bool isBeingPulled)
     {
         const float grappleAudioBasePitch = 1f;

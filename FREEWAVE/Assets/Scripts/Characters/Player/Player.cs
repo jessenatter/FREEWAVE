@@ -116,11 +116,11 @@ public class Player : Character
     
     protected override void MovementUpdate()
     {
-        grappleController?.TickCooldown();
+        grappleController.TickCooldown();
 
         if(grappleController == null || !grappleController.IsGrappling)
         {
-            grappleController?.StopPullAudio();
+            grappleController.StopPullAudio();
             base.MovementUpdate();
         }
         else 
@@ -216,7 +216,7 @@ public class Player : Character
             if(currentAimed == grapple)
             {
                 if(InputManager.Instance.useDrugAction.IsPressed() || InputManager.Instance.switchDrugAction.IsPressed())
-                    grappleController?.TryShoot();
+                    grappleController.TryShoot();
             }
             else if(currentAimed == radar)
             {
@@ -473,7 +473,7 @@ public class Player : Character
     protected override void Jump()
     {
         base.Jump();
-        grappleController?.Cancel();
+        grappleController.StopGrapple();
     }
 
     protected override void DoJump()
@@ -485,20 +485,20 @@ public class Player : Character
     protected override void Attack()
     {
         base.Attack();
-        grappleController?.Cancel();
+        grappleController.StopGrapple();
         SoundManager.PlaySound("knife",0.7f,0.2f);
     }
 
     protected override void DashAttack()
     {
         base.DashAttack();
-        grappleController?.Cancel();
+        grappleController.StopGrapple();
         SoundManager.PlaySound("knifeSlash",0.7f,0.2f);
     }
 
     protected override void DownAttack()
     {
-        grappleController?.Cancel();//first bc gravity opperations
+        grappleController.StopGrapple();//first bc gravity opperations
         base.DownAttack();
         SoundManager.PlaySound("downAttack",0.7f,0.2f);
     }
