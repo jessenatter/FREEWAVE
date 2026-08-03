@@ -8,33 +8,26 @@ using UnityEngine.XR;
 public class Player : Character
 {
     [HideInInspector] public Weapon knife,axe,hammer,grapple,radar;
-    bool isGrappling,grappleIsShooting;
     Ship ship;
     float maxDistanceFromShip = 1f;
     [HideInInspector] public bool canEnterShip,aiming;
-    Vector2 mouseWorld,grapplePoint;
+    Vector2 mouseWorld;
     bool nearInteractable;
     Interactable lastClosestInteractable;
     [SerializeField] GameObject frontArmIK;
     LimbManager frontArmTarget;
-    GameObject grappleBullet, grappleParent;
-    LineRenderer lineRenderer;
-    PublicTimer grappleCDtimer = new PublicTimer(30f); 
-    bool canGrapple,interactKeyReleased,attackKeyReleased,switchKeyReleased = true,dead;
+    bool interactKeyReleased,attackKeyReleased,switchKeyReleased = true,dead;
     bool interactHeld, interactHoldTriggered;
     float interactHoldTime;
     float shipFlipHoldDuration = 0.35f;
     CameraScript cam;
-    float maxGrappleSpeed = 15f;
-    AudioSource grappleAudioSource;
-    float grappleAudioActiveTime;
     [HideInInspector] public bool inCombat;
     PublicTimer combatCheckTimer = new PublicTimer(70f);
     PublicTimer inCombatTimer = new PublicTimer(70f);
     List<Weapon> aimedWeapons = new List<Weapon>();
     List<Weapon> meleeWeapons = new List<Weapon>();
     [HideInInspector] public Weapon currentMelee,currentAimed;
-    GameObject grappleFunctionPoint;
+    PlayerGrapple grappleController;
     Light2D radarLight;
     PublicTimer radarBeepTimer = new PublicTimer(30f);
     override protected void Start()
@@ -50,20 +43,8 @@ public class Player : Character
         base.Start();
         
         ship = GameObject.FindGameObjectWithTag("Ship").GetComponent<Ship>();
-        lineRenderer = GetComponent<LineRenderer>();
-        
-        lineRenderer.positionCount = 2;
-        float width = 0.015f;
-        lineRenderer.startWidth = width;
-        lineRenderer.endWidth = width;
 
         AudioSource[] playerAudioSources = GetComponents<AudioSource>();
-
-        if (playerAudioSources.Length > 0)
-        {
-            grappleAudioSource = playerAudioSources[0];
-            grappleAudioSource.loop = true;
-        }
 
         if (playerAudioSources.Length > 1)
             playerAudioSources[1].loop = true;
@@ -91,14 +72,16 @@ public class Player : Character
 
         SetHeldWeaponVisuals(false);
 
-        grappleFunctionPoint = grapple.gameObject.transform.GetChild(3).gameObject;
         radarLight = radar.gameObject.transform.GetChild(2).GetComponent<Light2D>();
         frontArmTarget = frontArmIK.GetComponent<LimbManager>();
 
-        grappleBullet = GameObject.FindGameObjectWithTag("GrappleBullet").gameObject;
-        grappleBullet.SetActive(false);
-
         airMovement = true;
+
+        grappleController = GetComponent<PlayerGrapple>();
+        if(grappleController == null)
+            grappleController = gameObject.AddComponent<PlayerGrapple>();
+
+        grappleController.Initialize(this);
 
         #endregion
     }
@@ -125,7 +108,7 @@ public class Player : Character
     {
         base.FixedUpdate();
         CheckForInteractables();
-        bool isWalking = characterIsActive && !dead && currentCharacterState == characterState.movement && groundedHit && Mathf.Abs(xInput) > 0f && !isGrappling;
+        bool isWalking = characterIsActive && !dead && currentCharacterState == characterState.movement && groundedHit && Mathf.Abs(xInput) > 0f && (grappleController == null || !grappleController.IsGrappling);
         UpdateFootstepAudio(isWalking);
         CheckCombat();
     }
@@ -133,21 +116,15 @@ public class Player : Character
     
     protected override void MovementUpdate()
     {
-        if(!isGrappling)
+        grappleController?.TickCooldown();
+
+        if(grappleController == null || !grappleController.IsGrappling)
         {
-            UpdateGrapplePullAudio(false);
+            grappleController?.StopPullAudio();
             base.MovementUpdate();
         }
         else 
-            GrappleStateUpdate();
-
-        if(!canGrapple)
-        {
-            if(grappleCDtimer.TickLoop())
-            {
-                canGrapple = true;
-            }
-        }
+            grappleController.MovementUpdate();
     }
     void GetInputs()
     {
@@ -239,7 +216,7 @@ public class Player : Character
             if(currentAimed == grapple)
             {
                 if(InputManager.Instance.useDrugAction.IsPressed() || InputManager.Instance.switchDrugAction.IsPressed())
-                    GrappleShoot();
+                    grappleController?.TryShoot();
             }
             else if(currentAimed == radar)
             {
@@ -413,104 +390,12 @@ public class Player : Character
         Manager.Instance.mouseObject.transform.position = Vector2.Lerp(transform.position,mouseWorld,.5f);
         frontArmIK.transform.position = mouseWorld;
     }
-    void GrappleShoot()
-    {
-        Vector2 dir = mouseWorld - (Vector2)transform.position;
-        float distance = 50f; //distance the ray checks
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distance, groundLayer);
+    public Vector2 AimWorld => mouseWorld;
 
-        if(hit == true && canGrapple)
-        {
-            SoundManager.PlaySound(0.5f,0.2f,"grapple");
-            isGrappling = true;
-            grapplePoint = hit.point;
-            grappleBullet.SetActive(true);
-            grappleBullet.transform.position = grappleFunctionPoint.transform.position;
-            grappleParent = hit.collider.gameObject;
-            rb.gravityScale = 0;
-            lineRenderer.enabled = true;
-            canGrapple = false;
-            grappleCDtimer.Reset();
-            grappleIsShooting = true;
-        }
-    }
-    void GrappleStateUpdate()
-    {
-        Vector2 dir = grapplePoint - (Vector2)grappleFunctionPoint.transform.position;
+    public LayerMask GroundLayer => groundLayer;
 
-        UpdateGrapplePullAudio(!grappleIsShooting);
-
-        if(grappleIsShooting)
-            GrappleShootingUpdate(dir);
-        else
-            GrappleUpdate(dir);
-
-        lineRenderer.SetPosition(0,grappleFunctionPoint.transform.position);
-        lineRenderer.SetPosition(1,grappleBullet.transform.position);
-    }
-    void GrappleShootingUpdate(Vector2 dir)
-    {
-        float grappleShootSpeed = .1f;
-        grappleBullet.transform.Translate(dir * grappleShootSpeed);
-        if(((Vector2)grappleBullet.transform.position - grapplePoint).magnitude < 0.1f)
-        {
-            grappleIsShooting = false;
-            grappleBullet.transform.SetParent(grappleParent.transform);
-        }
-
-        print("a");
-    } 
-    void GrappleUpdate(Vector2 dir)
-    {
-        float grappleSpeed = 17f;
-
-        Vector2 fakeGravity = Vector2.down * 8f;
-
-        rb.AddForce(dir.normalized * grappleSpeed + fakeGravity);
-        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity,maxGrappleSpeed);
-        
-        if(dir.magnitude < 1f)
-            GrappleCancel();
-    }
-    void GrappleCancel()
-    {
-        isGrappling = false;
-        UpdateGrapplePullAudio(false);
-        rb.gravityScale = initGravityScale;
-        lineRenderer.enabled = false;
-        grappleBullet.SetActive(false);
-    }
-
-    void UpdateGrapplePullAudio(bool isBeingPulled)
-    {
-        const float grappleAudioBasePitch = 1f;
-        const float grappleAudioPitchRange = 0.35f;
-        const float grappleAudioPitchCycleSpeed = 2.5f;
-
-        if (grappleAudioSource == null)
-            return;
-
-        if (!isBeingPulled)
-        {
-            grappleAudioActiveTime = 0f;
-            grappleAudioSource.pitch = grappleAudioBasePitch;
-
-            if (grappleAudioSource.isPlaying)
-                grappleAudioSource.Stop();
-
-            return;
-        }
-
-        grappleAudioActiveTime += Time.deltaTime;
-
-        float halfRange = grappleAudioPitchRange * 0.5f;
-        float pitchOffset = Mathf.PingPong(grappleAudioActiveTime * grappleAudioPitchCycleSpeed, grappleAudioPitchRange) - halfRange;
-        grappleAudioSource.pitch = grappleAudioBasePitch + pitchOffset;
-
-        if (!grappleAudioSource.isPlaying)
-            grappleAudioSource.Play();
-    }
+    public float InitialGravityScale => initGravityScale;
 
     void UpdateFootstepAudio(bool isWalking)
     {
@@ -588,7 +473,7 @@ public class Player : Character
     protected override void Jump()
     {
         base.Jump();
-        GrappleCancel();
+        grappleController?.Cancel();
     }
 
     protected override void DoJump()
@@ -600,20 +485,20 @@ public class Player : Character
     protected override void Attack()
     {
         base.Attack();
-        GrappleCancel();
+        grappleController?.Cancel();
         SoundManager.PlaySound("knife",0.7f,0.2f);
     }
 
     protected override void DashAttack()
     {
         base.DashAttack();
-        GrappleCancel();
+        grappleController?.Cancel();
         SoundManager.PlaySound("knifeSlash",0.7f,0.2f);
     }
 
     protected override void DownAttack()
     {
-        GrappleCancel();//first bc gravity opperations
+        grappleController?.Cancel();//first bc gravity opperations
         base.DownAttack();
         SoundManager.PlaySound("downAttack",0.7f,0.2f);
     }
