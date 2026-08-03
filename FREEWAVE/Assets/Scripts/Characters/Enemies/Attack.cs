@@ -11,6 +11,7 @@ public class Attack //for enemies
     public float knockbackForce;
     public float chargeDuration;
     public float attackDuration;
+    
     public float attackChance = 0.65f;
     public Attack(
         float proximityToPlayer,

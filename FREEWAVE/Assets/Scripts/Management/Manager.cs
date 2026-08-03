@@ -20,7 +20,7 @@ public class Manager : MonoBehaviour
     PublicTimer playerRespawnTimer = new PublicTimer(50f);
     bool playerDead = false;
     float maxShipYposition = 60f;
-    bool shipCanExitAtmosphere = false;
+    bool shipCanExitAtmosphere = true;
     [HideInInspector] public GameObject dialougeCanvas;
     void Awake()
     {

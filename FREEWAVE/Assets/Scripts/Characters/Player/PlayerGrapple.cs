@@ -124,7 +124,7 @@ public class PlayerGrapple : MonoBehaviour
     }
     void GrappleShootingUpdate(Vector2 dir)
     {
-        float grappleShootSpeed = 0.1f;
+        float grappleShootSpeed = 1f;
         Vector2 currentPosition = grappleBullet.transform.position;
         Vector2 nextPosition = Vector2.MoveTowards(currentPosition, grapplePoint, grappleShootSpeed);
 
