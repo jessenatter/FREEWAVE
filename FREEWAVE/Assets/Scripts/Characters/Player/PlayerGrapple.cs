@@ -146,9 +146,17 @@ public class PlayerGrapple : MonoBehaviour
     void GrappleUpdate(Vector2 dir)
     {
         float grappleSpeed = 16f;
+        float inputInfluence = 10f;
         Vector2 fakeGravity = Vector2.down * 4f;
 
-        rb.AddForce(dir.normalized * grappleSpeed + fakeGravity);
+        float moveInputX = 0f;
+        if (InputManager.Instance != null)
+            moveInputX = InputManager.Instance.moveAction.ReadValue<Vector2>().x;
+
+        Vector2 inputForce = new Vector2(moveInputX * inputInfluence, 0f);
+        Vector2 pullForce = dir.normalized * grappleSpeed + fakeGravity + inputForce;
+
+        rb.AddForce(pullForce);
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity,maxGrappleSpeed);
 
         grappleXdir = (int)Mathf.Sign(dir.x);
