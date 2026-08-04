@@ -146,7 +146,7 @@ public class PlayerGrapple : MonoBehaviour
     void GrappleUpdate(Vector2 dir)
     {
         float grappleSpeed = 16f;
-        Vector2 fakeGravity = Vector2.down * 8f;
+        Vector2 fakeGravity = Vector2.down * 4f;
 
         rb.AddForce(dir.normalized * grappleSpeed + fakeGravity);
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity,maxGrappleSpeed);

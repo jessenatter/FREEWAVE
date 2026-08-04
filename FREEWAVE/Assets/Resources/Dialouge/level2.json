@@ -2,25 +2,21 @@
   "convo1": [
     {
       "speaker": "Player",
-      "text": "Fuck..."
-    },
-    {
-      "speaker": "Player",
-      "text": "Where the fuck did I just land..."
-    },
-    {
-      "speaker": "Player",
-      "text": "..."
-    },
-    {
-      "speaker": "Player",
-      "text": "Where did the ship go...?"
+      "text": "Hopefully my ship landed somewhere over here..."
     }
   ],
   "convo2": [
     {
       "speaker": "Player",
-      "text": "What happened to this guy..."
+      "text": "What is this...?"
+    },
+    {
+      "speaker": "Player",
+      "text": "A knife?"
+    },
+    {
+      "speaker": "Player",
+      "text": "This could come in handy..."
     }
   ]
 }

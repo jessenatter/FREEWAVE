@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7783890470191726097}
   - component: {fileID: 2756876707320440775}
   - component: {fileID: 4880554302203467518}
+  - component: {fileID: 915744642678156650}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Manager
@@ -324,6 +325,19 @@ MonoBehaviour:
   blendDistance: 0
   weight: 0
   sharedProfile: {fileID: 11400000, guid: b5e7b097963584606a4f96d77c004273, type: 2}
+--- !u!114 &915744642678156650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488310531014625514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f53cf3afb58440488f2cc18868cd7b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InitialWeaponUnlocks
+  unlockedWeaponNames: []
 --- !u!1 &1132216182179137586
 GameObject:
   m_ObjectHideFlags: 0
