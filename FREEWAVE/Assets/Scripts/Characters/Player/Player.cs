@@ -518,18 +518,25 @@ public class Player : Character
         if(string.IsNullOrWhiteSpace(weaponName))
             return false;
 
+        string normalizedName = weaponName.Trim().ToLowerInvariant();
         Weapon weaponToUnlock = null;
 
-        if(weaponName == "knife")
+        if(normalizedName == "knife")
             weaponToUnlock = knife;
-        else if(weaponName == "axe")
+        else if(normalizedName == "axe")
             weaponToUnlock = axe;
-        else if(weaponName == "hammer")
+        else if(normalizedName == "hammer")
             weaponToUnlock = hammer;
-        else if(weaponName == "grapple")
+        else if(normalizedName == "grapple")
             weaponToUnlock = grapple;
-        else if(weaponName == "radar")
+        else if(normalizedName == "radar")
             weaponToUnlock = radar;
+
+        if(weaponToUnlock == null)
+        {
+            Debug.LogWarning($"[Player] Unknown weapon name '{weaponName}'.");
+            return false;
+        }
 
         weaponToUnlock.unlocked = true;
 

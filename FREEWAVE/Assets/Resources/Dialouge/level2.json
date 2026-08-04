@@ -1,0 +1,26 @@
+{
+  "convo1": [
+    {
+      "speaker": "Player",
+      "text": "Fuck..."
+    },
+    {
+      "speaker": "Player",
+      "text": "Where the fuck did I just land..."
+    },
+    {
+      "speaker": "Player",
+      "text": "..."
+    },
+    {
+      "speaker": "Player",
+      "text": "Where did the ship go...?"
+    }
+  ],
+  "convo2": [
+    {
+      "speaker": "Player",
+      "text": "What happened to this guy..."
+    }
+  ]
+}

@@ -21,6 +21,18 @@
     {
       "speaker": "Player",
       "text": "What happened to this guy..."
+    },
+
+    {
+      "speaker": "Player",
+      "text": "He must have been torn up by the rotten..."
+    }
+  ],
+
+  "convo3": [
+    {
+      "speaker": "Player",
+      "text": "I probably need a key for this thing..."
     }
   ]
 }
